@@ -19,6 +19,8 @@ return new class extends Migration
             $table->tinyInteger("NbAdultes")->default(0);
             $table->tinyInteger("NbEnfants")->default(0);
             $table->string("Statut");
+            $table->foreign('fkClient')->references('ClientID')->on('client');
+            $table->foreign('fkAppart')->references('AppartementID')->on('appartements');
             $table->string("Source")->nullable();
             $table->tinyInteger("Notes")->default(0);
             $table->timestamps();
