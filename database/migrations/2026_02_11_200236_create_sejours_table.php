@@ -12,16 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('sejours', function (Blueprint $table) {
-            $table->id("SéjourID")->autoIncrement();
+            $table->id("SéjourID")->unsignedInteger()->autoIncrement();
             $table->dateTime("DateCheckIn");
             $table->time("HeureCheckIn");
             $table->date("DateCheckOut");
             $table->time("HeureCheckOut");
-            $table->tinyInteger("NbOccupantsRéels");
-            $table->boolean("CléRemise");
-            $table->boolean("CautionVersée");
+            $table->tinyInteger("NbOccupantsRéels")->default(1);
+            $table->boolean("CléRemise")->default(0);
+            $table->boolean("CautionVersée")->default(0);
             $table->integer("MontantCaution");
-            $table->boolean("CautionRemboursée");
+            $table->boolean("CautionRemboursée")->default(0);
             $table->timestamps();
         });
     }

@@ -12,13 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('fournisseurs', function (Blueprint $table) {
-            $table->id("FournisseurID")->autoIncrement();
+            $table->id("FournisseurID")->unsignedInteger()->autoIncrement();
             $table->string("Nom");
             $table->string("Type")->nullable();
-            $table->string("Contact");
+            $table->string("Contact")->nullable();
             $table->string("Téléphone");
-            $table->string("Email");
-            $table->string("Adresse");
+            $table->string("Email")->nullable();
+            $table->string("Adresse")->nullable();
+            $table->string("etat")->nullable();
             $table->timestamps();
         });
     }

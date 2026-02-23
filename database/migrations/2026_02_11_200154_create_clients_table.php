@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('clients', function (Blueprint $table) {
-            $table->id("ClientID")->autoIncrement();
+            $table->id("ClientID")->unsignedInteger()->autoIncrement();
             $table->string("Nom");
             $table->string("Prenom");
             $table->string("Email")->nullable();
@@ -21,7 +21,7 @@ return new class extends Migration
             $table->date("DateNaissance")->nullable();
             $table->string("TypeClient")->nullable();
             $table->string("Statut")->nullable();
-            $table->string("PointsFidelite")->default("0");
+            $table->integer("PointsFidelite")->default(0);
             $table->timestamps();
         });
     }

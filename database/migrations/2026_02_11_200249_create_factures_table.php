@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('factures', function (Blueprint $table) {
-            $table->id("FactureID")->autoIncrement();
+            $table->id("FactureID")->unsignedInteger()->autoIncrement();
             $table->string("NumeroFacture");
             $table->dateTime("DateFacture");
-            $table->integer("MontantHT");
-            $table->integer("MontantTVA");
-            $table->integer("MontantTTC");
+            $table->integer("MontantHT")->default(0);
+            $table->integer("MontantTVA")->default(0);
+            $table->integer("MontantTTC")->default(0);
             $table->string("StatutPaiement");
             $table->dateTime("DatePaiement");
             $table->timestamps();

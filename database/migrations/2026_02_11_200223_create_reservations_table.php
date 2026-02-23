@@ -12,15 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('reservations', function (Blueprint $table) {
-            $table->id("ReservationID")->autoIncrement();
+            $table->id("ReservationID")->unsignedInteger()->autoIncrement();
             $table->string("Numero");
-            $table->dateTime("DateArrivee");
-            $table->dateTime("DateDepart");
-            $table->tinyInteger("NbAdultes");
-            $table->tinyInteger("NbEnfants");
+            $table->dateTime("DateArrivee")->useCurrent();
+            $table->dateTime("DateDepart")->useCurrent();
+            $table->tinyInteger("NbAdultes")->default(0);
+            $table->tinyInteger("NbEnfants")->default(0);
             $table->string("Statut");
-            $table->string("Source");
-            $table->tinyInteger("Notes");
+            $table->string("Source")->nullable();
+            $table->tinyInteger("Notes")->default(0);
             $table->timestamps();
         });
     }
