@@ -12,7 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('sejours', function (Blueprint $table) {
-            $table->id();
+            $table->id("SéjourID")->autoIncrement();
+            $table->dateTime("DateCheckIn");
+            $table->time("HeureCheckIn");
+            $table->date("DateCheckOut");
+            $table->time("HeureCheckOut");
+            $table->tinyInteger("NbOccupantsRéels");
+            $table->boolean("CléRemise");
+            $table->boolean("CautionVersée");
+            $table->integer("MontantCaution");
+            $table->boolean("CautionRemboursée");
             $table->timestamps();
         });
     }

@@ -12,7 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('services', function (Blueprint $table) {
-            $table->id();
+            $table->id("ServiceID")->autoIncrement();
+            $table->string("Code");
+            $table->string("Libellé")->nullable();
+            $table->string("Catégorie")->nullable();
+            $table->integer("PrixUnitaire");
+            $table->string("DuréeMoyenne")->nullable();
+            $table->string("UnitéFacturation");
             $table->timestamps();
         });
     }

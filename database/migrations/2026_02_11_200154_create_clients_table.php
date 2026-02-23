@@ -12,7 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('clients', function (Blueprint $table) {
-            $table->id();
+            $table->id("ClientID")->autoIncrement();
+            $table->string("Nom");
+            $table->string("Prenom");
+            $table->string("Email")->nullable();
+            $table->string("Telephone")->nullable();
+            $table->string("Adresse")->nullable();
+            $table->date("DateNaissance")->nullable();
+            $table->string("TypeClient")->nullable();
+            $table->string("Statut")->nullable();
+            $table->string("PointsFidelite")->default("0");
             $table->timestamps();
         });
     }

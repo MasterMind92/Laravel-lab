@@ -12,7 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('inventaires', function (Blueprint $table) {
-            $table->id();
+            $table->id("ArticleID")->autoIncrement();
+            $table->string("Référence");
+            $table->string("Libellé");
+            $table->string("Catégorie");
+            $table->string("QuantitéStock");
+            $table->string("SeuilMin");
+            $table->string("Localisation");
+            $table->string("Etat");
             $table->timestamps();
         });
     }

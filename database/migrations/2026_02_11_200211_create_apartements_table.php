@@ -12,7 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('apartements', function (Blueprint $table) {
-            $table->id();
+            $table->id("AppartementID")->autoIncrement();
+            $table->string("Code");
+            $table->string("Type");
+            $table->string("Surface")->nullable();
+            $table->string("Etage")->nullable();
+            $table->tinyInteger("CapaciteMax")->default("1");
+            $table->string("Etat")->nullable();
+            $table->dateTime("DernierNettoyage")->useCurrent();
+            $table->dateTime("DateDerniereRenovation");
+            $table->string("Observations")->nullable();
             $table->timestamps();
         });
     }

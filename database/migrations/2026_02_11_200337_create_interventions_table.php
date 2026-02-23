@@ -12,7 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('interventions', function (Blueprint $table) {
-            $table->id();
+            $table->id("InterventionID")->autoIncrement();
+            $table->dateTime("DateDemande")->nullable();
+            $table->dateTime("DateIntervention")->nullable();
+            $table->string("Type")->nullable();
+            $table->string("Description")->nullable();
+            $table->string("Priorite")->nullable();
+            $table->integer("CoutMateriel")->nullable();
+            $table->integer("CoutMainOeuvre")->nullable();
+            $table->string("Statut")->nullable();
             $table->timestamps();
         });
     }
