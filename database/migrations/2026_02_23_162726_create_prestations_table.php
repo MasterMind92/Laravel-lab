@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id("PrestationID")->unsignedInteger()->autoincrement();
             $table->dateTime("DateDemande")->useCurrent();
             $table->date("DateRéalisation")->nullable();
-            $table->time("HeureDébut")->nullable();
+            $table->time("HeureDebut")->nullable();
             $table->time("HeureFin")->nullable();
             $table->string("Statut")->nullable();
             $table->string("Satisfaction")->nullable();

@@ -22,7 +22,7 @@ class StoretarifRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'body' => 'required',
         ];
     }
 }

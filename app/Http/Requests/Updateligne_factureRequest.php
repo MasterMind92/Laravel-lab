@@ -22,7 +22,7 @@ class Updateligne_factureRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'body' => 'required',
         ];
     }
 }

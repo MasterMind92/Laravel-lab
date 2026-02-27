@@ -22,7 +22,7 @@ class StoreInterventionsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'body' => 'required',
         ];
     }
 }
