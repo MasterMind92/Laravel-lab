@@ -22,7 +22,16 @@ class UpdateClientsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'body' => 'required',
+            'ClientID' => 'required|numeric',
+            'Nom' => 'required|string|alpha_num:ascii',
+            'Prenom' => 'required|string|alpha_num:ascii',
+            'Email' => 'required|email:rfc,dns',
+            'Telephone' => 'required|alpha_num:ascii|min:8',
+            'Adresse' => 'required|alpha_num:ascii',
+            'DateNaissance' => 'required|date',
+            'TypeClient' => 'required|alpha_num:ascii',
+            'Statut' => 'required|string|alpha_num:ascii',
+            'PointsFidelite' => 'required|numeric',
         ];
     }
 }

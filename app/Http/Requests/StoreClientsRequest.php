@@ -22,7 +22,15 @@ class StoreClientsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'body' => 'required',
+            'Nom' => 'required|string',
+            'Prenom' => 'required|string',
+            'Email' => 'required|email:rfc,dns',
+            'Telephone' => 'required|alpha_num:ascii|min:8',
+            'Adresse' => 'required|alpha_num:ascii',
+            'DateNaissance' => 'required|date',
+            'TypeClient' => 'required|alpha_num:ascii',
+            'Statut' => 'required|string|alpha_num:ascii',
+            'PointsFidelite' => 'required|numeric',
         ];
     }
 }
