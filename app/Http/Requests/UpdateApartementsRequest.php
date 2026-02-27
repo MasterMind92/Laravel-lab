@@ -11,7 +11,7 @@ class UpdateApartementsRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,16 @@ class UpdateApartementsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'body' => 'required',
+            'AppartementID' => 'required|numeric',
+            'Code' => 'required|alpha_num:ascii',
+            'Type' => 'required|alpha_num:ascii',
+            'Surface' => 'required|alpha_num:ascii',
+            'Etage' => 'required|numeric',
+            'CapaciteMax' => 'required|numeric',
+            'Etat' => 'required|alpha_num:ascii|in:A,I',
+            'DernierNettoyage' => 'required|date',
+            'DateDerniereRenovation' => 'required|date',
+            'Observations' => 'required|alpha_num:ascii|max:255|string',
         ];
     }
 }
