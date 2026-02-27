@@ -11,7 +11,7 @@ class StoreReservationsRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,16 @@ class StoreReservationsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'body' => 'required',
+            'Numero' => 'required|alpha_num:ascii',
+            'DateArrivee' => 'required|date',
+            'DateDepart' => 'required|date',
+            'NbAdultes' => 'required|numeric|lt:5',
+            'NbEnfants' => 'required|numeric|lt:5',
+            'Statut' => 'required|string|',
+            'fkClient' => 'required|numeric',
+            'fkAppart' => 'required|numeric',
+            'Source' => 'required|string',
+            'Notes' => 'required|numeric',
         ];
     }
 }

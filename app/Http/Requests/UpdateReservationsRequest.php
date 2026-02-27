@@ -22,7 +22,17 @@ class UpdateReservationsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'body' => 'required',
+            'ReservationID' => 'required|numeric',
+            'Numero' => 'required|alpha_num:ascii',
+            'DateArrivee' => 'required|date',
+            'DateDepart' => 'required|date',
+            'NbAdultes' => 'required|numeric|lt:5',
+            'NbEnfants' => 'required|numeric|lt:5',
+            'Statut' => 'required|string|',
+            'fkClient' => 'required|numeric',
+            'fkAppart' => 'required|numeric',
+            'Source' => 'required|string',
+            'Notes' => 'required|numeric',
         ];
     }
 }
