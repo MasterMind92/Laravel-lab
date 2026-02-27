@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('services', function (Blueprint $table) {
             $table->id("ServiceID")->unsignedInteger()->autoIncrement();
             $table->string("Code");
-            $table->string("Libellé")->nullable();
-            $table->string("Catégorie")->nullable();
+            $table->string("Libelle")->nullable();
+            $table->string("Categorie")->nullable();
             $table->integer("PrixUnitaire");
-            $table->string("DuréeMoyenne")->nullable();
-            $table->string("UnitéFacturation");
+            $table->string("DureeMoyenne")->nullable();
+            $table->string("UniteFacturation");
             $table->timestamps();
         });
     }

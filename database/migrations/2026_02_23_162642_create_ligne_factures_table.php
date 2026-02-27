@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('ligne_factures', function (Blueprint $table) {
             $table->id("LigneID")->unsignedInteger()->autoincrement();
             $table->string("Description");
-            $table->tinyInteger("Quantité")->default(0);
+            $table->tinyInteger("Quantite")->default(0);
             $table->integer("PrixUnitaire")->default(0);
             $table->integer("TVA")->default(0);
             $table->string("TotalLigne")->nullable();

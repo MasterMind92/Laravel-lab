@@ -6,5 +6,60 @@ use Illuminate\Database\Eloquent\Model;
 
 class Promotion extends Model
 {
-    //
+    use SoftDeletes;
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        "Code",
+        "Description",
+        "TypeRemise",
+        "ValeurRemise",
+        "DateDébut",
+        "DateFin",
+        "ConditionsApplication",
+        "Etat",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+    ];
+
+    /**
+     * retrouve la reservations associee a l'appartements
+     */
+    public function appartement(): HasOne
+    {
+        return $this->hasOne(Apartements::class);
+    }
+
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'promotions';
+
+    /**
+     * The primary key associated with the table.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'PromotionID';
+
+    /**
+     * Indicates if the model's ID is auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = true;
+
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = true;
 }

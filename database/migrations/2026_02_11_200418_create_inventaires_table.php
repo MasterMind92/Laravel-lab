@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('inventaires', function (Blueprint $table) {
             $table->id("ArticleID")->unsignedInteger()->autoIncrement();
-            $table->string("Référence")->nullable();
-            $table->string("Libellé")->nullable();
-            $table->string("Catégorie")->nullable();
-            $table->integer("QuantitéStock")->default(0);
+            $table->string("Reference")->nullable();
+            $table->string("Libelle")->nullable();
+            $table->string("Categorie")->nullable();
+            $table->integer("QuantiteStock")->default(0);
             $table->string("SeuilMin")->default(0);
             $table->string("Localisation")->nullable();
             $table->string("Etat")->nullable();

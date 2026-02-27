@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('tarifs', function (Blueprint $table) {
             $table->id("TarifID")->unsignedInteger()->autoIncrement();
             $table->string("TypeAppartement")->nullable();
-            $table->date("PériodeDébut");
-            $table->date("PériodeFin");
+            $table->date("PeriodeDebut");
+            $table->date("PeriodeFin");
             $table->integer("PrixJournalier")->default(0);
             $table->integer("PrixHebdomadaire")->default(0);
             $table->integer("PrixMensuel")->default(0);
