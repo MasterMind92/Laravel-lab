@@ -28,9 +28,17 @@ class Reservations extends Model
     /**
      * retrouve la reservations associee a l'appartements
      */
-    public function appartement(): HasOne
+    public function client(): HasOne
     {
-        return $this->hasOne(Apartements::class);
+        return $this->hasOne(Clients::class);
+    }
+
+    /**
+     * retrouve la reservations associee a l'appartements
+     */
+    public function sejour(): HasOne
+    {
+        return $this->hasOne(Sejours::class);
     }
 
 
