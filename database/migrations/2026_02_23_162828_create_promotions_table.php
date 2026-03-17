@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string("Description")->nullable();
             $table->string("TypeRemise");
             $table->string("ValeurRemise");
-            $table->date("DateDébut")->nullable();
+            $table->date("DateDebut")->nullable();
             $table->date("DateFin")->nullable();
             $table->string("ConditionsApplication");
             $table->string("Etat")->default("A");
