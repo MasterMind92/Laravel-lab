@@ -14,6 +14,10 @@ class ApartementsController extends Controller
     public function index()
     {
         //
+
+        $appartement = Apartements::all();
+
+        var_dump($appartements);
     }
 
     /**
@@ -21,15 +25,29 @@ class ApartementsController extends Controller
      */
     public function create()
     {
-        //
+        // 
+        
+        
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreApartementsRequest $request)
+    public function store(StoreApartementsRequest $request): RedirectResponse
     {
-        //
+        
+        // Retrieve the validated input data...
+        $validated = $request->validated();
+
+        dd($validated);
+
+        $appartement = new Flight;
+ 
+        $appartement->name = $request->name;
+ 
+        $appartement->save();
+ 
+        return redirect('/flights');
     }
 
     /**
@@ -38,6 +56,9 @@ class ApartementsController extends Controller
     public function show(Apartements $apartements)
     {
         //
+
+        dd($appartements);
+        
     }
 
     /**

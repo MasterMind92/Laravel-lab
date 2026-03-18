@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string("Statut");
             $table->bigInteger('fkClient')->unsigned();
             $table->bigInteger('fkAppart')->unsigned();
-            $table->foreign('fkClient')->references('ClientID')->on('client');
-            $table->foreign('fkAppart')->references('AppartementID')->on('appartements');
+            $table->foreign('fkClient')->references('ClientID')->on('clients');
+            $table->foreign('fkAppart')->references('AppartementID')->on('apartements');
             $table->string("Source")->nullable();
             $table->tinyInteger("Notes")->default(0);
             $table->timestamps();

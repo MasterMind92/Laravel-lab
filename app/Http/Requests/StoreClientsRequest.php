@@ -11,7 +11,7 @@ class StoreClientsRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,15 +22,27 @@ class StoreClientsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'Nom' => 'required|string',
-            'Prenom' => 'required|string',
-            'Email' => 'required|email:rfc,dns',
-            'Telephone' => 'required|alpha_num:ascii|min:8',
-            'Adresse' => 'required|alpha_num:ascii',
-            'DateNaissance' => 'required|date',
-            'TypeClient' => 'required|alpha_num:ascii',
-            'Statut' => 'required|string|alpha_num:ascii',
-            'PointsFidelite' => 'required|numeric',
+            'Nom' => 'required',
+            'Prenom' => 'required',
+            'Email' => 'required',
+            'Telephone' => 'required',
+            'Adresse' => 'required',
+            'DateNaissance' => 'required',
+            'TypeClient' => 'required',
+            'Statut' => 'required',
+            'PointsFidelite' => 'required',
         ];
     }
+
+    // return [
+    //         'Nom' => 'required|string',
+    //         'Prenom' => 'required|string',
+    //         'Email' => 'required|email:rfc,dns',
+    //         'Telephone' => 'required|alpha_num:ascii|min:8',
+    //         'Adresse' => 'required|alpha_num:ascii',
+    //         'DateNaissance' => 'required|date',
+    //         'TypeClient' => 'required|alpha_num:ascii',
+    //         'Statut' => 'required|string|alpha_num:ascii',
+    //         'PointsFidelite' => 'required|numeric',
+    //     ];
 }

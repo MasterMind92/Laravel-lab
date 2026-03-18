@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Clients extends Model
 {
@@ -23,8 +24,7 @@ class Clients extends Model
         "Statut",
         "PointsFidelite",
         "created_at",
-        "updated_at",
-        "deleted_at",
+        "updated_at"
     ];
 
     /**

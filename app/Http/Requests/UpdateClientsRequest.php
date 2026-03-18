@@ -22,16 +22,29 @@ class UpdateClientsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'ClientID' => 'required|numeric',
-            'Nom' => 'required|string|alpha_num:ascii',
-            'Prenom' => 'required|string|alpha_num:ascii',
-            'Email' => 'required|email:rfc,dns',
-            'Telephone' => 'required|alpha_num:ascii|min:8',
-            'Adresse' => 'required|alpha_num:ascii',
-            'DateNaissance' => 'required|date',
-            'TypeClient' => 'required|alpha_num:ascii',
-            'Statut' => 'required|string|alpha_num:ascii',
-            'PointsFidelite' => 'required|numeric',
+            'ClientID' => 'required',
+            'Nom' => 'required',
+            'Prenom' => 'required',
+            'Email' => 'required',
+            'Telephone' => 'required',
+            'Adresse' => 'required',
+            'DateNaissance' => 'required',
+            'TypeClient' => 'required',
+            'Statut' => 'required',
+            'PointsFidelite' => 'required',
         ];
     }
+
+    // return [
+    //         'ClientID' => 'required|numeric',
+    //         'Nom' => 'required|string|alpha_num:ascii',
+    //         'Prenom' => 'required|string|alpha_num:ascii',
+    //         'Email' => 'required|email:rfc,dns',
+    //         'Telephone' => 'required|alpha_num:ascii|min:8',
+    //         'Adresse' => 'required|alpha_num:ascii',
+    //         'DateNaissance' => 'required|date',
+    //         'TypeClient' => 'required|alpha_num:ascii',
+    //         'Statut' => 'required|string|alpha_num:ascii',
+    //         'PointsFidelite' => 'required|numeric',
+    //     ];
 }
