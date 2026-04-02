@@ -30,9 +30,9 @@ class Sejours extends Model
     /**
      * retrouve la reservations associee a l'appartements
      */
-    public function facture(): HasMany
+    public function facture(): HasOne
     {
-        return $this->hasMany(Facture::class);
+        return $this->hasOne(Facture::class);
     }
 
 

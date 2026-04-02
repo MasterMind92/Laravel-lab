@@ -30,10 +30,10 @@ class Clients extends Model
     /**
      * retrouve la reservations associee a l'appartements
      */
-    // public function appartement(): HasOne
-    // {
-    //     return $this->hasOne(Apartements::class);
-    // }
+    public function reservation(): HasMany
+    {
+        return $this->hasMany(Reservations::class);
+    }
 
     /**
      * The table associated with the model.

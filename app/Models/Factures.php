@@ -24,6 +24,14 @@ class Factures extends Model
         "updated_at",
         "deleted_at",
     ];
+
+    /**
+     * retrouve la reservations associee a l'appartements
+     */
+    public function ligneFacture(): HasMany
+    {
+        return $this->hasMany(Ligne_facture::class);
+    }
     /**
      * The table associated with the model.
      *
