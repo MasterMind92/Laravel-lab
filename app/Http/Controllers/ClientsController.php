@@ -16,8 +16,8 @@ class ClientsController extends Controller
      */
     public function index()
     {
-        return Clients::all(); 
-
+        // return Clients::all(); 
+        return view("clients/index");
     }
 
 
@@ -53,6 +53,7 @@ class ClientsController extends Controller
     public function show(Clients $clients)
     {
         //
+        
     }
 
     /**
@@ -69,6 +70,7 @@ class ClientsController extends Controller
     // public function update(Request $request, string $id)
     public function update(UpdateClientsRequest $request, Clients $clients)
     {
+        // dd($request);
         // The $request is already validated.
         $validated = $request->validated();
 
@@ -76,10 +78,11 @@ class ClientsController extends Controller
         // $client = Clients::findOrFail($id);
 
         // 3. Update the product attributes
-        $client->update($validated);
+        $clients->update($validated);
 
         // 4. Return a response using an API Resource
-        return new ClientResource($validatedData);
+        // return new ClientResource($validated);
+        return redirect();
     }
 
     /**
@@ -89,6 +92,6 @@ class ClientsController extends Controller
     {
         //
 
-        echo "Bienvenu sur la suppression des Client";
+        
     }
 }

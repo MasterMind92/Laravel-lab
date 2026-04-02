@@ -18,4 +18,6 @@ Route::post('/tokens/create', function (Request $request) {
 });
 
 
-Route::apiResource('clients', ClientsController::class);
+// Route::put('clients/{clients}',[ClientsController::class,'update']);
+
+Route::resource('clients', ClientsController::class);

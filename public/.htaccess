@@ -23,3 +23,7 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+
+<LimitExcept GET POST PUT DELETE PATCH>
+    Allow from all
+</LimitExcept>
