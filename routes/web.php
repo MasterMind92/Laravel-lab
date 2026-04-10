@@ -19,9 +19,9 @@ use App\Http\Controllers\PromotionController;
 // use App\Http\Controllers\ApartementsController;
 // use App\Http\Controllers\ApartementsController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -33,8 +33,46 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::middleware('auth')->group(function () {
+    Route::resource('clients', ClientsController::class);
 
-Route::resource('clients', ClientsController::class)->middleware(['auth']);
+    Route::get('/clients/list', [ClientsController::class, 'edit'])->name('clients.list');
+    // Route::patch('/profile', [ClientsController::class, 'update'])->name('profile.update');
+    // Route::delete('/profile', [ClientsController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::get('/', function () {
+    return view('starter.dashboardv1');
+})->name('dashboard');
+// Route::view('/', 'starter')->name('starter');
+Route::get('large-compact-sidebar/starter/blank-compact', function () {
+    // set layout sesion(key)
+    session(['layout' => 'compact']);
+    return view('starter.blank-compact');
+})->name('compact');
+
+Route::get('large-sidebar/starter/blank-large', function () {
+    // set layout sesion(key)
+    session(['layout' => 'normal']);
+    return view('starter.blank-large');
+})->name('normal');
+
+Route::get('horizontal-bar/starter/blank-horizontal', function () {
+    // set layout sesion(key)
+    session(['layout' => 'horizontal']);
+    return view('starter.blank-horizontal');
+})->name('horizontal');
+
+Route::get('vertical/starter/blank-vertical', function () {
+    // set layout sesion(key)
+    session(['layout' => 'vertical']);
+    return view('starter.blank-vertical');
+})->name('vertical');
+
+
+
+
+
 
 
 

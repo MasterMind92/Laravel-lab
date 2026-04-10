@@ -16,8 +16,28 @@ class ClientsController extends Controller
      */
     public function index()
     {
+         $columns = [
+            "#",
+            "Name",
+            "Phone",
+            "Email",
+            "Role",
+            "Date",
+        ];
+
         // return Clients::all(); 
-        return view("clients/index");
+        return view("clients/index",["columns"=>$columns]);
+    }
+
+     /**
+     * Renvoi la liste des clients.
+     */
+    public function list(Clients $clients)
+    {
+        //
+        $clients = Clients::all();
+
+        return new ClientResource($clients);
     }
 
 
