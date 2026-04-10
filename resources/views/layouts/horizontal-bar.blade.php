@@ -7,7 +7,6 @@
 
                         <div>
 
-
                             <div>
                                 <label class="toggle" for="drop-2">
 
@@ -50,6 +49,98 @@
                                         </a>
                                     </li>
                                 </ul>
+
+                            </div>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div>
+                            <a href="{{route('clients.index')}}" class="nav-item">
+                                <i class="nav-icon mr-2 i-Bar-Chart"></i>
+                                Clients
+                            </a>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <a href="{{route('clients.index')}}" class="nav-item">
+                                <i class="nav-icon mr-2 i-Bar-Chart"></i>
+                                Appartements
+                            </a>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <a href="{{route('clients.index')}}" class="nav-item">
+                                <i class="nav-icon mr-2 i-Bar-Chart"></i>
+                               Reservations
+                            </a>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <a href="{{route('clients.index')}}" class="nav-item">
+                                <i class="nav-icon mr-2 i-Bar-Chart"></i>
+                                Facture
+                            </a>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <a href="{{route('clients.index')}}" class="nav-item">
+                                <i class="nav-icon mr-2 i-Bar-Chart"></i>
+                               Fournisseur
+                            </a>
+                        </div>
+                    </li>
+                    <li class="{{ request()->is('starter/*') ? 'active' : '' }}">
+
+                        <div>
+
+                            <div>
+                                <label class="toggle" for="drop-2">
+
+                                    Services
+                                </label>
+                                <a href="#">
+                                    <i class="nav-icon mr-2 i-Bar-Chart"></i>
+                                    Services
+                                </a>
+
+                                <input type="checkbox" id="drop-2">
+                                <ul>
+
+                                    <li class="nav-item ">
+                                        <a class="{{ Route::currentRouteName()=='dashboard' ? 'open' : '' }}"
+                                            href="{{route('dashboard')}}">
+                                            <i class="nav-icon mr-2 i-Clock-3"></i>
+                                            <span class="item-name">Inventaire</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{route('normal')}}"
+                                            class="{{ Route::currentRouteName()=='normal' ? 'open' : '' }}">
+                                            <i class="nav-icon mr-2 i-Clock-4"></i>
+                                            <span class="item-name">Employé</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="{{ Route::currentRouteName()=='compact' ? 'open' : '' }}"
+                                            href="{{route('compact')}}">
+                                            <i class="nav-icon mr-2 i-Over-Time"></i>
+                                            <span class="item-name">Prestation</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="{{ Route::currentRouteName()=='horizontal' ? 'open' : '' }}"
+                                            href="{{route('horizontal')}}">
+                                            <i class="nav-icon mr-2 i-Clock"></i>
+                                            <span class="item-name">Intervention</span>
+                                        </a>
+                                    </li>
+                                </ul>
+
                             </div>
                         </div>
                     </li>

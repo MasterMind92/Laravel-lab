@@ -20,4 +20,4 @@ Route::post('/tokens/create', function (Request $request) {
 
 // Route::put('clients/{clients}',[ClientsController::class,'update']);
 
-Route::resource('clients', ClientsController::class);
+// Route::resource('clients', ClientsController::class);

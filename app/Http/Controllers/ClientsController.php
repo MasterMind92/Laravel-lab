@@ -15,29 +15,55 @@ class ClientsController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-         $columns = [
+    {   
+        // titre de la page
+        $page_data= [
+            "label"=>"Clients",
+            "link" => route("clients.index"),
+            "current" => "Index"
+        ];
+
+        // colonne du tableau
+        $columns = [
             "#",
             "Name",
             "Phone",
             "Email",
+            "Type Client",
+            "Etat",
             "Role",
-            "Date",
         ];
 
-        // return Clients::all(); 
-        return view("clients/index",["columns"=>$columns]);
-    }
+        // initialiser les donnees de session par defaut
+        $sessions = [
+            "dateDeb"=>date("Y-m-01"),
+            "dateFin"=>date("Y-m-d"),
+            "etat"=>"0",
+        ];
 
-     /**
-     * Renvoi la liste des clients.
-     */
-    public function list(Clients $clients)
-    {
-        //
+        // initialisation des valeurs par defauts
+        session($sessions);
+
+        // recuperation de client selon la date
+        // $clients = Clients::where("created_at",">=", date("Y-m-01"))
+        //                     ->where("created_at","<=", date("Y-m-d"))
+        //                     ->get();
+
         $clients = Clients::all();
 
-        return new ClientResource($clients);
+        // dd($clients);
+
+        return view("clients/index",["columns"=>$columns,"title"=>$page_data,"clients"=>$clients]);
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function search(Request $request)
+    {
+        //
+
+        
     }
 
 
@@ -79,9 +105,10 @@ class ClientsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Clients $clients)
+    public function setState(Request $request)
     {
         //
+        dd($request->id,$request->id);
     }
 
     /**

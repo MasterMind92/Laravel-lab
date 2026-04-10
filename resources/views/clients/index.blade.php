@@ -1,10 +1,25 @@
-@extends('layouts.master')
+@extends('layouts.horizontal-master')
 @section('main-content')
 <div class="breadcrumb">
-    <h1>Blank Page</h1>
+    <h1>
+        @isset($title)
+        {{$title['label']}}
+        @endisset
+    </h1>
     <ul>
-        <li><a href="">UI Kits</a></li>
-        <li>Blank Page</li>
+        
+        <li>
+            @isset($title)
+                <a href="{{$title['link']}}">{{$title['label']}}</a>
+            @endisset
+        </li>
+        <li>
+           @isset($title)
+            <li>
+                {{$title['label']}}
+            </li>
+            @endisset
+        </li>
     </ul>
 
 </div>
@@ -20,21 +35,20 @@
 
                 <div class="col-md-3">
                     <label>Date début</label>
-                    <input type="date" id="date_debut" class="form-control">
+                    <input type="date" id="date_debut" class="form-control" value="{{session('dateDeb')}}">
                 </div>
 
                 <div class="col-md-3">
                     <label>Date fin</label>
-                    <input type="date" id="date_fin" class="form-control">
+                    <input type="date" id="date_fin" class="form-control" value="{{session('dateFin')}}">
                 </div>
 
                 <div class="col-md-3">
                     <label>Etat</label>
                     <select id="etat" class="form-control">
-                        <option value="">Tous</option>
-                        <option value="Actif">Actif</option>
-                        <option value="Inactif">Inactif</option>
-                        <option value="Supprime">Supprimé</option>
+                        <option @if(session('etat') == "0")selected @endif value="">Tous</option>
+                        <option @if(session('etat')=="A")selected  @endif value="Actif">Actif</option>
+                        <option @if(session('etat')=="I")selected @endif value="Inactif">Inactif</option>
                     </select>
                 </div>
 
@@ -53,7 +67,7 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5>Gestion des Clients</h5>
 
-            <button class="btn btn-primary" id="btnAdd">
+            <button class="btn btn-primary" id="btnAdd" data-toggle="modal" data-target="#addModal">
                 ➕ Ajouter
             </button>
         </div>
@@ -69,62 +83,99 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
+
+                    @foreach ($clients as $item)
+                        <tr>
+                            <td>{{$item['ClientID']}}</td>
+                            <td>{{$item['Nom']}}</td>
+                            <td>{{$item['Telephone']}}</td>
+                            <td>{{$item['Email']}}</td>
+                            <td>{{$item['TypeClient']}}</td>
+                            <td> <span class="badge badge-pill badge-primary">{{$item['Statut']}}</span> </td>
+                            <td>{{$item['created_at']}}</td>
+                            <td>
+                                <button class="btn btn-warning" title="Details" data-toggle="modal" data-target="#modal-details" data-id="{{$item['ClientID']}}"  type="button"> <i class="i-Pen"></i> Details</button>
+                                <button class="btn btn-primary" name="activer"  title="Activer" data-id="{{$item['ClientID']}}" type="button">Activer</button>
+                                <button class="btn btn-danger"  name="desactiver" title="Desactiver"  data-id="{{$item['ClientID']}}" type="button">Desactiver</button>
+                            </td>
+                        </tr>
+                    @endforeach
+                    
+                    {{-- <tr>
+                        <td>2</td>
                         <td>Dalo</td>
                         <td>0747427163</td>
                         <td>dalomarc@gmail.com</td>
                         <td>Admin</td>
+                        <td> <span class="badge badge-pill badge-primary">Activé</span> </td>
                         <td>2025-03-02</td>
                         <td>
-                            {{-- <button class="btn btn-primary" type="button">Text</button> --}}
-                            {{-- <button class="btn btn-danger" type="button">Text</button>
-                            <button class="btn btn-warning" type="button">Text</button> --}}
+                            <button class="btn btn-warning" title="Details" data-toggle="modal" data-target="#modal-details" type="button"> <i class="i-Pen"></i> Details</button>
+                            <button class="btn btn-primary" title="Activer" type="button">Activer</button>
+                            <button class="btn btn-danger" title="Desactiver"  type="button">Desactiver</button>
                         </td>
-                    </tr>
+                    </tr> --}}
                 </tbody>
             </table>
         </div>
     </div>
 
+    
 
 <!-- 🧾 MODAL AJOUT -->
 <div class="modal fade" id="addModal">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5>Ajouter Client</h5>
+                <h5 class="modal-title">Ajouter Client</h5>
+                <button class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
 
             <div class="modal-body">
-                <form id="addForm">
-                    @csrf
-                    <input type="text" name="nom" class="form-control mb-2" placeholder="Nom" required>
-                    <input type="email" name="email" class="form-control mb-2" placeholder="Email" required>
-                </form>
+                @include('clients.add-form')
             </div>
 
-            <div class="modal-footer">
-                <button class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                <button class="btn btn-success" id="saveClient">Enregistrer</button>
+        </div>
+    </div>
+</div>
+
+<!-- 🧾 MODAL AJOUT -->
+<div class="modal fade" id="addModal">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ajouter Client</h5>
+                <button class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
+
+            <div class="modal-body">
+                @include('clients.add-form')
+            </div>
+
         </div>
     </div>
 </div>
 
 <!-- 📋 MODAL DETAILS -->
-<div class="modal fade" id="detailModal">
-    <div class="modal-dialog">
+<div class="modal fade" id="modal-details">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5>Détails Client</h5>
+                <button class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
 
-            <div class="modal-body" id="detailContent"></div>
-
-            <div class="modal-footer">
-                <button class="btn btn-warning" id="btnEdit">Modifier</button>
+            <div class="modal-body" id="detailContent">
+                 @include('clients.modify-form')
             </div>
+
+            
         </div>
     </div>
 </div>
@@ -133,39 +184,69 @@
 
 @section('page-js')
 <script src="{{asset('assets/js/vendor/datatables.min.js')}}"></script>
-<script src="{{asset('assets/js/datatables.script.js')}}"></script> 
+<script src="{{asset('assets/js/vendor/sweetalert2.min.js')}}"></script> 
+<script src="{{asset('assets/js/sweetalert.script.js')}}"></script> 
 <script>
 $(function () {
 
     // 📊 DATATABLE
-    let table = $('#clientTable').DataTable({
-        processing: true,
-        //serverSide: true,
-        // ajax: {
-        //     url: "{{ route('clients.list') }}",
-        //     data: function (d) {
-        //         d.date_debut = $('#date_debut').val();
-        //         d.date_fin = $('#date_fin').val();
-        //         d.etat = $('#etat').val();
-        //     }
-        // },
-        columns: [
-            @foreach($columns as $col)
-                { data: "{{ $col }}" },
-            @endforeach
-            {
-                data: 'id',
-                render: function (data, type, row) {
-                    return `
-                        <button title="Modifier" class="btn btn-info btn-sm btnDetail" data-id="${data}">📋</button>
-                        <button title="Modifier" class="btn btn-${row.etat === 'Actif' ? 'danger' : 'success'} btn-sm btnToggle" data-id="${data}">
-                            ${row.etat === 'Actif' ? '👎' : '👍'}
-                        </button>
-                    `;
-                }
+    let table = $('#clientTable').DataTable();
+
+
+    $("#clientTable").delegate("button[name='activer']","click",function(){
+        
+        let id = $(this).attr("data-id");
+        swal({
+            title: "Confirmer ?",
+            text: "Activer cet {élément}",
+            icon: "warning",
+            showCancelButton: true
+        }).then(result => {
+
+            if (result.isConfirmed) {
+
+                $.get("{{ route('clients.activate') }}", {id:id,"activer":true}, function (data) {
+                    console.log(data);
+                    
+                    $('#addModal').modal('hide');
+                    table.ajax.reload();
+
+                    Swal.fire("Succès", "Client ajouté", "success");
+                });
             }
-        ]
+        });
     });
+
+    $("#clientTable").delegate("button[name='desactiver']","click",function(data){
+        console.log(data);
+        let id = $(this).attr("data-id");
+
+        swal({
+            title: "Confirmer ?",
+            text: "Desactiver cet {élément}",
+            icon: "warning",
+            showCancelButton: true
+        }).then(result => {
+
+            if (result.isConfirmed) {
+
+                $.post("{{ route('clients.store') }}", {id:id,"activer":false} , function () {
+
+                    $('#addModal').modal('hide');
+                    table.ajax.reload();
+
+                    Swal.fire("Succès", "Client ajouté", "success");
+                });
+            }
+        });
+    });
+    //BOUTON ACTIVER
+    let btnActive = $("button[name='activer']");
+
+    let btnUnactive = $("button[name='desactiver']");
+
+    // BOUTON DESACTIVER
+
 
     // 🔍 FILTRE
     $('#btnFilter').click(() => table.ajax.reload());
@@ -176,7 +257,7 @@ $(function () {
     // 💾 ENREGISTRER CLIENT
     $('#saveClient').click(function () {
 
-        Swal.fire({
+        swal({
             title: "Confirmer ?",
             text: "Ajouter ce client",
             icon: "warning",

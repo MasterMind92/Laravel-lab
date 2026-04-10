@@ -7,12 +7,14 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>Gull - Laravel 7 + Bootstrap 4 admin template</title>
+        <title>ResiGère</title>
         <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,400i,600,700,800,900" rel="stylesheet">
         @yield('before-css')
         {{-- theme css --}}
-        <link id="gull-theme" rel="stylesheet" href="{{  asset('assets/styles/css/themes/lite-purple.min.css')}}">
+        {{-- <link id="gull-theme" rel="stylesheet" href="{{  asset('assets/styles/css/themes/lite-purple.min.css')}}"> --}}
+        <link id="gull-theme" rel="stylesheet" href="{{  asset('assets/styles/css/themes/lite-blue.min.css')}}">
         <link rel="stylesheet" href="{{asset('assets/styles/vendor/perfect-scrollbar.css')}}">
+        <link rel="stylesheet" href="{{asset('assets/styles/vendor/sweetalert2.min.css')}}">
         {{-- page specific css --}}
         @yield('page-css')
     </head>
@@ -29,14 +31,6 @@
             </div>
         </div>
         <!-- Pre Loader end  -->
-
-
-
-
-
-
-
-
 
 
         <!-- ============ Horizontal Layout start ============= -->
@@ -76,20 +70,6 @@
         <!-- ============ Horizontal Layout End ============= -->
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         {{-- common js --}}
         <script src="{{mix('assets/js/common-bundle-script.js')}}"></script>
         {{-- page specific javascript --}}
@@ -100,13 +80,7 @@
         <script src="{{asset('assets/js/script.js')}}"></script>
 
 
-
-
         <script src="{{asset('assets/js/sidebar-horizontal.script.js')}}"></script>
-
-
-
-
 
         <script src="{{asset('assets/js/customizer.script.js')}}"></script>
 
