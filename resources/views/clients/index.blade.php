@@ -31,7 +31,7 @@
 
     <div class="card mb-4">
         <div class="card-body">
-            <form id="filterForm" class="row align-items-end">
+            <form id="filterForm" class="row align-items-end" action= {{route("clients.search")}}>
 
                 <div class="col-md-3">
                     <label>Date début</label>
@@ -47,8 +47,8 @@
                     <label>Etat</label>
                     <select id="etat" class="form-control">
                         <option @if(session('etat') == "0")selected @endif value="">Tous</option>
-                        <option @if(session('etat')=="A")selected  @endif value="Actif">Actif</option>
-                        <option @if(session('etat')=="I")selected @endif value="Inactif">Inactif</option>
+                        <option @if(session('etat')=="Actif")selected  @endif value="Actif">Actif</option>
+                        <option @if(session('etat')=="Inactif")selected @endif value="Inactif">Inactif</option>
                     </select>
                 </div>
 
@@ -84,37 +84,7 @@
                 </thead>
                 <tbody>
 
-                    @foreach ($clients as $item)
-                        <tr>
-                            <td>{{$item['ClientID']}}</td>
-                            <td>{{$item['Nom']}}</td>
-                            <td>{{$item['Telephone']}}</td>
-                            <td>{{$item['Email']}}</td>
-                            <td>{{$item['TypeClient']}}</td>
-                            <td> <span class="badge badge-pill badge-primary">{{$item['Statut']}}</span> </td>
-                            <td>{{$item['created_at']}}</td>
-                            <td>
-                                <button class="btn btn-warning" title="Details" data-toggle="modal" data-target="#modal-details" data-id="{{$item['ClientID']}}"  type="button"> <i class="i-Pen"></i> Details</button>
-                                <button class="btn btn-primary" name="activer"  title="Activer" data-id="{{$item['ClientID']}}" type="button">Activer</button>
-                                <button class="btn btn-danger"  name="desactiver" title="Desactiver"  data-id="{{$item['ClientID']}}" type="button">Desactiver</button>
-                            </td>
-                        </tr>
-                    @endforeach
                     
-                    {{-- <tr>
-                        <td>2</td>
-                        <td>Dalo</td>
-                        <td>0747427163</td>
-                        <td>dalomarc@gmail.com</td>
-                        <td>Admin</td>
-                        <td> <span class="badge badge-pill badge-primary">Activé</span> </td>
-                        <td>2025-03-02</td>
-                        <td>
-                            <button class="btn btn-warning" title="Details" data-toggle="modal" data-target="#modal-details" type="button"> <i class="i-Pen"></i> Details</button>
-                            <button class="btn btn-primary" title="Activer" type="button">Activer</button>
-                            <button class="btn btn-danger" title="Desactiver"  type="button">Desactiver</button>
-                        </td>
-                    </tr> --}}
                 </tbody>
             </table>
         </div>
@@ -190,12 +160,26 @@
 $(function () {
 
     // 📊 DATATABLE
-    let table = $('#clientTable').DataTable();
+    let table = $('#clientTable').DataTable({
+        "ajax": {
+            "url": "{{route('clients.list')}}",
+            "type": "POST",
+            headers: {
+                'X-CSRF-TOKEN':  $('meta[name="csrf-token"]').attr('content')
+            },
+            "data":function(data) {
+                data.date_debut = $('#date_debut').val();
+                data.date_fin = $('#date_fin').val();
+                data.etat = $('#etat').val();
+            },
+        },
+    });
 
 
     $("#clientTable").delegate("button[name='activer']","click",function(){
         
         let id = $(this).attr("data-id");
+
         swal({
             title: "Confirmer ?",
             text: "Activer cet {élément}",
@@ -205,19 +189,20 @@ $(function () {
 
             if (result.isConfirmed) {
 
-                $.get("{{ route('clients.activate') }}", {id:id,"activer":true}, function (data) {
+                $.post("{{ route('clients.activate') }}", {id:id,"activer":true}, function (data) {
                     console.log(data);
                     
                     $('#addModal').modal('hide');
                     table.ajax.reload();
 
-                    Swal.fire("Succès", "Client ajouté", "success");
+                    swal("Succès", "Client ajouté", "success");
                 });
             }
         });
     });
 
     $("#clientTable").delegate("button[name='desactiver']","click",function(data){
+
         console.log(data);
         let id = $(this).attr("data-id");
 
@@ -235,7 +220,7 @@ $(function () {
                     $('#addModal').modal('hide');
                     table.ajax.reload();
 
-                    Swal.fire("Succès", "Client ajouté", "success");
+                    swal("Succès", "Client ajouté", "success");
                 });
             }
         });
@@ -255,23 +240,42 @@ $(function () {
     $('#btnAdd').click(() => $('#addModal').modal('show'));
 
     // 💾 ENREGISTRER CLIENT
-    $('#saveClient').click(function () {
+    $('#saveClient').click(function (e) {
+        e.preventDefault();
 
         swal({
             title: "Confirmer ?",
             text: "Ajouter ce client",
             icon: "warning",
             showCancelButton: true
+
         }).then(result => {
-            if (result.isConfirmed) {
+            
+            // console.log(result,result.isConfirmed);
+            
+            if (result) {
 
-                $.post("{{ route('clients.store') }}", $('#addForm').serialize(), function () {
+                var options = {
+                    type: "post",
+                    headers: {
+                        'X-CSRF-TOKEN':  $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: "{{ route('clients.store') }}",
+                    data: $('#addForm').serialize(),
+                    dataType: "json",
+                    success: function (response) {
+                        console.log(response);
+                
+                        $('#addModal').modal('hide');
+                        table.ajax.reload();
 
-                    $('#addModal').modal('hide');
-                    table.ajax.reload();
+                        swal("Succès", "Client ajouté", "success");
+                    }
+                };
 
-                    Swal.fire("Succès", "Client ajouté", "success");
-                });
+                $.ajax(options);
+
+                
             }
         });
     });
@@ -297,7 +301,7 @@ $(function () {
 
         let id = $(this).data('id');
 
-        Swal.fire({
+        swal({
             title: "Changer statut ?",
             icon: "question",
             showCancelButton: true
@@ -307,7 +311,7 @@ $(function () {
                 $.post(`/clients/toggle/${id}`, {_token: "{{ csrf_token() }}"}, function () {
 
                     table.ajax.reload();
-                    Swal.fire("Succès", "Statut modifié", "success");
+                    swal("Succès", "Statut modifié", "success");
                 });
             }
         });

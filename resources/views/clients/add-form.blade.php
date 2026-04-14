@@ -1,4 +1,4 @@
-<form method="POST" action="{{ route('clients.store') }}" enctype="application/x-www-form-urlencoded">
+<form method="POST" id="addForm" action="{{ route('clients.store') }}" enctype="application/x-www-form-urlencoded">
     @csrf
 
     <div class="form-row">
@@ -71,7 +71,7 @@
         <button type="reset" class="btn btn-secondary mr-2" data-dismiss="modal" >
             Annuler
         </button>
-        <button type="submit" class="btn btn-success">
+        <button type="submit" id="saveClient" class="btn btn-success">
             Enregistrer
         </button>
     </div>

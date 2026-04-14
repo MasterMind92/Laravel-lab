@@ -30,14 +30,14 @@ class ClientsController extends Controller
             "Phone",
             "Email",
             "Type Client",
+            "Date",
             "Etat",
-            "Role",
         ];
 
         // initialiser les donnees de session par defaut
         $sessions = [
-            "dateDeb"=>date("Y-m-01"),
-            "dateFin"=>date("Y-m-d"),
+            "dateDeb"=>date("Y-m-01 00:00:00"),
+            "dateFin"=>date("Y-m-d 23:59:59"),
             "etat"=>"0",
         ];
 
@@ -56,13 +56,106 @@ class ClientsController extends Controller
         return view("clients/index",["columns"=>$columns,"title"=>$page_data,"clients"=>$clients]);
     }
 
+    
+
     /**
      * Display the specified resource.
      */
     public function search(Request $request)
     {
         //
+        // titre de la page
+        $page_data= [
+            "label"=>"Clients",
+            "link" => route("clients.index"),
+            "current" => "Index"
+        ];
 
+        // colonne du tableau
+        $columns = [
+            "#",
+            "Name",
+            "Phone",
+            "Email",
+            "Type Client",
+            "Date",
+            "Etat",
+        ];
+
+        // initialiser les donnees de session par defaut
+        $sessions = [
+            "dateDeb"=>date("Y-m-01 00:00:00",strtotime($request->dateDeb)),
+            "dateFin"=>date("Y-m-d 23:59:59",strtotime($request->dateFin)),
+            "etat"=>$request->etat,
+        ];
+
+        // initialisation des valeurs par defauts
+        session($sessions);
+
+        
+
+        return view("clients/index",["columns"=>$columns,"title"=>$page_data,"clients"=>$clients]);
+        
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function list(Request $request)
+    {   
+        // mettre en place la reponses de la fonction ajax qui permet
+        // de lister clients presents en base selon le parametres date de debut
+        // date de fin et etat
+        
+        // recuperation des variables
+        $dateDeb = $request->dateDeb ?? $request->session()->get('dateDeb');
+        $dateEnd = $request->dateEnd ?? $request->session()->get('dateFin');
+        $status = $request->status ?? $request->session()->get('status');
+
+        // dd($dateDeb,$dateEnd);
+
+        $clients = Clients::where("created_at",">=", date("Y-m-d 00:00:00",strtotime($dateDeb)))
+                         ->where("created_at","<=", date("Y-m-d 23:59:59",strtotime($dateEnd)))
+                        //  ->where("Statut",$status)
+                         ->get();
+        
+        // $clients = Clients::all();
+
+        $data = [];
+
+        foreach ($clients as $t) {
+            
+            $row = [];
+
+            $buttons_details = "<button class=\"btn btn-warning mr-2\" title=\"Details\" data-toggle=\"modal\" data-target=\"#modal-details\" data-id=\"".$t->ClientID."\"  type=\"button\"> <i class=\"i-Pen\"></i> Details</button>";
+
+            $button_activate = "<button class=\"btn btn-primary mr-2\" name=\"activer\"  title=\"Activer\" data-id=\"".$t->ClientID."}}\" type=\"button\">Activer</button>";
+
+            $button_deactivate = "<button class=\"btn btn-danger mr-2\"  name=\"desactiver\" title=\"Desactiver\"  data-id=\"".$t->ClientID."\" type=\"button\">Desactiver</button>";
+
+            $buttons = $buttons_details.$button_activate.$button_deactivate;
+
+            $row[] = $t->ClientID;
+            $row[] = $t->Nom;
+            $row[] = $t->Telephone;
+            $row[] = $t->Email;
+            $row[] = $t->TypeClient;
+            $row[] = $t->Statut;
+            $row[] = $t->created_at;
+            $row[] = $buttons;
+
+            $data[] = $row;
+        }
+
+        // puis afficher la reponse finale
+        $output = [
+            "draw" => (int) html_entity_decode(0),
+            "recordsTotal" => 0,
+            "recordsFiltered" => 0,
+            "data" => $data,
+        ];
+
+        echo json_encode($output);
         
     }
 
