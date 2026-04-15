@@ -30,19 +30,21 @@ class ClientsController extends Controller
             "Phone",
             "Email",
             "Type Client",
-            "Date",
             "Etat",
+            "Date",
         ];
 
         // initialiser les donnees de session par defaut
         $sessions = [
-            "dateDeb"=>date("Y-m-01 00:00:00"),
-            "dateFin"=>date("Y-m-d 23:59:59"),
+            "dateDeb"=>date("Y-m-01"),
+            "dateFin"=>date("Y-m-d"),
             "etat"=>"0",
         ];
 
         // initialisation des valeurs par defauts
         session($sessions);
+
+        // dd($sessions,session()->all());
 
         // recuperation de client selon la date
         // $clients = Clients::where("created_at",">=", date("Y-m-01"))
@@ -78,14 +80,14 @@ class ClientsController extends Controller
             "Phone",
             "Email",
             "Type Client",
-            "Date",
             "Etat",
+            "Date",
         ];
 
         // initialiser les donnees de session par defaut
         $sessions = [
-            "dateDeb"=>date("Y-m-01 00:00:00",strtotime($request->dateDeb)),
-            "dateFin"=>date("Y-m-d 23:59:59",strtotime($request->dateFin)),
+            "dateDeb"=>date("Y-m-01",strtotime($request->dateDeb)),
+            "dateFin"=>date("Y-m-d",strtotime($request->dateFin)),
             "etat"=>$request->etat,
         ];
 
@@ -93,7 +95,6 @@ class ClientsController extends Controller
         session($sessions);
 
         
-
         return view("clients/index",["columns"=>$columns,"title"=>$page_data,"clients"=>$clients]);
         
     }
@@ -129,7 +130,7 @@ class ClientsController extends Controller
 
             $buttons_details = "<button class=\"btn btn-warning mr-2\" title=\"Details\" data-toggle=\"modal\" data-target=\"#modal-details\" data-id=\"".$t->ClientID."\"  type=\"button\"> <i class=\"i-Pen\"></i> Details</button>";
 
-            $button_activate = "<button class=\"btn btn-primary mr-2\" name=\"activer\"  title=\"Activer\" data-id=\"".$t->ClientID."}}\" type=\"button\">Activer</button>";
+            $button_activate = "<button class=\"btn btn-primary mr-2\" name=\"activer\"  title=\"Activer\" data-id=\"".$t->ClientID."\" type=\"button\">Activer</button>";
 
             $button_deactivate = "<button class=\"btn btn-danger mr-2\"  name=\"desactiver\" title=\"Desactiver\"  data-id=\"".$t->ClientID."\" type=\"button\">Desactiver</button>";
 
@@ -201,7 +202,23 @@ class ClientsController extends Controller
     public function setState(Request $request)
     {
         //
-        dd($request->id,$request->id);
+
+        $state = ($request->state) ? "A":"I" ;
+
+        $responseState = Clients::where("ClientID",$request->id)
+                                ->update(["Statut"=> $state]);
+
+        $msg = "Mise a jour effectuee avec succes";
+
+        if($responseState != true){
+            $msg = "Echec mise a jour";
+        }
+        // dd($request->id,$request->state,$responseState);
+
+        echo json_encode([
+            "status"=>$responseState,
+            "msg" => $msg
+        ]);
     }
 
     /**

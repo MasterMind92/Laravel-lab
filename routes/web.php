@@ -39,8 +39,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/clients/list', [ClientsController::class, 'list'])->name('clients.list');
     Route::post('/clients/search', [ClientsController::class, 'search'])->name('clients.search');
-    Route::post('/clients/activate', [ClientsController::class, 'setState'])->name('clients.activate');
-    Route::post('/clients/deactivate', [ClientsController::class, 'setState'])->name('clients.deactivate');
+    Route::post('/clients/state/{state}', [ClientsController::class, 'setState'])->name('clients.state');
     // Route::patch('/profile', [ClientsController::class, 'update'])->name('profile.update');
     // Route::delete('/profile', [ClientsController::class, 'destroy'])->name('profile.destroy');
 });

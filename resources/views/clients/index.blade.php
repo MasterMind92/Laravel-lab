@@ -46,9 +46,9 @@
                 <div class="col-md-3">
                     <label>Etat</label>
                     <select id="etat" class="form-control">
-                        <option @if(session('etat') == "0")selected @endif value="">Tous</option>
-                        <option @if(session('etat')=="Actif")selected  @endif value="Actif">Actif</option>
-                        <option @if(session('etat')=="Inactif")selected @endif value="Inactif">Inactif</option>
+                        <option @if(session('etat') == "0") selected @endif value="">Tous</option>
+                        <option @if(session('etat')=="Actif") selected  @endif value="Actif">Actif</option>
+                        <option @if(session('etat')=="Inactif") selected @endif value="Inactif">Inactif</option>
                     </select>
                 </div>
 
@@ -185,27 +185,47 @@ $(function () {
             text: "Activer cet {élément}",
             icon: "warning",
             showCancelButton: true
+
         }).then(result => {
 
-            if (result.isConfirmed) {
+            if (result) {
+                
+                let options = {
+                    type: "post",
+                    headers: {
+                        'X-CSRF-TOKEN':  $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: "{{ route('clients.state', ['state'=>true]) }}",
+                    data: {id:id},
+                    dataType: "json",
+                    success: function (response) {
 
-                $.post("{{ route('clients.activate') }}", {id:id,"activer":true}, function (data) {
-                    console.log(data);
+                        console.log(response);
                     
-                    $('#addModal').modal('hide');
-                    table.ajax.reload();
+                        $('#addModal').modal('hide');
+                        
+                        if (response.status) {
+                            swal("Succès", "Client activé avec succès", "success");
+                        }else{
+                            swal("Echec", response.msg, "warning");
+                        }
+                    
+                        table.ajax.reload();
+                    }
+                };
 
-                    swal("Succès", "Client ajouté", "success");
-                });
+                $.ajax(options);
+
             }
         });
     });
 
-    $("#clientTable").delegate("button[name='desactiver']","click",function(data){
+    $("#clientTable").delegate("button[name='desactiver']","click",function(){
 
-        console.log(data);
         let id = $(this).attr("data-id");
 
+        console.log(id);
+        
         swal({
             title: "Confirmer ?",
             text: "Desactiver cet {élément}",
@@ -213,15 +233,36 @@ $(function () {
             showCancelButton: true
         }).then(result => {
 
-            if (result.isConfirmed) {
+            if (result) {
+                
+                let options = {
+                    type: "post",
+                    headers: {
+                        'X-CSRF-TOKEN':  $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: "{{ route('clients.state', ['state' => 0]) }}",
+                    data: {id:id},
+                    dataType: "json",
+                    success: function (response) {
 
-                $.post("{{ route('clients.store') }}", {id:id,"activer":false} , function () {
+                        console.log(response);
 
-                    $('#addModal').modal('hide');
-                    table.ajax.reload();
+                        $('#addModal').modal('hide');
 
-                    swal("Succès", "Client ajouté", "success");
-                });
+                        if (response.status) {
+                            swal("Succès", "Client desactivé avec succès", "success");
+                        }else{
+                            swal("Echec", response.msg, "warning");
+                        }
+                    
+                        table.ajax.reload();
+
+                    }
+                };
+
+                $.ajax(options);
+
+                
             }
         });
     });
