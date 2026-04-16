@@ -65,6 +65,7 @@ class ClientsController extends Controller
      */
     public function search(Request $request)
     {
+        
         //
         // titre de la page
         $page_data= [
@@ -95,7 +96,7 @@ class ClientsController extends Controller
         session($sessions);
 
         
-        return view("clients/index",["columns"=>$columns,"title"=>$page_data,"clients"=>$clients]);
+        return view("clients/index",["columns"=>$columns,"title"=>$page_data]);
         
     }
 
@@ -127,21 +128,35 @@ class ClientsController extends Controller
         foreach ($clients as $t) {
             
             $row = [];
-
-            $buttons_details = "<button class=\"btn btn-warning mr-2\" title=\"Details\" data-toggle=\"modal\" data-target=\"#modal-details\" data-id=\"".$t->ClientID."\"  type=\"button\"> <i class=\"i-Pen\"></i> Details</button>";
-
+            //
+            $buttons_details = "<button class=\"btn btn-warning mr-2\" title=\"Details\" data-toggle=\"modal\" data-target=\"#modal-details\" data-id=\"".$t->ClientID."\" name=\"details\"  type=\"button\"> <i class=\"i-Pen\"></i> Details</button>";
+            //
             $button_activate = "<button class=\"btn btn-primary mr-2\" name=\"activer\"  title=\"Activer\" data-id=\"".$t->ClientID."\" type=\"button\">Activer</button>";
-
+            //
             $button_deactivate = "<button class=\"btn btn-danger mr-2\"  name=\"desactiver\" title=\"Desactiver\"  data-id=\"".$t->ClientID."\" type=\"button\">Desactiver</button>";
+            //liste des boutons
+            $buttons = $buttons_details;
+            
+            $etat = "<span class=\"badge badge-pill badge-danger\">Désactivé</span>";
 
-            $buttons = $buttons_details.$button_activate.$button_deactivate;
+            if($t->Statut == "A"){
+                $buttons.= $button_deactivate;
+                $etat = "<span class=\"badge badge-pill badge-success\">Activé</span>";
+            }
+
+            if($t->Statut == "I"){
+                $buttons.= $button_activate;
+                $etat = "<span class=\"badge badge-pill badge-danger\">Désactivé</span>";
+            }
+
+            
 
             $row[] = $t->ClientID;
             $row[] = $t->Nom;
             $row[] = $t->Telephone;
             $row[] = $t->Email;
             $row[] = $t->TypeClient;
-            $row[] = $t->Statut;
+            $row[] = $etat;
             $row[] = $t->created_at;
             $row[] = $buttons;
 
@@ -190,9 +205,27 @@ class ClientsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Clients $clients)
+    public function show(Request $request)
     {
-        //
+        // permettre de recuperer les infos d'une entite 
+        // et de les renvoyer a la vue
+
+        // dd($request);
+
+        $client = Clients::where("ClientID",$request->id)->first();
+
+        $msg = "Echec recuperation de la ligne";
+
+        if ( (boolean) $client) {
+            $msg = "Ligne retrouvée avec succès" ;
+        }
+
+        echo json_encode([
+            "status"=> (boolean) $client,
+            "msg" => $msg,
+            "data"=> $client
+            
+        ]);
         
     }
 
@@ -205,17 +238,18 @@ class ClientsController extends Controller
 
         $state = ($request->state) ? "A":"I" ;
 
+        //
         $responseState = Clients::where("ClientID",$request->id)
                                 ->update(["Statut"=> $state]);
-
+        // message par defaut
         $msg = "Mise a jour effectuee avec succes";
-
+        // message d'echec
         if($responseState != true){
             $msg = "Echec mise a jour";
         }
-        // dd($request->id,$request->state,$responseState);
 
-        echo json_encode([
+        // reponse de fin
+        return response()->json([
             "status"=>$responseState,
             "msg" => $msg
         ]);
@@ -239,7 +273,11 @@ class ClientsController extends Controller
 
         // 4. Return a response using an API Resource
         // return new ClientResource($validated);
-        return redirect();
+        // return redirect();
+        return response()->json([
+            'status' => true,
+            'message' => 'Client mis à jour avec succès'
+        ]);
     }
 
     /**

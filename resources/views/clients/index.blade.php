@@ -31,29 +31,29 @@
 
     <div class="card mb-4">
         <div class="card-body">
-            <form id="filterForm" class="row align-items-end" action= {{route("clients.search")}}>
-
+            <form id="filterForm"  method="POST" class="row align-items-end" action= {{route("clients.search")}}>
+                @csrf
                 <div class="col-md-3">
                     <label>Date début</label>
-                    <input type="date" id="date_debut" class="form-control" value="{{session('dateDeb')}}">
+                    <input type="date" id="date_debut" name="dateDeb" class="form-control" value="{{session('dateDeb')}}">
                 </div>
 
                 <div class="col-md-3">
                     <label>Date fin</label>
-                    <input type="date" id="date_fin" class="form-control" value="{{session('dateFin')}}">
+                    <input type="date" id="date_fin" name="dateFin" class="form-control" value="{{session('dateFin')}}">
                 </div>
 
                 <div class="col-md-3">
                     <label>Etat</label>
-                    <select id="etat" class="form-control">
-                        <option @if(session('etat') == "0") selected @endif value="">Tous</option>
-                        <option @if(session('etat')=="Actif") selected  @endif value="Actif">Actif</option>
-                        <option @if(session('etat')=="Inactif") selected @endif value="Inactif">Inactif</option>
+                    <select id="etat" name="Statut" class="form-control">
+                        <option @if(session('Statut') == "0") selected @endif value="">Tous</option>
+                        <option @if(session('Statut')=="A") selected  @endif value="Actif">Actif</option>
+                        <option @if(session('Statut')=="I") selected @endif value="Inactif">Inactif</option>
                     </select>
                 </div>
 
                 <div class="col-md-3">
-                    <button type="button" id="btnFilter" class="btn btn-primary">
+                    <button type="submit" id="btnFilter" class="btn btn-primary">
                         Rechercher
                     </button>
                 </div>
@@ -110,6 +110,8 @@
         </div>
     </div>
 </div>
+
+
 
 <!-- 🧾 MODAL AJOUT -->
 <div class="modal fade" id="addModal">
@@ -203,7 +205,7 @@ $(function () {
                         console.log(response);
                     
                         $('#addModal').modal('hide');
-                        
+
                         if (response.status) {
                             swal("Succès", "Client activé avec succès", "success");
                         }else{
@@ -280,6 +282,47 @@ $(function () {
     // ➕ OUVRIR MODAL AJOUT
     $('#btnAdd').click(() => $('#addModal').modal('show'));
 
+    // 💾 MODIFIER CLIENT
+    $('#modifClient').click(function (e) {
+        e.preventDefault();
+
+        swal({
+            title: "Confirmer ?",
+            text: "Modifier ce client",
+            icon: "warning",
+            showCancelButton: true
+
+        }).then(result => {
+            
+            // console.log(result,result.isConfirmed);
+            
+            if (result) {
+
+                let id = $('#form-modif').find('input[name="ClientID"]').val();
+
+                var options = {
+                    url: `/clients/${id}`,
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: $('#form-modif').serialize() + '&_method=PUT',
+                    success: function (response) {
+                        $('#modal-details').modal('hide');
+                        table.ajax.reload();
+                        swal("Succès", "Client modifié", "success");
+                    },
+                    error: function (xhr) {
+                        console.log(xhr.responseJSON);
+                    }
+                };
+
+                $.ajax(options);
+
+            }
+        });
+    });
+
     // 💾 ENREGISTRER CLIENT
     $('#saveClient').click(function (e) {
         e.preventDefault();
@@ -316,7 +359,6 @@ $(function () {
 
                 $.ajax(options);
 
-                
             }
         });
     });
@@ -337,26 +379,75 @@ $(function () {
         });
     });
 
+    function fillForm(formId, data) {
+        console.log(formId, data);
+        
+        $(`#${formId} :input`).each(function() {
+
+            let id = $(this).attr('id');
+            let type = $(this).attr('type');
+
+            if (!id || data[id] === undefined) return;
+
+            if (type === 'checkbox') {
+                $(this).prop('checked', data[id]);
+            } 
+            else if (type === 'radio') {
+                if ($(this).val() == data[id]) {
+                    $(this).prop('checked', true);
+                }
+            } 
+            else {
+                $(this).val(data[id]);
+            }
+        });
+    }
+
     // 🔄 ACTIVER / DESACTIVER
-    $('#clientTable').on('click', '.btnToggle', function () {
+    $('#clientTable').on('click', 'button[name="details"]', function () {
 
         let id = $(this).data('id');
 
-        swal({
-            title: "Changer statut ?",
-            icon: "question",
-            showCancelButton: true
-        }).then(result => {
-            if (result.isConfirmed) {
+        // effectuer une requete ajax
+        // pour recuperer les infos du client
+        // en fonction de l'id 
 
-                $.post(`/clients/toggle/${id}`, {_token: "{{ csrf_token() }}"}, function () {
+        var options = {
+            type: "get",
+            headers: {
+                'X-CSRF-TOKEN':  $('meta[name="csrf-token"]').attr('content')
+            },
+            url: `/clients/${id}`,
+            data: {'id':id},
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
 
-                    table.ajax.reload();
-                    swal("Succès", "Statut modifié", "success");
-                });
+                fillForm("form-modif", data.data);
             }
-        });
+        };
+
+        $.ajax(options);
+
+        
+
+        // swal({
+        //     title: "Changer statut ?",
+        //     icon: "question",
+        //     showCancelButton: true
+        // }).then(result => {
+        //     if (result.isConfirmed) {
+
+        //         $.post(`/clients/toggle/${id}`, {_token: "{{ csrf_token() }}"}, function () {
+
+        //             table.ajax.reload();
+        //             swal("Succès", "Statut modifié", "success");
+        //         });
+        //     }
+        // });
     });
+
+    
 
 });
 </script>   
