@@ -38,7 +38,7 @@ class ClientsController extends Controller
         $sessions = [
             "dateDeb"=>date("Y-m-01"),
             "dateFin"=>date("Y-m-d"),
-            "etat"=>"0",
+            "Statut"=>false,
         ];
 
         // initialisation des valeurs par defauts
@@ -89,7 +89,7 @@ class ClientsController extends Controller
         $sessions = [
             "dateDeb"=>date("Y-m-01",strtotime($request->dateDeb)),
             "dateFin"=>date("Y-m-d",strtotime($request->dateFin)),
-            "etat"=>$request->etat,
+            "Statut"=>$request->Statut,
         ];
 
         // initialisation des valeurs par defauts
@@ -112,14 +112,15 @@ class ClientsController extends Controller
         // recuperation des variables
         $dateDeb = $request->dateDeb ?? $request->session()->get('dateDeb');
         $dateEnd = $request->dateEnd ?? $request->session()->get('dateFin');
-        $status = $request->status ?? $request->session()->get('status');
-
-        // dd($dateDeb,$dateEnd);
+        $status = $request->status ?? $request->session()->get('Statut');
 
         $clients = Clients::where("created_at",">=", date("Y-m-d 00:00:00",strtotime($dateDeb)))
                          ->where("created_at","<=", date("Y-m-d 23:59:59",strtotime($dateEnd)))
-                        //  ->where("Statut",$status)
-                         ->get();
+                         ->when($status, function($query, $status){
+                                return $query->where("Statut",$status);
+                         })->get();
+
+        // dd($clients);
         
         // $clients = Clients::all();
 
@@ -149,7 +150,6 @@ class ClientsController extends Controller
                 $etat = "<span class=\"badge badge-pill badge-danger\">Désactivé</span>";
             }
 
-            
 
             $row[] = $t->ClientID;
             $row[] = $t->Nom;
@@ -258,25 +258,32 @@ class ClientsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    // public function update(Request $request, string $id)
-    public function update(UpdateClientsRequest $request, Clients $clients)
+    public function update(UpdateClientsRequest $request,string $id)
+    // public function update(UpdateClientsRequest $request, Clients $clients)
     {
-        // dd($request);
+        
         // The $request is already validated.
         $validated = $request->validated();
 
         // 1. Find the product (using findOrFail to handle not found cases)
-        // $client = Clients::findOrFail($id);
+        $clients = Clients::findOrFail($id);
 
         // 3. Update the product attributes
-        $clients->update($validated);
+        $response = $clients->update($validated);
+
+        // dd($response,$validated,$clients);
 
         // 4. Return a response using an API Resource
-        // return new ClientResource($validated);
-        // return redirect();
+
+        $msg = 'Echec mise à jour Client';
+        if((boolean) $response){
+            $msg = 'Client mis à jour avec succès';
+
+        }
+        
         return response()->json([
-            'status' => true,
-            'message' => 'Client mis à jour avec succès'
+            'status' => (boolean) $response,
+            'msg' => $msg
         ]);
     }
 

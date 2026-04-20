@@ -23,8 +23,6 @@ class Clients extends Model
         "TypeClient",
         "Statut",
         "PointsFidelite",
-        "created_at",
-        "updated_at"
     ];
 
     /**

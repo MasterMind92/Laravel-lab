@@ -46,9 +46,9 @@
                 <div class="col-md-3">
                     <label>Etat</label>
                     <select id="etat" name="Statut" class="form-control">
-                        <option @if(session('Statut') == "0") selected @endif value="">Tous</option>
-                        <option @if(session('Statut')=="A") selected  @endif value="Actif">Actif</option>
-                        <option @if(session('Statut')=="I") selected @endif value="Inactif">Inactif</option>
+                        <option @if(!session('Statut')) selected @endif value="">Tous</option>
+                        <option @if(session('Statut')=="A") selected  @endif value="A">Actif</option>
+                        <option @if(session('Statut')=="I") selected @endif value="I">Inactif</option>
                     </select>
                 </div>
 
@@ -310,7 +310,14 @@ $(function () {
                     success: function (response) {
                         $('#modal-details').modal('hide');
                         table.ajax.reload();
-                        swal("Succès", "Client modifié", "success");
+
+                        if(response){
+                            swal("Information", response.msg, "success");
+
+                        }else{
+
+                            swal("Information", response.msg, "warning");
+                        }
                     },
                     error: function (xhr) {
                         console.log(xhr.responseJSON);

@@ -54,8 +54,8 @@
         <div class="form-group col-md-4">
             <label>Statut</label>
             <select name="Statut" class="form-control" required>
-                <option value="Actif">Actif</option>
-                <option value="Inactif">Inactif</option>
+                <option value="A">Actif</option>
+                <option value="I">Inactif</option>
             </select>
         </div>
 
