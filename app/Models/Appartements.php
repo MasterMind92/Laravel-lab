@@ -4,28 +4,24 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Apartements extends Model
+class Appartements extends Model
 {
-    use SoftDeletes;
+    // use SoftDeletes;
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        "Numero",
-        "DateArrivee",
-        "DateDepart",
-        "NbAdultes",
-        "NbEnfants",
-        "Statut",
-        'fkClient',
-        'fkAppart',
-        "Source",
-        "Notes",
-        "created_at",
-        "updated_at",
-        "deleted_at",
+        "Code",
+        "Type",
+        "Surface",
+        "Etage",
+        "CapaciteMax",
+        "Etat",
+        "DernierNettoyage",
+        'DateDerniereRenovation',
+        'Observations',
     ];
 
     /**

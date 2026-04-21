@@ -28,7 +28,7 @@ class UpdateApartementsRequest extends FormRequest
             'Surface' => 'required|alpha_num:ascii',
             'Etage' => 'required|numeric',
             'CapaciteMax' => 'required|numeric',
-            'Etat' => 'required|alpha_num:ascii|in:A,I',
+            'Etat' => 'required|alpha_num:ascii|in:Disponible,Occupé,Maintenance',
             'DernierNettoyage' => 'required|date',
             'DateDerniereRenovation' => 'required|date',
             'Observations' => 'required|alpha_num:ascii|max:255|string',

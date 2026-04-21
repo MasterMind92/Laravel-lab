@@ -1,81 +1,77 @@
-<form method="POST" action="" id="form-modif" enctype="application/x-www-form-urlencoded">
+<form method="POST" action="" id="modifAppart" enctype="application/x-www-form-urlencoded">
     @csrf
 
-    <input type="hidden" name="ClientID" id="ClientID" />
+    @method('PUT')
+
+    <input type="hidden" name="AppartementID" id="AppartementID" />
     
     <div class="form-row">
-
-        <!-- Nom -->
         <div class="form-group col-md-6">
-            <label>Nom *</label>
-            <input type="text" name="Nom" id="Nom" class="form-control" placeholder="Nom du client" required>
+            <label>Code *</label>
+            <input type="text" class="form-control" name="Code" id="Code"
+                value="{{ $appartement->Code ?? '' }}">
         </div>
 
-        <!-- Prénom -->
         <div class="form-group col-md-6">
-            <label>Prénom *</label>
-            <input type="text" name="Prenom" id="Prenom" class="form-control" placeholder="Prénom du client" required>
+            <label>Type</label>
+            <input type="text" class="form-control" name="Type" id="Type"
+                value="{{ $appartement->Type ?? '' }}">
         </div>
+    </div>
 
-        <!-- Email -->
-        <div class="form-group col-md-6">
-            <label>Email</label>
-            <input type="email" name="Email" id="Email" class="form-control" placeholder="email@example.com" required>
-        </div>
-
-        <!-- Téléphone -->
-        <div class="form-group col-md-6">
-            <label>Téléphone</label>
-            <input type="text" name="Telephone" id="Telephone" class="form-control" placeholder="Ex: 0700000000" required>
-        </div>
-
-        <!-- Adresse -->
-        <div class="form-group col-md-12">
-            <label>Adresse</label>
-            <input type="text" name="Adresse" id="Adresse" class="form-control" placeholder="Adresse complète" required>
-        </div>
-
-        <!-- Date de naissance -->
+    <div class="form-row">
         <div class="form-group col-md-4">
-            <label>Date de naissance</label>
-            <input type="date" name="DateNaissance" id="DateNaissance" class="form-control" required>
+            <label>Surface</label>
+            <input type="text" class="form-control" name="Surface" id="Surface"
+                value="{{ $appartement->Surface ?? '' }}">
         </div>
 
-        <!-- Type Client -->
         <div class="form-group col-md-4">
-            <label>Type Client</label>
-            <select name="TypeClient" id="TypeClient" class="form-control" required>
+            <label>Etage</label>
+            <input type="text" class="form-control" name="Etage" id="Etage"
+                value="{{ $appartement->Etage ?? '' }}">
+        </div>
+
+        <div class="form-group col-md-4">
+            <label>Capacité Max *</label>
+            <input type="number" class="form-control" name="CapaciteMax" id="CapaciteMax"
+                value="{{ $appartement->CapaciteMax ?? 1 }}">
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>Etat</label>
+            <select class="form-control" name="Etat" id="Etat">
                 <option value="">-- Choisir --</option>
-                <option value="Standard">Standard</option>
-                <option value="Premium">Premium</option>
-                <option value="VIP">VIP</option>
+                <option value="Disponible" {{ ($appartement->Etat ?? '') == 'Disponible' ? 'selected' : '' }}>Disponible</option>
+                <option value="Occupé" {{ ($appartement->Etat ?? '') == 'Occupé' ? 'selected' : '' }}>Occupé</option>
+                <option value="Maintenance" {{ ($appartement->Etat ?? '') == 'Maintenance' ? 'selected' : '' }}>Maintenance</option>
             </select>
         </div>
 
-        <!-- Statut -->
-        <div class="form-group col-md-4">
-            <label>Statut</label>
-            <select name="Statut" id="Statut" class="form-control" required>
-                <option value="A">Actif</option>
-                <option value="I">Inactif</option>
-            </select>
-        </div>
-
-        <!-- Points fidélité -->
         <div class="form-group col-md-6">
-            <label>Points Fidélité</label>
-            <input type="number" name="PointsFidelite" id="PointsFidelite" class="form-control" value="0" min="0">
+            <label>Dernier nettoyage *</label>
+            <input type="datetime-local" class="form-control" name="DernierNettoyage" id="DernierNettoyage"
+                value="{{ isset($appartement->DernierNettoyage) ? date('Y-m-d\TH:i', strtotime($appartement->DernierNettoyage)) : '' }}">
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>Date dernière rénovation *</label>
+            <input type="datetime-local" class="form-control" name="DateDerniereRenovation" id="DateDerniereRenovation"
+                value="{{ isset($appartement->DateDerniereRenovation) ? date('Y-m-d\TH:i', strtotime($appartement->DateDerniereRenovation)) : '' }}">
         </div>
 
+        <div class="form-group col-md-6">
+            <label>Observations</label>
+            <textarea class="form-control" name="Observations" id="Observations">{{ $appartement->Observations ?? '' }}</textarea>
+        </div>
     </div>
 
-    <div class="d-flex justify-content-end">
-        <button type="reset" data-dismiss="modal" aria-label="Close" class="btn btn-secondary mr-2">
-            Annuler
-        </button>
-        <button type="submit" id="modifClient" class="btn btn-success">
-            Modifier
-        </button>
-    </div>
+    <button type="submit" id="saveAppart" class="btn btn-primary">
+        {{ isset($appartement) ? 'Mettre à jour' : 'Enregistrer' }}
+    </button>
     
 </form>

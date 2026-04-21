@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('apartements', function (Blueprint $table) {
+        Schema::create('appartements', function (Blueprint $table) {
             $table->id("AppartementID")->unsignedInteger()->autoIncrement();
             $table->string("Code");
             $table->string("Type")->nullable();

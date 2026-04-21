@@ -55,7 +55,7 @@ class ClientsController extends Controller
 
         // dd($clients);
 
-        return view("clients/index",["columns"=>$columns,"title"=>$page_data,"clients"=>$clients]);
+        return view("clients/index",["columns"=>$columns,"title"=>$page_data]);
     }
 
     
@@ -220,7 +220,7 @@ class ClientsController extends Controller
             $msg = "Ligne retrouvée avec succès" ;
         }
 
-        echo json_encode([
+        return response()->json([
             "status"=> (boolean) $client,
             "msg" => $msg,
             "data"=> $client

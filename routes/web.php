@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 //Inclusion des class controllers
 //
-use App\Http\Controllers\ApartementsController;
+use App\Http\Controllers\AppartementsController;
 use App\Http\Controllers\ClientsController;
 use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\SejoursController;
@@ -43,6 +43,20 @@ Route::middleware('auth')->group(function () {
     // Route::patch('/profile', [ClientsController::class, 'update'])->name('profile.update');
     // Route::delete('/profile', [ClientsController::class, 'destroy'])->name('profile.destroy');
 });
+
+
+Route::middleware('auth')->group(function () {
+
+    Route::resource('appartements', AppartementsController::class);
+
+    Route::post('/appartements/list', [AppartementsController::class, 'list'])->name('appartements.list');
+    Route::post('/appartements/search', [AppartementsController::class, 'search'])->name('appartements.search');
+    Route::post('/appartements/state', [AppartementsController::class, 'setState'])->name('appartements.state');
+    // Route::patch('/profile', [ClientsController::class, 'update'])->name('profile.update');
+    // Route::delete('/profile', [ClientsController::class, 'destroy'])->name('profile.destroy');
+});
+
+
 
 Route::get('/', function () {
     return view('starter.dashboardv1');

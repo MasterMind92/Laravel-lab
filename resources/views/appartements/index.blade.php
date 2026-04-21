@@ -31,7 +31,7 @@
 
     <div class="card mb-4">
         <div class="card-body">
-            <form id="filterForm"  method="POST" class="row align-items-end" action= {{route("clients.search")}}>
+            <form id="filterForm"  method="POST" class="row align-items-end" action= {{route("appartements.search")}}>
                 @csrf
                 <div class="col-md-3">
                     <label>Date début</label>
@@ -46,9 +46,9 @@
                 <div class="col-md-3">
                     <label>Etat</label>
                     <select id="etat" name="Statut" class="form-control">
-                        <option @if(session('Statut') == "0") selected @endif value="">Tous</option>
-                        <option @if(session('Statut')=="A") selected  @endif value="Actif">Actif</option>
-                        <option @if(session('Statut')=="I") selected @endif value="Inactif">Inactif</option>
+                        <option @if(session('Etat') == "0") selected @endif value="">Tous</option>
+                        <option @if(session('Etat')=="A") selected  @endif value="Actif">Actif</option>
+                        <option @if(session('Etat')=="I") selected @endif value="Inactif">Inactif</option>
                     </select>
                 </div>
 
@@ -65,7 +65,7 @@
     <!-- 📊 SECTION TABLE -->
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5>Gestion des Clients</h5>
+            <h5>Gestion des appartements</h5>
 
             <button class="btn btn-primary" id="btnAdd" data-toggle="modal" data-target="#addModal">
                 ➕ Ajouter
@@ -90,7 +90,8 @@
         </div>
     </div>
 
-    
+
+
 
 <!-- 🧾 MODAL AJOUT -->
 <div class="modal fade" id="addModal">
@@ -104,28 +105,7 @@
             </div>
 
             <div class="modal-body">
-                @include('clients.add-form')
-            </div>
-
-        </div>
-    </div>
-</div>
-
-
-
-<!-- 🧾 MODAL AJOUT -->
-<div class="modal fade" id="addModal">
-    <div class="modal-dialog ">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Ajouter Client</h5>
-                <button class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-            <div class="modal-body">
-                @include('clients.add-form')
+                @include('appartements.add-form')
             </div>
 
         </div>
@@ -137,14 +117,14 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5>Détails Client</h5>
+                <h5>Détails Appartement</h5>
                 <button class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
 
             <div class="modal-body" id="detailContent">
-                 @include('clients.modify-form')
+                 @include('appartements.modify-form')
             </div>
 
             
@@ -164,7 +144,7 @@ $(function () {
     // 📊 DATATABLE
     let table = $('#clientTable').DataTable({
         "ajax": {
-            "url": "{{route('clients.list')}}",
+            "url": "{{route('appartements.list')}}",
             "type": "POST",
             headers: {
                 'X-CSRF-TOKEN':  $('meta[name="csrf-token"]').attr('content')
@@ -178,17 +158,23 @@ $(function () {
     });
 
 
-    $("#clientTable").delegate("button[name='activer']","click",function(){
+    $("#clientTable").delegate("button[name='activer'],button[name='desactiver'],button[name='entretien']","click",function(){
         
         let id = $(this).attr("data-id");
 
+        let msg = $(this).attr("data-msg");
+
+        
+
         swal({
             title: "Confirmer ?",
-            text: "Activer cet {élément}",
+            text: msg,
             icon: "warning",
             showCancelButton: true
 
         }).then(result => {
+
+            let state = $(this).attr("data-state");
 
             if (result) {
                 
@@ -197,8 +183,8 @@ $(function () {
                     headers: {
                         'X-CSRF-TOKEN':  $('meta[name="csrf-token"]').attr('content')
                     },
-                    url: "{{ route('clients.state', ['state'=>true]) }}",
-                    data: {id:id},
+                    url: "{{ route('appartements.state') }}",
+                    data: {id:id,state:state},
                     dataType: "json",
                     success: function (response) {
 
@@ -207,7 +193,7 @@ $(function () {
                         $('#addModal').modal('hide');
 
                         if (response.status) {
-                            swal("Succès", "Client activé avec succès", "success");
+                            swal("Succès", response.msg, "success");
                         }else{
                             swal("Echec", response.msg, "warning");
                         }
@@ -222,52 +208,8 @@ $(function () {
         });
     });
 
-    $("#clientTable").delegate("button[name='desactiver']","click",function(){
+    
 
-        let id = $(this).attr("data-id");
-
-        console.log(id);
-        
-        swal({
-            title: "Confirmer ?",
-            text: "Desactiver cet {élément}",
-            icon: "warning",
-            showCancelButton: true
-        }).then(result => {
-
-            if (result) {
-                
-                let options = {
-                    type: "post",
-                    headers: {
-                        'X-CSRF-TOKEN':  $('meta[name="csrf-token"]').attr('content')
-                    },
-                    url: "{{ route('clients.state', ['state' => 0]) }}",
-                    data: {id:id},
-                    dataType: "json",
-                    success: function (response) {
-
-                        console.log(response);
-
-                        $('#addModal').modal('hide');
-
-                        if (response.status) {
-                            swal("Succès", "Client desactivé avec succès", "success");
-                        }else{
-                            swal("Echec", response.msg, "warning");
-                        }
-                    
-                        table.ajax.reload();
-
-                    }
-                };
-
-                $.ajax(options);
-
-                
-            }
-        });
-    });
     //BOUTON ACTIVER
     let btnActive = $("button[name='activer']");
 
@@ -283,7 +225,7 @@ $(function () {
     $('#btnAdd').click(() => $('#addModal').modal('show'));
 
     // 💾 MODIFIER CLIENT
-    $('#modifClient').click(function (e) {
+    $('#saveAppart').click(function (e) {
         e.preventDefault();
 
         swal({
@@ -298,19 +240,25 @@ $(function () {
             
             if (result) {
 
-                let id = $('#form-modif').find('input[name="ClientID"]').val();
+                let id = $('#modifAppart').find('input[name="AppartementID"]').val();
 
                 var options = {
-                    url: `/clients/${id}`,
+                    url: `/appartements/${id}`,
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    data: $('#form-modif').serialize() + '&_method=PUT',
+                    data: $('#modifAppart').serialize() + '&_method=PUT',
                     success: function (response) {
                         $('#modal-details').modal('hide');
                         table.ajax.reload();
-                        swal("Succès", "Client modifié", "success");
+                        if (response.status) {
+                            swal("Information", response.msg, "success");
+                            
+                        }else{
+                            swal("Attention !", response.msg, "warning");
+
+                        }
                     },
                     error: function (xhr) {
                         console.log(xhr.responseJSON);
@@ -344,16 +292,23 @@ $(function () {
                     headers: {
                         'X-CSRF-TOKEN':  $('meta[name="csrf-token"]').attr('content')
                     },
-                    url: "{{ route('clients.store') }}",
+                    url: "{{ route('appartements.store') }}",
                     data: $('#addForm').serialize(),
                     dataType: "json",
+                    statusCode: {
+                        422: function(data) {
+
+                            swal("Attention", "Une erreur de validation est survenue", "warning");
+                        }
+                    },
                     success: function (response) {
                         console.log(response);
-                
+
                         $('#addModal').modal('hide');
                         table.ajax.reload();
 
-                        swal("Succès", "Client ajouté", "success");
+                        swal("Succès", "Appartement ajouté", "success");
+                
                     }
                 };
 
@@ -368,7 +323,7 @@ $(function () {
 
         let id = $(this).data('id');
 
-        $.get(`/clients/${id}`, function (data) {
+        $.get(`/appartements/${id}`, function (data) {
 
             $('#detailContent').html(`
                 <p><strong>Nom:</strong> ${data.nom}</p>
@@ -417,13 +372,13 @@ $(function () {
             headers: {
                 'X-CSRF-TOKEN':  $('meta[name="csrf-token"]').attr('content')
             },
-            url: `/clients/${id}`,
+            url: `/appartements/${id}`,
             data: {'id':id},
             dataType: "json",
             success: function (data) {
                 console.log(data);
 
-                fillForm("form-modif", data.data);
+                fillForm("modifAppart", data.data);
             }
         };
 
@@ -431,20 +386,6 @@ $(function () {
 
         
 
-        // swal({
-        //     title: "Changer statut ?",
-        //     icon: "question",
-        //     showCancelButton: true
-        // }).then(result => {
-        //     if (result.isConfirmed) {
-
-        //         $.post(`/clients/toggle/${id}`, {_token: "{{ csrf_token() }}"}, function () {
-
-        //             table.ajax.reload();
-        //             swal("Succès", "Statut modifié", "success");
-        //         });
-        //     }
-        // });
     });
 
     
