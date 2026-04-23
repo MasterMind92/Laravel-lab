@@ -60,13 +60,12 @@ class AppartementsController extends Controller
         // titre de la page
         $page_data= [
             "label"=>"Appartement",
-            "link" => route("appartement.index"),
+            "link" => route("appartements.index"),
             "current" => "Index"
         ];
 
         // colonne du tableau
         $columns = [
-            "#",
             "Code",
             "Type",
             "Surface",

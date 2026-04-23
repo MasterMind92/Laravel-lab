@@ -3,7 +3,7 @@
         <div class="container-fluid">
             <div class=" topnav rtl-ps-none" id="" data-perfect-scrollbar data-suppress-scroll-x="true">
                 <ul class="menu float-left">
-                    <li class="{{ request()->is('starter/*') ? 'active' : '' }}">
+                    {{-- <li class="{{ request()->is('starter/*') ? 'active' : '' }}">
 
                         <div>
 
@@ -23,7 +23,7 @@
                                     <li class="nav-item ">
                                         <a class="{{ Route::currentRouteName()=='dashboard' ? 'open' : '' }}"
                                             href="{{route('dashboard')}}">
-                                            <i class="nav-icon mr-2 i-Clock-3"></i>
+                                            <i class="nav-icon mr-2 fa fa-list"></i>
                                             <span class="item-name">Dashboard</span>
                                         </a>
                                     </li>
@@ -52,28 +52,28 @@
 
                             </div>
                         </div>
-                    </li>
+                    </li> --}}
 
                     <li>
                         <div>
                             <a href="{{route('clients.index')}}" class="nav-item">
-                                <i class="nav-icon mr-2 i-Bar-Chart"></i>
+                                <i class="nav-icon mr-2 fa fa-user"></i>
                                 Clients
                             </a>
                         </div>
                     </li>
                     <li>
                         <div>
-                            <a href="{{route('clients.index')}}" class="nav-item">
-                                <i class="nav-icon mr-2 i-Bar-Chart"></i>
+                            <a href="{{route('appartements.index')}}" class="nav-item">
+                                <i class="nav-icon mr-2 fa fa-home"></i>
                                 Appartements
                             </a>
                         </div>
                     </li>
                     <li>
                         <div>
-                            <a href="{{route('clients.index')}}" class="nav-item">
-                                <i class="nav-icon mr-2 i-Bar-Chart"></i>
+                            <a href="{{route('reservations.index')}}" class="nav-item">
+                                <i class="nav-icon mr-2 fa fa-recycle"></i>
                                Reservations
                             </a>
                         </div>
@@ -81,7 +81,7 @@
                     <li>
                         <div>
                             <a href="{{route('clients.index')}}" class="nav-item">
-                                <i class="nav-icon mr-2 i-Bar-Chart"></i>
+                                <i class="nav-icon mr-2 fa fa-envelope"></i>
                                 Facture
                             </a>
                         </div>
@@ -89,7 +89,7 @@
                     <li>
                         <div>
                             <a href="{{route('clients.index')}}" class="nav-item">
-                                <i class="nav-icon mr-2 i-Bar-Chart"></i>
+                                <i class="nav-icon mr-2 fa fa-users"></i>
                                Fournisseur
                             </a>
                         </div>
@@ -100,11 +100,10 @@
 
                             <div>
                                 <label class="toggle" for="drop-2">
-
                                     Services
                                 </label>
                                 <a href="#">
-                                    <i class="nav-icon mr-2 i-Bar-Chart"></i>
+                                    <i class="nav-icon mr-2 fa fa-box"></i>
                                     Services
                                 </a>
 
@@ -114,28 +113,28 @@
                                     <li class="nav-item ">
                                         <a class="{{ Route::currentRouteName()=='dashboard' ? 'open' : '' }}"
                                             href="{{route('dashboard')}}">
-                                            <i class="nav-icon mr-2 i-Clock-3"></i>
+                                            <i class="nav-icon mr-2 fa fa-list"></i>
                                             <span class="item-name">Inventaire</span>
                                         </a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="{{route('normal')}}"
                                             class="{{ Route::currentRouteName()=='normal' ? 'open' : '' }}">
-                                            <i class="nav-icon mr-2 i-Clock-4"></i>
+                                            <i class="nav-icon mr-2 fa fa-users"></i>
                                             <span class="item-name">Employé</span>
                                         </a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="{{ Route::currentRouteName()=='compact' ? 'open' : '' }}"
                                             href="{{route('compact')}}">
-                                            <i class="nav-icon mr-2 i-Over-Time"></i>
+                                            <i class="nav-icon mr-2 fa fa-share"></i>
                                             <span class="item-name">Prestation</span>
                                         </a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="{{ Route::currentRouteName()=='horizontal' ? 'open' : '' }}"
                                             href="{{route('horizontal')}}">
-                                            <i class="nav-icon mr-2 i-Clock"></i>
+                                            <i class="nav-icon mr-2 fa fa-calendar"></i>
                                             <span class="item-name">Intervention</span>
                                         </a>
                                     </li>

@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Reservations extends Model
 {
-    use SoftDeletes;
+    // use SoftDeletes;
     /**
      * The attributes that are mass assignable.
      *
@@ -28,17 +30,17 @@ class Reservations extends Model
     /**
      * retrouve la reservations associee a l'appartements
      */
-    public function client(): HasOne
+    public function appartement(): BelongsTo
     {
-        return $this->hasOne(Clients::class);
+        return $this->belongsTo(Appartements::class,'fkAppart');
     }
 
     /**
      * retrouve la reservations associee a l'appartements
      */
-    public function sejour(): HasOne
+    public function client(): BelongsTo
     {
-        return $this->hasOne(Sejours::class);
+        return $this->belongsTo(Clients::class,'fkClient');
     }
 
 

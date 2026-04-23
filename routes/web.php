@@ -6,15 +6,15 @@ use Illuminate\Support\Facades\Route;
 //
 use App\Http\Controllers\AppartementsController;
 use App\Http\Controllers\ClientsController;
-use App\Http\Controllers\CommandeController;
-use App\Http\Controllers\SejoursController;
-use App\Http\Controllers\ServicesController;
-use App\Http\Controllers\FacturesController;
-use App\Http\Controllers\LigneFactureController;
-use App\Http\Controllers\OccupantController;
-use App\Http\Controllers\PrestationController;
-use App\Http\Controllers\PromotionController;
-// use App\Http\Controllers\ApartementsController;
+use App\Http\Controllers\ReservationsController;
+// use App\Http\Controllers\CommandeController;
+// use App\Http\Controllers\SejoursController;
+// use App\Http\Controllers\ServicesController;
+// use App\Http\Controllers\FacturesController;
+// use App\Http\Controllers\LigneFactureController;
+// use App\Http\Controllers\OccupantController;
+// use App\Http\Controllers\PrestationController;
+// use App\Http\Controllers\PromotionController;
 // use App\Http\Controllers\ApartementsController;
 // use App\Http\Controllers\ApartementsController;
 // use App\Http\Controllers\ApartementsController;
@@ -56,6 +56,17 @@ Route::middleware('auth')->group(function () {
     // Route::delete('/profile', [ClientsController::class, 'destroy'])->name('profile.destroy');
 });
 
+
+Route::middleware('auth')->group(function () {
+
+    Route::resource('reservations', ReservationsController::class);
+
+    Route::post('/reservations/list', [ReservationsController::class, 'list'])->name('reservations.list');
+    Route::post('/reservations/search', [ReservationsController::class, 'search'])->name('reservations.search');
+    Route::post('/reservations/state', [ReservationsController::class, 'setState'])->name('reservations.state');
+    // Route::patch('/profile', [ClientsController::class, 'update'])->name('profile.update');
+    // Route::delete('/profile', [ClientsController::class, 'destroy'])->name('profile.destroy');
+});
 
 
 Route::get('/', function () {

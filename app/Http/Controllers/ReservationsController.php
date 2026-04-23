@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reservations;
+use App\Models\Clients;
+use App\Models\Appartements;
 use App\Http\Requests\StoreReservationsRequest;
 use App\Http\Requests\UpdateReservationsRequest;
+use Illuminate\Http\Request;
 
 class ReservationsController extends Controller
 {
@@ -13,15 +16,168 @@ class ReservationsController extends Controller
      */
     public function index()
     {
-        //
+        // titre de la page
+        $page_data= [
+            "label"=>"Reservation",
+            "link" => route("reservations.index"),
+            "current" => "Index"
+        ];
+
+        // colonne du tableau
+        $columns = [
+            "#",
+            "Numero",
+            "DateArrivee",
+            "DateDepart",
+            "NbAdultes",
+            "NbEnfants",
+            "Appartement",
+            "Client",
+            "Statut",
+        ];
+
+        // initialiser les donnees de session par defaut
+        $sessions = [
+            "dateDeb"=>date("Y-m-01"),
+            "dateFin"=>date("Y-m-d"),
+            "Statut"=>"0",
+        ];
+
+        // initialisation des valeurs par defauts
+        session($sessions);
+
+        
+        return view("reservations/index",["columns"=>$columns,"title"=>$page_data,"clients"=>Clients::all(),"appartements"=>Appartements::all()]);
+
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function search()
     {
-        //
+        // titre de la page
+        $page_data= [
+            "label"=>"Reservation",
+            "link" => route("reservations.index"),
+            "current" => "Index"
+        ];
+
+        // colonne du tableau
+        $columns = [
+            "#",
+            "Numero",
+            "DateArrivee",
+            "DateDepart",
+            "NbAdultes",
+            "NbEnfants",
+            "Appartement",
+            "Client",
+            "Statut",
+        ];
+
+        // initialiser les donnees de session par defaut
+        $sessions = [
+            "dateDeb"=>date("Y-m-01",strtotime($request->dateDeb)),
+            "dateFin"=>date("Y-m-d",strtotime($request->dateFin)),
+            "Statut"=>$request->Statut,
+        ];
+
+        // initialisation des valeurs par defauts
+        session($sessions);
+        
+        return view("reservations/index",["columns"=>$columns,"title"=>$page_data]);
+        
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function list(Request $request)
+    {   
+        // mettre en place la reponses de la fonction ajax qui permet
+        // de lister clients presents en base selon le parametres date de debut
+        // date de fin et Statut
+        
+        // recuperation des variables
+        $dateDeb = $request->dateDeb ?? $request->session()->get('dateDeb');
+        $dateEnd = $request->dateEnd ?? $request->session()->get('dateFin');
+        $status = $request->status ?? $request->session()->get('status');
+
+        // dd($dateDeb,$dateEnd);
+
+        // $reservations = Reservations::where("created_at",">=", date("Y-m-d 00:00:00",strtotime($dateDeb)))
+        //                  ->where("created_at","<=", date("Y-m-d 23:59:59",strtotime($dateEnd)))
+        //                 //  ->where("Statut",$status)
+        //                  ->get();
+
+        $reservations = Reservations::all();
+        
+        $appartement = $reservations[0]->appartement->Code;
+
+        // dd($appartement);
+
+        $data = [];
+
+        foreach ($reservations as $t) {
+            
+            $row = [];
+
+            $buttons_details = "<button class=\"btn btn-warning mr-2\" title=\"Details\" data-toggle=\"modal\" data-target=\"#modal-details\" data-id=\"".$t->ClientID."\" name=\"details\"  type=\"button\"> <i class=\"i-Pen\"></i> Details</button>";
+            //
+            $button_activate = "<button class=\"btn btn-primary mr-2\" name=\"activer\"  title=\"Activer\" data-id=\"".$t->ClientID."\" type=\"button\">Confirmer</button>";
+            //
+            $button_deactivate = "<button class=\"btn btn-danger mr-2\"  name=\"desactiver\" title=\"Desactiver\"  data-id=\"".$t->ClientID."\" type=\"button\">Annuler</button>";
+            //liste des boutons
+            $buttons = $buttons_details;
+            
+            $etat = "<span class=\"badge badge-pill badge-danger\">Désactivé</span>";
+
+            if($t->Statut == "1"){
+                $buttons.= $button_activate.$button_deactivate;
+                $etat = "<span class=\"badge badge-pill badge-warning\">En attente</span>";
+
+            }elseif($t->Statut == "2"){
+
+                $buttons.= $button_activate.$button_deactivate;
+                $etat = "<span class=\"badge badge-pill badge-success\">Confirmé</span>";
+
+            }elseif($t->Statut == "3"){
+                $buttons.= $button_activate.$button_deactivate;
+                $etat = "<span class=\"badge badge-pill badge-danger\">Annulée</span>";
+            }
+
+
+            // $appartement = $t->Appartement();
+
+            // dd($appartement);
+            // $t->Client();
+
+            $row[] = $t->ReservationID;
+            $row[] = $t->Numero;
+            $row[] = $t->DateArrivee;
+            $row[] = $t->DateDepart;
+            $row[] = $t->NbAdultes;
+            $row[] = $t->NbEnfants;
+            $row[] = $t->appartement->Code;
+            $row[] = $t->client->Nom." ".$t->client->Prenoms;
+            $row[] = $etat;
+            // $row[] = $Statut;
+            $row[] = $buttons;
+
+            $data[] = $row;
+        }
+
+        // puis afficher la reponse finale
+        $output = [
+            "draw" => (int) html_entity_decode(0),
+            "recordsTotal" => 0,
+            "recordsFiltered" => 0,
+            "data" => $data,
+        ];
+
+        echo json_encode($output);
+        
     }
 
     /**
@@ -29,7 +185,26 @@ class ReservationsController extends Controller
      */
     public function store(StoreReservationsRequest $request)
     {
-        //
+        // The request is already validated and authorized.
+        // You can access the validated data using $request->validated()
+        $validated = $request->validated();
+
+        $reservations = Reservations::create($validated);
+
+        // return new ClientResource($clients);
+
+        // 3. Optionally, return the created resource using an API Resource class
+        // (See Step 3 below for the resource example)
+        // return new ProductResource($product);
+
+        // Or return a simple JSON response
+        return response()->json([
+            "status" => (boolean) $reservations,
+            'data' => $reservations,
+            'message' => $reservations 
+                        ? 'Reservation créée avec succès'
+                        : 'Reservation créée avec succès',
+        ], 201); // 201 status code for Created
     }
 
     /**
@@ -45,7 +220,58 @@ class ReservationsController extends Controller
      */
     public function edit(Reservations $reservations)
     {
+        // permettre de recuperer les infos d'une entite 
+        // et de les renvoyer a la vue
+
+        $reservations = Reservations::where("ReservationID",$request->id)->first();
+
+        $msg = "Echec récuperation de la ligne";
+
+        if ( (boolean) $reservations) {
+            $msg = "Ligne retrouvée avec succès" ;
+        }
+
+        return response()->json([
+            "status"=> (boolean) $reservations,
+            "msg" => $msg,
+            "data"=> $reservations
+            
+        ]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function setState(Request $request)
+    {
+        
+        // dd(!$request->state, intval($request->state) < 0, intval($request->state) > 2);
+        // vaidation de la valeur entrante
+        if (!$request->state OR (intval($request->state) < 1) OR (intval($request->state) > 3)) {
+            return response()->json([
+                "status"=>false,
+                "msg" => "Revoyez vos parametres"
+            ]);
+        }
+
+        $values = ["Disponible","Maintenance","Occupé"];
+
+        // dd($request->id,$values[$request->state]);
         //
+        $responseState = Reservations::where("ReservationID",$request->id)
+                                ->update(["Statut"=> $values[intval($request->state)-1]]);
+        // message par defaut
+        $msg = "Mise à jour effectuée avec succes";
+        // message d'echec
+        if($responseState != true){
+            $msg = "Echec mise a jour";
+        }
+
+        // reponse de fin
+        return response()->json([
+            "status"=>$responseState,
+            "msg" => $msg
+        ]);
     }
 
     /**
@@ -53,7 +279,17 @@ class ReservationsController extends Controller
      */
     public function update(UpdateReservationsRequest $request, Reservations $reservations)
     {
-        //
+        // The $request is already validated.
+        $reservations = Reservations::findOrFail($id);
+
+        $response = $reservations->update($request->validated());
+
+        return response()->json([
+            'status' => (bool) $response,
+            'msg' => $response 
+                ? 'Reservation mis à jour avec succès'
+                : 'Echec mise à jour'
+        ]);
     }
 
     /**

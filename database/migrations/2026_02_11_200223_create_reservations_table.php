@@ -18,11 +18,11 @@ return new class extends Migration
             $table->dateTime("DateDepart")->useCurrent();
             $table->tinyInteger("NbAdultes")->default(0);
             $table->tinyInteger("NbEnfants")->default(0);
-            $table->string("Statut");
+            $table->string("Statut")->comment("1: En attente; 2: Confirmée; 3: Annulé ");
             $table->bigInteger('fkClient')->unsigned();
             $table->bigInteger('fkAppart')->unsigned();
             $table->foreign('fkClient')->references('ClientID')->on('clients');
-            $table->foreign('fkAppart')->references('AppartementID')->on('apartements');
+            $table->foreign('fkAppart')->references('AppartementID')->on('appartements');
             $table->string("Source")->nullable();
             $table->tinyInteger("Notes")->default(0);
             $table->timestamps();

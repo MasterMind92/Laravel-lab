@@ -23,15 +23,15 @@ class UpdateApartementsRequest extends FormRequest
     {
         return [
             'AppartementID' => 'required|numeric',
-            'Code' => 'required|alpha_num:ascii',
-            'Type' => 'required|alpha_num:ascii',
-            'Surface' => 'required|alpha_num:ascii',
+            'Code' => 'required|alpha_dash:ascii|',
+            'Type' => 'required|alpha_dash:ascii|',
+            'Surface' => 'required|alpha_dash:ascii|',
             'Etage' => 'required|numeric',
             'CapaciteMax' => 'required|numeric',
-            'Etat' => 'required|alpha_num:ascii|in:Disponible,Occupé,Maintenance',
+            'Etat' => 'required|alpha_dash:ascii|in:Disponible,Occupé,Maintenance',
             'DernierNettoyage' => 'required|date',
             'DateDerniereRenovation' => 'required|date',
-            'Observations' => 'required|alpha_num:ascii|max:255|string',
+            'Observations' => 'required|max:255|string',
         ];
     }
 }
