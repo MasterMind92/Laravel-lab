@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string("Telephone")->nullable();
             $table->string("Adresse")->nullable();
             $table->date("DateNaissance")->nullable();
-            $table->string("TypeClient")->nullable();
+            $table->string("TypeClient")->comment("1. Standard; 2.Premium ; 3. VIP;")->default("1")->nullable();
             $table->string("Statut")->nullable();
             $table->integer("PointsFidelite")->default(0);
             $table->timestamps();

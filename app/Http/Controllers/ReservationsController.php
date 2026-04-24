@@ -54,7 +54,7 @@ class ReservationsController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function search()
+    public function search(Request $request)
     {
         // titre de la page
         $page_data= [
@@ -86,7 +86,8 @@ class ReservationsController extends Controller
         // initialisation des valeurs par defauts
         session($sessions);
         
-        return view("reservations/index",["columns"=>$columns,"title"=>$page_data]);
+                return view("reservations/index",["columns"=>$columns,"title"=>$page_data,"clients"=>Clients::all(),"appartements"=>Appartements::all()]);
+
         
     }
 
@@ -123,11 +124,13 @@ class ReservationsController extends Controller
             
             $row = [];
 
-            $buttons_details = "<button class=\"btn btn-warning mr-2\" title=\"Details\" data-toggle=\"modal\" data-target=\"#modal-details\" data-id=\"".$t->ClientID."\" name=\"details\"  type=\"button\"> <i class=\"i-Pen\"></i> Details</button>";
+            $buttons_details = "<button class=\"btn btn-warning mr-2\" title=\"Details\" data-toggle=\"modal\" data-target=\"#modal-details\" data-id=\"".$t->ReservationID."\" name=\"details\"  type=\"button\"> <i class=\"i-Pen\"></i> Details</button>";
             //
-            $button_activate = "<button class=\"btn btn-primary mr-2\" name=\"activer\"  title=\"Activer\" data-id=\"".$t->ClientID."\" type=\"button\">Confirmer</button>";
+            $button_activate = "<button class=\"btn btn-primary mr-2\" name=\"activer\"  title=\"Activer\" data-id=\"".$t->ReservationID."\" type=\"button\">Confirmer</button>";
             //
-            $button_deactivate = "<button class=\"btn btn-danger mr-2\"  name=\"desactiver\" title=\"Desactiver\"  data-id=\"".$t->ClientID."\" type=\"button\">Annuler</button>";
+            $button_deactivate = "<button class=\"btn btn-danger mr-2\"  name=\"desactiver\" title=\"Desactiver\"  data-id=\"".$t->ReservationID."\" type=\"button\">Annuler</button>";
+            
+            $button_deactivate = "<button class=\"btn btn-success mr-2\"  name=\"terminer\" title=\"terminer\"  data-id=\"".$t->ReservationID."\" type=\"button\">Terminer</button>";
             //liste des boutons
             $buttons = $buttons_details;
             
@@ -139,12 +142,16 @@ class ReservationsController extends Controller
 
             }elseif($t->Statut == "2"){
 
-                $buttons.= $button_activate.$button_deactivate;
+                $buttons.= $button_deactivate;
                 $etat = "<span class=\"badge badge-pill badge-success\">Confirmé</span>";
 
             }elseif($t->Statut == "3"){
-                $buttons.= $button_activate.$button_deactivate;
+                $buttons.= $button_activate;
                 $etat = "<span class=\"badge badge-pill badge-danger\">Annulée</span>";
+
+            }elseif($t->Statut == "4"){
+
+                $etat = "<span class=\"badge badge-pill badge-success\">Terminée</span>";
             }
 
 
@@ -210,9 +217,23 @@ class ReservationsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Reservations $reservations)
+    public function show(Request $request)
     {
         //
+        $reservation = Reservations::where("ReservationID",$request->id)->first();
+
+        $msg = "Echec recuperation de la ligne";
+
+        if ( (boolean) $reservation) {
+            $msg = "Ligne retrouvée avec succès" ;
+        }
+
+        return response()->json([
+            "status"=> (boolean) $reservation,
+            "msg" => $msg,
+            "data"=> $reservation
+            
+        ]);
     }
 
     /**
@@ -247,19 +268,18 @@ class ReservationsController extends Controller
         
         // dd(!$request->state, intval($request->state) < 0, intval($request->state) > 2);
         // vaidation de la valeur entrante
-        if (!$request->state OR (intval($request->state) < 1) OR (intval($request->state) > 3)) {
+        if (!$request->state OR (intval($request->state) < 1) OR (intval($request->state) > 4)) {
             return response()->json([
                 "status"=>false,
                 "msg" => "Revoyez vos parametres"
             ]);
         }
 
-        $values = ["Disponible","Maintenance","Occupé"];
+        // $values = ["Disponible","Maintenance","Occupé"];
 
-        // dd($request->id,$values[$request->state]);
         //
         $responseState = Reservations::where("ReservationID",$request->id)
-                                ->update(["Statut"=> $values[intval($request->state)-1]]);
+                                ->update(["Statut"=> intval($request->state)]);
         // message par defaut
         $msg = "Mise à jour effectuée avec succes";
         // message d'echec
@@ -277,7 +297,7 @@ class ReservationsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateReservationsRequest $request, Reservations $reservations)
+    public function update(UpdateReservationsRequest $request, $id)
     {
         // The $request is already validated.
         $reservations = Reservations::findOrFail($id);

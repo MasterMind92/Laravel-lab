@@ -17,8 +17,11 @@ return new class extends Migration
             $table->string("Type")->nullable();
             $table->string("Surface")->nullable();
             $table->string("Etage")->nullable();
+            $table->tinyText("Images")->comment("concatener les liens des images separer par des points virgules")->nullable();
+            $table->string("Gmaps")->comment("cette colonne contient le lien google maps de l'appartement")->nullable();
+            $table->string("Adresse")->comment("cette colonne contient l'adresse de l'appartement")->nullable();
             $table->tinyInteger("CapaciteMax")->default("1");
-            $table->string("Etat")->nullable();
+            $table->string("Etat")->comment("1.Disponible; 2.Occupe; 3.Maintenance;")->nullable();
             $table->dateTime("DernierNettoyage")->useCurrent();
             $table->dateTime("DateDerniereRenovation");
             $table->string("Observations")->nullable();

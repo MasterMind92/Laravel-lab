@@ -65,7 +65,7 @@
     <!-- 📊 SECTION TABLE -->
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5>Gestion des Clients</h5>
+            <h5>Gestion des  {{$title['label']}}</h5>
 
             <button class="btn btn-primary" id="btnAdd" data-toggle="modal" data-target="#addModal">
                 ➕ Ajouter
@@ -98,10 +98,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">
-                    Ajouter 
-                    @isset($title)
-                        {{$title['label']}}
-                    @endisset 
+                    Ajouter {{$title['label']}}
                 </h5>
                 <button class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -119,11 +116,11 @@
 
 
 <!-- 📋 MODAL DETAILS -->
-{{-- <div class="modal fade" id="modal-details">
+<div class="modal fade" id="modal-details">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5>Détails Client</h5>
+                <h5>Détails  {{$title['label']}}</h5>
                 <button class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -136,7 +133,7 @@
             
         </div>
     </div>
-</div> --}}
+</div>
 
 @endsection
 
@@ -163,7 +160,7 @@ $(function () {
         },
     });
 
-
+    // 
     $("#clientTable").delegate("button[name='activer']","click",function(){
         
         let id = $(this).attr("data-id");
@@ -183,7 +180,7 @@ $(function () {
                     headers: {
                         'X-CSRF-TOKEN':  $('meta[name="csrf-token"]').attr('content')
                     },
-                    url: "{{ route('reservations.state', ['state'=>true]) }}",
+                    url: "{{ route('reservations.state', ['state'=>2]) }}",
                     data: {id:id},
                     dataType: "json",
                     success: function (response) {
@@ -208,6 +205,53 @@ $(function () {
         });
     });
 
+    // 
+    $("#clientTable").delegate("button[name='terminer']","click",function(){
+        
+        let id = $(this).attr("data-id");
+
+        swal({
+            title: "Confirmer ?",
+            text: "Terminer cette réservation",
+            icon: "warning",
+            showCancelButton: true
+
+        }).then(result => {
+
+            if (result) {
+                
+                let options = {
+                    type: "post",
+                    headers: {
+                        'X-CSRF-TOKEN':  $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: "{{ route('reservations.state', ['state'=>4]) }}",
+                    data: {id:id},
+                    dataType: "json",
+                    success: function (response) {
+
+                        console.log(response);
+                    
+                        $('#addModal').modal('hide');
+
+                        if (response.status) {
+                            swal("Succès", response.msg, "success");
+                        }else{
+                            swal("Echec", response.msg, "warning");
+                        }
+                    
+                        table.ajax.reload();
+                    }
+                };
+
+                $.ajax(options);
+
+            }
+        });
+    });
+
+
+    //
     $("#clientTable").delegate("button[name='desactiver']","click",function(){
 
         let id = $(this).attr("data-id");
@@ -228,7 +272,7 @@ $(function () {
                     headers: {
                         'X-CSRF-TOKEN':  $('meta[name="csrf-token"]').attr('content')
                     },
-                    url: "{{ route('reservations.state', ['state' => 0]) }}",
+                    url: "{{ route('reservations.state', ['state' => 3]) }}",
                     data: {id:id},
                     dataType: "json",
                     success: function (response) {
@@ -238,7 +282,7 @@ $(function () {
                         $('#addModal').modal('hide');
 
                         if (response.status) {
-                            swal("Succès", "Client desactivé avec succès", "success");
+                            swal("Succès", response.msg, "success");
                         }else{
                             swal("Echec", response.msg, "warning");
                         }
@@ -269,12 +313,12 @@ $(function () {
     $('#btnAdd').click(() => $('#addModal').modal('show'));
 
     // 💾 MODIFIER CLIENT
-    $('#modifClient').click(function (e) {
+    $('#modifReserv').click(function (e) {
         e.preventDefault();
 
         swal({
             title: "Confirmer ?",
-            text: "Modifier ce client",
+            text: "Modifier cette reseravtion",
             icon: "warning",
             showCancelButton: true
 
@@ -284,10 +328,10 @@ $(function () {
             
             if (result) {
 
-                let id = $('#form-modif').find('input[name="ClientID"]').val();
+                let id = $('#form-modif').find('input[name="ReservationID"]').val();
 
                 var options = {
-                    url: `/clients/${id}`,
+                    url: `/reservations/${id}`,
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -296,7 +340,13 @@ $(function () {
                     success: function (response) {
                         $('#modal-details').modal('hide');
                         table.ajax.reload();
-                        swal("Succès", "Client modifié", "success");
+
+                        if (response.status) {
+                            swal("Information", response.msg, "success");
+                        } else {
+                            swal("Information", response.msg, "warning");
+                        }
+                        
                     },
                     error: function (xhr) {
                         console.log(xhr.responseJSON);
@@ -354,7 +404,7 @@ $(function () {
 
         let id = $(this).data('id');
 
-        $.get(`/clients/${id}`, function (data) {
+        $.get(`/reservations/${id}`, function (data) {
 
             $('#detailContent').html(`
                 <p><strong>Nom:</strong> ${data.nom}</p>
@@ -403,7 +453,7 @@ $(function () {
             headers: {
                 'X-CSRF-TOKEN':  $('meta[name="csrf-token"]').attr('content')
             },
-            url: `/clients/${id}`,
+            url: `/reservations/${id}`,
             data: {'id':id},
             dataType: "json",
             success: function (data) {
@@ -424,7 +474,7 @@ $(function () {
         // }).then(result => {
         //     if (result.isConfirmed) {
 
-        //         $.post(`/clients/toggle/${id}`, {_token: "{{ csrf_token() }}"}, function () {
+        //         $.post(`/reservations/toggle/${id}`, {_token: "{{ csrf_token() }}"}, function () {
 
         //             table.ajax.reload();
         //             swal("Succès", "Statut modifié", "success");
