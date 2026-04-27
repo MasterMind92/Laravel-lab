@@ -19,7 +19,7 @@ class Fournisseurs extends Model
         "Telephone",
         "Email",
         "Adresse",
-        "etat",
+        "Etat",
         "created_at",
         "updated_at",
         "deleted_at",

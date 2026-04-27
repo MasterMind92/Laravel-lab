@@ -133,10 +133,12 @@ class FournisseursController extends Controller
                 $etat = "<span class=\"badge badge-pill badge-success\">Activé</span>";
             }
 
-            if($t->Etat == "I"){
+            if(($t->Etat == "I")|| ($t->Etat == "S")){
                 $buttons.= $button_activate;
                 $etat = "<span class=\"badge badge-pill badge-danger\">Désactivé</span>";
             }
+
+            
 
 
             $row[] = $t->FournisseurID;
@@ -187,8 +189,8 @@ class FournisseursController extends Controller
             'status'=> (boolean) $fournisseurs,
             'fournisseurs' => $fournisseurs,
             'msg' => $fournisseurs
-                        ? 'Appartement créé avec succes'
-                        : 'Appartement créé avec succes',
+                        ? 'Fournisseur créé avec succes'
+                        : 'Echec creation fournisseur',
         ], 201); // 201 status code for Created
     }
 
