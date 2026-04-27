@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AppartementsController;
 use App\Http\Controllers\ClientsController;
 use App\Http\Controllers\ReservationsController;
+use App\Http\Controllers\FournisseursController;
 // use App\Http\Controllers\CommandeController;
 // use App\Http\Controllers\SejoursController;
 // use App\Http\Controllers\ServicesController;
@@ -15,7 +16,6 @@ use App\Http\Controllers\ReservationsController;
 // use App\Http\Controllers\OccupantController;
 // use App\Http\Controllers\PrestationController;
 // use App\Http\Controllers\PromotionController;
-// use App\Http\Controllers\ApartementsController;
 // use App\Http\Controllers\ApartementsController;
 // use App\Http\Controllers\ApartementsController;
 
@@ -52,6 +52,18 @@ Route::middleware('auth')->group(function () {
     Route::post('/appartements/list', [AppartementsController::class, 'list'])->name('appartements.list');
     Route::post('/appartements/search', [AppartementsController::class, 'search'])->name('appartements.search');
     Route::post('/appartements/state', [AppartementsController::class, 'setState'])->name('appartements.state');
+    // Route::patch('/profile', [ClientsController::class, 'update'])->name('profile.update');
+    // Route::delete('/profile', [ClientsController::class, 'destroy'])->name('profile.destroy');
+});
+
+
+Route::middleware('auth')->group(function () {
+
+    Route::resource('fournisseurs', FournisseursController::class);
+
+    Route::post('/fournisseurs/list', [FournisseursController::class, 'list'])->name('fournisseurs.list');
+    Route::post('/fournisseurs/search', [FournisseursController::class, 'search'])->name('fournisseurs.search');
+    Route::post('/fournisseurs/state', [FournisseursController::class, 'setState'])->name('fournisseurs.state');
     // Route::patch('/profile', [ClientsController::class, 'update'])->name('profile.update');
     // Route::delete('/profile', [ClientsController::class, 'destroy'])->name('profile.destroy');
 });

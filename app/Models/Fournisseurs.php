@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Fournisseurs extends Model
 {
-    use SoftDeletes;
+    // use SoftDeletes;
     /**
      * The attributes that are mass assignable.
      *
@@ -16,7 +16,7 @@ class Fournisseurs extends Model
         "Nom",
         "Type",
         "Contact",
-        "Téléphone",
+        "Telephone",
         "Email",
         "Adresse",
         "etat",

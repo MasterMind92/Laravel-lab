@@ -88,7 +88,7 @@
                     </li>
                     <li>
                         <div>
-                            <a href="{{route('clients.index')}}" class="nav-item">
+                            <a href="{{route('fournisseurs.index')}}" class="nav-item">
                                 <i class="nav-icon mr-2 fa fa-users"></i>
                                Fournisseur
                             </a>

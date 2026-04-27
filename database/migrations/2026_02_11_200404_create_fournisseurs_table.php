@@ -16,10 +16,10 @@ return new class extends Migration
             $table->string("Nom");
             $table->string("Type")->nullable();
             $table->string("Contact")->nullable();
-            $table->string("Téléphone");
+            $table->string("Telephone");
             $table->string("Email")->nullable();
             $table->string("Adresse")->nullable();
-            $table->string("etat")->nullable();
+            $table->string("Etat")->nullable();
             $table->timestamps();
         });
     }

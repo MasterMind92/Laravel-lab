@@ -11,7 +11,7 @@ class StoreFournisseursRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,13 @@ class StoreFournisseursRequest extends FormRequest
     public function rules(): array
     {
         return [
-           'body' => 'required',
+            'Nom' => 'required|max:255',
+            'Type' => 'nullable|max:100',
+            'Contact' => 'nullable|max:255',
+            'Telephone' => 'required|max:50',
+            'Email' => 'nullable|email|max:255',
+            'Adresse' => 'nullable|max:255',
+            'Etat' => 'required|max:50',
         ];
     }
 }
