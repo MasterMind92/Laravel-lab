@@ -190,7 +190,7 @@ $(function () {
                         $('#addModal').modal('hide');
 
                         if (response.status) {
-                            swal("Succès", "Client activé avec succès", "success");
+                            swal("Succès", response.msg, "success");
                         }else{
                             swal("Echec", response.msg, "warning");
                         }
@@ -360,12 +360,12 @@ $(function () {
     });
 
     // 💾 ENREGISTRER CLIENT
-    $('#saveClient').click(function (e) {
+    $('#saveReserv').click(function (e) {
         e.preventDefault();
 
         swal({
             title: "Confirmer ?",
-            text: "Ajouter ce client",
+            text: "Ajouter cette reservation",
             icon: "warning",
             showCancelButton: true
 
@@ -389,7 +389,13 @@ $(function () {
                         $('#addModal').modal('hide');
                         table.ajax.reload();
 
-                        swal("Succès", "Client ajouté", "success");
+                        if (response.status) {
+                            swal("Information", response.msg, "success");
+                        } else {
+                            swal("Information", response.message, "warning");
+                        }
+
+                        // swal("Succès", "Reservation ajoutée", "success");
                     }
                 };
 

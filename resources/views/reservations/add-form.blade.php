@@ -106,7 +106,7 @@
                     value="{{ $reservation->Notes ?? 0 }}">
         </div>
 
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" id="saveReserv" class="btn btn-primary">
             {{ isset($reservation) ? 'Mettre à jour' : 'Enregistrer' }}
         </button>
 
