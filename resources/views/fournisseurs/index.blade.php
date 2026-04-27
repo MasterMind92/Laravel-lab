@@ -49,6 +49,7 @@
                         <option @if(!session('Statut')) selected @endif value="">Tous</option>
                         <option @if(session('Statut')=="A") selected  @endif value="A">Actif</option>
                         <option @if(session('Statut')=="I") selected @endif value="I">Inactif</option>
+                        <option @if(session('Statut')=="S") selected @endif value="S">Inactif</option>
                     </select>
                 </div>
 
@@ -183,7 +184,7 @@ $(function () {
 
         swal({
             title: "Confirmer ?",
-            text: "Activer cet {élément}",
+            text: "Activer cet élément",
             icon: "warning",
             showCancelButton: true
 
@@ -206,7 +207,7 @@ $(function () {
                         $('#addModal').modal('hide');
 
                         if (response.status) {
-                            swal("Succès", "Client activé avec succès", "success");
+                            swal("Succès", response.msg, "success");
                         }else{
                             swal("Echec", response.msg, "warning");
                         }
@@ -229,7 +230,7 @@ $(function () {
         
         swal({
             title: "Confirmer ?",
-            text: "Desactiver cet {élément}",
+            text: "Désactiver cet {élément}",
             icon: "warning",
             showCancelButton: true
         }).then(result => {
@@ -287,7 +288,7 @@ $(function () {
 
         swal({
             title: "Confirmer ?",
-            text: "Modifier ce client",
+            text: "Modifier ce fournisseur",
             icon: "warning",
             showCancelButton: true
 
@@ -297,10 +298,10 @@ $(function () {
             
             if (result) {
 
-                let id = $('#form-modif').find('input[name="ClientID"]').val();
+                let id = $('#form-modif').find('input[name="FournisseurID"]').val();
 
                 var options = {
-                    url: `/clients/${id}`,
+                    url: `/fournisseurs/${id}`,
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -430,7 +431,7 @@ $(function () {
             headers: {
                 'X-CSRF-TOKEN':  $('meta[name="csrf-token"]').attr('content')
             },
-            url: `/clients/${id}`,
+            url: `/fournisseurs/${id}`,
             data: {'id':id},
             dataType: "json",
             success: function (data) {

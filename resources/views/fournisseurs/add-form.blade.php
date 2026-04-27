@@ -161,12 +161,12 @@
                     <option value="">-- Sélectionner --</option>
 
                     <option value="A"
-                    {{ old('Etat')=='Actif' ? 'selected':'' }}>
+                    {{ old('Etat')=='A' ? 'selected':'' }}>
                         Actif
                     </option>
 
                     <option value="I"
-                    {{ old('Etat')=='Inactif' ? 'selected':'' }}>
+                    {{ old('Etat')=='I' ? 'selected':'' }}>
                         Inactif
                     </option>
 

@@ -52,7 +52,7 @@ class FournisseursController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function search()
+    public function search(Request $request)
     {
         // titre de la page
         $page_data= [
@@ -184,6 +184,7 @@ class FournisseursController extends Controller
 
         // Or return a simple JSON response
         return response()->json([
+            'status'=> (boolean) $fournisseurs,
             'fournisseurs' => $fournisseurs,
             'msg' => $fournisseurs
                         ? 'Appartement créé avec succes'
@@ -230,7 +231,7 @@ class FournisseursController extends Controller
 
         //
         $responseState = Fournisseurs::where("FournisseurID",$request->id)
-                                ->update(["Statut"=> $state]);
+                                ->update(["Etat"=> $state]);
         // msg par defaut
         $msg = "Mise a jour effectuee avec succes";
         // msg d'echec
