@@ -53,8 +53,44 @@
                             </div>
                         </div>
                     </li> --}}
+                    <li class ="{{ request()->routeIs('clients.*') ? 'open' : '' }} ">
+                        <div>
+                            <a href="{{route('dashboard')}}" class="nav-item">
+                                <i class="nav-icon mr-2 fa fa-chart-area"></i>
+                                Tableau de Bord
+                            </a>
+                        </div>
+                    </li>
+                    <li class="{{ request()->is('starter/*') ? 'active' : '' }}">
 
-                    <li>
+                        <div>
+                            <div>
+                                <label class="toggle" for="drop-2">
+                                    Appartements
+                                </label>
+                                <a href="{{route('appartements.index')}}" class="nav-item">
+                                    <i class="nav-icon mr-2 fa fa-home"></i>
+                                    Appartements
+                                </a>
+
+                                <input type="checkbox" id="drop-2">
+                                <ul>
+
+                                    <li class="nav-item ">
+                                        <a class="{{ Route::currentRouteName()=='dashboard' ? 'open' : '' }}"
+                                            href="{{route('dashboard')}}">
+                                            <i class="nav-icon mr-2 fa fa-list"></i>
+                                            <span class="item-name">Inventaire</span>
+                                        </a>
+                                    </li>
+                                    
+                                </ul>
+
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class =" {{ request()->routeIs('clients.*') ? 'open' : '' }} ">
                         <div>
                             <a href="{{route('clients.index')}}" class="nav-item">
                                 <i class="nav-icon mr-2 fa fa-user"></i>
@@ -62,14 +98,7 @@
                             </a>
                         </div>
                     </li>
-                    <li>
-                        <div>
-                            <a href="{{route('appartements.index')}}" class="nav-item">
-                                <i class="nav-icon mr-2 fa fa-home"></i>
-                                Appartements
-                            </a>
-                        </div>
-                    </li>
+                    
                     <li>
                         <div>
                             <a href="{{route('reservations.index')}}" class="nav-item">
@@ -86,25 +115,17 @@
                             </a>
                         </div>
                     </li>
-                    <li>
-                        <div>
-                            <a href="{{route('fournisseurs.index')}}" class="nav-item">
-                                <i class="nav-icon mr-2 fa fa-users"></i>
-                               Fournisseur
-                            </a>
-                        </div>
-                    </li>
+                    
                     <li class="{{ request()->is('starter/*') ? 'active' : '' }}">
 
                         <div>
-
                             <div>
                                 <label class="toggle" for="drop-2">
-                                    Services
+                                    Fournisseur
                                 </label>
-                                <a href="#">
-                                    <i class="nav-icon mr-2 fa fa-box"></i>
-                                    Services
+                                <a href="{{route('fournisseurs.index')}}" class="nav-item">
+                                    <i class="nav-icon mr-2 fa fa-users"></i>
+                                    Fournisseur
                                 </a>
 
                                 <input type="checkbox" id="drop-2">
@@ -114,16 +135,10 @@
                                         <a class="{{ Route::currentRouteName()=='dashboard' ? 'open' : '' }}"
                                             href="{{route('dashboard')}}">
                                             <i class="nav-icon mr-2 fa fa-list"></i>
-                                            <span class="item-name">Inventaire</span>
+                                            <span class="item-name">Services</span>
                                         </a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a href="{{route('normal')}}"
-                                            class="{{ Route::currentRouteName()=='normal' ? 'open' : '' }}">
-                                            <i class="nav-icon mr-2 fa fa-users"></i>
-                                            <span class="item-name">Employé</span>
-                                        </a>
-                                    </li>
+                                    
                                     <li class="nav-item">
                                         <a class="{{ Route::currentRouteName()=='compact' ? 'open' : '' }}"
                                             href="{{route('compact')}}">
@@ -131,6 +146,29 @@
                                             <span class="item-name">Prestation</span>
                                         </a>
                                     </li>
+                                    
+                                </ul>
+
+                            </div>
+                        </div>
+                    </li>
+                    
+                    <li class="{{ request()->is('starter/*') ? 'active' : '' }}">
+
+                        <div>
+
+                            <div>
+                                <label class="toggle" for="drop-2">
+                                    Employés
+                                </label>
+                                <a href="{{route('reservations.index')}}" class="nav-item">
+                                    <i class="nav-icon mr-2 fa fa-users"></i>
+                                    Employés
+                                </a>
+
+                                <input type="checkbox" id="drop-2">
+                                <ul>
+
                                     <li class="nav-item">
                                         <a class="{{ Route::currentRouteName()=='horizontal' ? 'open' : '' }}"
                                             href="{{route('horizontal')}}">

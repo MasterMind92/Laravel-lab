@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Inventaires extends Model
 {
-    use SoftDeletes;
+    // use SoftDeletes;
     /**
      * The attributes that are mass assignable.
      *
@@ -18,12 +18,19 @@ class Inventaires extends Model
         "Categorie",
         "QuantiteStock",
         "SeuilMin",
+        'fkAppart',
+        'fkCommande',
         "Localisation",
         "Etat",
-        "created_at",
-        "updated_at",
-        "deleted_at",
     ];
+
+    /**
+     * retrouve la reservations associee a l'appartements
+     */
+    public function appartement(): BelongsTo
+    {
+        return $this->belongsTo(Appartements::class,'fkAppart');
+    }
 
 
     /**

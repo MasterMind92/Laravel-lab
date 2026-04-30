@@ -18,6 +18,10 @@ return new class extends Migration
             $table->string("Categorie")->nullable();
             $table->integer("QuantiteStock")->default(0);
             $table->string("SeuilMin")->default(0);
+            $table->bigInteger('fkAppart')->unsigned();
+            $table->foreign('fkAppart')->references('AppartementID')->on('appartements');
+            $table->bigInteger('fkCommande')->unsigned();
+            $table->foreign('fkCommande')->references('CommandeID')->on('commandes');
             $table->string("Localisation")->nullable();
             $table->string("Etat")->nullable();
             $table->timestamps();

@@ -16,6 +16,7 @@ class ClientsController extends Controller
      */
     public function index()
     {   
+
         // titre de la page
         $page_data= [
             "label"=>"Clients",

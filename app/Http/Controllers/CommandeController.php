@@ -14,14 +14,88 @@ class CommandeController extends Controller
     public function index()
     {
         //
+        // titre de la page
+        $page_data= [
+            "label"=>"Commande",
+            "link" => route("commande.index"),
+            "current" => "Index"
+        ];
+
+        // colonne du tableau
+        $columns = [
+            "#",
+            "Date Commande",
+            "Date Livraison Prévue",
+            "Date Livraison Réelle",
+            "Statut",
+            "Montant Total",
+            "Etat",
+            "Date",
+        ];
+
+        // initialiser les donnees de session par defaut
+        $sessions = [
+            "dateDeb"=>date("Y-m-01"),
+            "dateFin"=>date("Y-m-d"),
+            "Statut"=>false,
+        ];
+
+        // initialisation des valeurs par defauts
+        session($sessions);
+
+        // dd($sessions,session()->all());
+
+        // recuperation de client selon la date
+        // $clients = Clients::where("created_at",">=", date("Y-m-01"))
+        //                     ->where("created_at","<=", date("Y-m-d"))
+        //                     ->get();
+
+        $clients = Clients::all();
+
+        // dd($clients);
+
+        return view("clients/index",["columns"=>$columns,"title"=>$page_data]);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display the specified resource.
      */
-    public function create()
+    public function search(Request $request)
     {
+        
         //
+        // titre de la page
+        $page_data= [
+            "label"=>"Commande",
+            "link" => route("commande.index"),
+            "current" => "Index"
+        ];
+
+        // colonne du tableau
+        $columns = [
+            "#",
+            "Date Commande",
+            "Date Livraison Prévue",
+            "Date Livraison Réelle",
+            "Statut",
+            "Montant Total",
+            "Etat",
+            "Date",
+        ];
+
+        // initialiser les donnees de session par defaut
+        $sessions = [
+            "dateDeb"=>date("Y-m-01",strtotime($request->dateDeb)),
+            "dateFin"=>date("Y-m-d",strtotime($request->dateFin)),
+            "Statut"=>$request->Statut,
+        ];
+
+        // initialisation des valeurs par defauts
+        session($sessions);
+
+        
+        return view("clients/index",["columns"=>$columns,"title"=>$page_data]);
+        
     }
 
     /**
@@ -29,7 +103,23 @@ class CommandeController extends Controller
      */
     public function store(StorecommandeRequest $request)
     {
-        //
+        // The request is already validated and authorized.
+        // You can access the validated data using $request->validated()
+        $validated = $request->validated();
+
+        $clients = Clients::create($validated);
+
+        return new ClientResource($clients);
+
+        // 3. Optionally, return the created resource using an API Resource class
+        // (See Step 3 below for the resource example)
+        // return new ProductResource($product);
+
+        // Or return a simple JSON response
+        // return response()->json([
+        //     'message' => 'Client créé avec succes',
+        //     'client' => $clients
+        // ], 201); // 201 status code for Created
     }
 
     /**
@@ -41,11 +131,78 @@ class CommandeController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Display the specified resource.
      */
-    public function edit(commande $commande)
-    {
-        //
+    public function list(Request $request)
+    {   
+        // mettre en place la reponses de la fonction ajax qui permet
+        // de lister clients presents en base selon le parametres date de debut
+        // date de fin et etat
+        
+        // recuperation des variables
+        $dateDeb = $request->dateDeb ?? $request->session()->get('dateDeb');
+        $dateEnd = $request->dateEnd ?? $request->session()->get('dateFin');
+        $status = $request->status ?? $request->session()->get('Statut');
+
+        $clients = Clients::where("created_at",">=", date("Y-m-d 00:00:00",strtotime($dateDeb)))
+                         ->where("created_at","<=", date("Y-m-d 23:59:59",strtotime($dateEnd)))
+                         ->when($status, function($query, $status){
+                                return $query->where("Statut",$status);
+                         })->get();
+
+        // dd($clients);
+        
+        // $clients = Clients::all();
+
+        $data = [];
+
+        foreach ($clients as $t) {
+            
+            $row = [];
+            //
+            $buttons_details = "<button class=\"btn btn-warning mr-2\" title=\"Details\" data-toggle=\"modal\" data-target=\"#modal-details\" data-id=\"".$t->ClientID."\" name=\"details\"  type=\"button\"> <i class=\"i-Pen\"></i> Details</button>";
+            //
+            $button_activate = "<button class=\"btn btn-primary mr-2\" name=\"activer\"  title=\"Activer\" data-id=\"".$t->ClientID."\" type=\"button\">Activer</button>";
+            //
+            $button_deactivate = "<button class=\"btn btn-danger mr-2\"  name=\"desactiver\" title=\"Desactiver\"  data-id=\"".$t->ClientID."\" type=\"button\">Desactiver</button>";
+            //liste des boutons
+            $buttons = $buttons_details;
+            
+            $etat = "<span class=\"badge badge-pill badge-danger\">Désactivé</span>";
+
+            if($t->Statut == "A"){
+                $buttons.= $button_deactivate;
+                $etat = "<span class=\"badge badge-pill badge-success\">Activé</span>";
+            }
+
+            if($t->Statut == "I"){
+                $buttons.= $button_activate;
+                $etat = "<span class=\"badge badge-pill badge-danger\">Désactivé</span>";
+            }
+
+
+            $row[] = $t->ClientID;
+            $row[] = $t->Nom;
+            $row[] = $t->Telephone;
+            $row[] = $t->Email;
+            $row[] = $t->TypeClient;
+            $row[] = $etat;
+            $row[] = $t->created_at;
+            $row[] = $buttons;
+
+            $data[] = $row;
+        }
+
+        // puis afficher la reponse finale
+        $output = [
+            "draw" => (int) html_entity_decode(0),
+            "recordsTotal" => 0,
+            "recordsFiltered" => 0,
+            "data" => $data,
+        ];
+
+        echo json_encode($output);
+        
     }
 
     /**
