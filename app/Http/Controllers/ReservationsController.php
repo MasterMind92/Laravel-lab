@@ -114,7 +114,7 @@ class ReservationsController extends Controller
 
         $reservations = Reservations::all();
         
-        $appartement = $reservations[0]->appartement->Code;
+        // $appartement = $reservations[0]->appartement->Code;
 
         // dd($appartement);
 
@@ -208,9 +208,9 @@ class ReservationsController extends Controller
         return response()->json([
             "status" => (boolean) $reservations,
             'data' => $reservations,
-            'message' => $reservations 
+            'msg' => $reservations 
                         ? 'Reservation créée avec succès'
-                        : 'Reservation créée avec succès',
+                        : 'Echec Reservation',
         ], 201); // 201 status code for Created
     }
 
