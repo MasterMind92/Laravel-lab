@@ -11,7 +11,7 @@ class UpdatecommandeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,12 @@ class UpdatecommandeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'body' => 'required',
+            'DateCommande' => 'required',
+            'DateLivraisonPrévue' => 'required',
+            'DateLivraisonRéelle' => 'required',
+            'Statut' => 'required',
+            'MontantTotal' => 'required',
+            'Etat' => 'required',
         ];
     }
 }

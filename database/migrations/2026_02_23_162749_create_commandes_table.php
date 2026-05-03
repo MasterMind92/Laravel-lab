@@ -16,7 +16,7 @@ return new class extends Migration
             $table->dateTime("DateCommande");
             $table->dateTime("DateLivraisonPrévue");
             $table->dateTime("DateLivraisonRéelle");
-            $table->string("Statut")->default("Non-livré");
+            $table->string("Statut")->default("Non-livré")->comment("0:Initie , 1: en cours de livraison , 2: livre, 3: Annule ");
             $table->integer("MontantTotal");
             $table->string("Etat");
             $table->timestamps();

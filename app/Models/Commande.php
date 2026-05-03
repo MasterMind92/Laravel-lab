@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Commande extends Model
 {
-   use SoftDeletes;
+//    use SoftDeletes;
     /**
      * The attributes that are mass assignable.
      *

@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\commande;
+use App\Models\Commande;
 use App\Http\Requests\StorecommandeRequest;
 use App\Http\Requests\UpdatecommandeRequest;
+use Illuminate\Http\Request;
 
 class CommandeController extends Controller
 {
@@ -29,8 +30,6 @@ class CommandeController extends Controller
             "Date Livraison Réelle",
             "Statut",
             "Montant Total",
-            "Etat",
-            "Date",
         ];
 
         // initialiser les donnees de session par defaut
@@ -46,15 +45,15 @@ class CommandeController extends Controller
         // dd($sessions,session()->all());
 
         // recuperation de client selon la date
-        // $clients = Clients::where("created_at",">=", date("Y-m-01"))
+        // $commande = Commande::where("created_at",">=", date("Y-m-01"))
         //                     ->where("created_at","<=", date("Y-m-d"))
         //                     ->get();
 
-        $clients = Clients::all();
+        // $commande = Commande::all();
 
-        // dd($clients);
+        // dd($commande);
 
-        return view("clients/index",["columns"=>$columns,"title"=>$page_data]);
+        return view("commande/index",["columns"=>$columns,"title"=>$page_data]);
     }
 
     /**
@@ -79,8 +78,6 @@ class CommandeController extends Controller
             "Date Livraison Réelle",
             "Statut",
             "Montant Total",
-            "Etat",
-            "Date",
         ];
 
         // initialiser les donnees de session par defaut
@@ -94,7 +91,7 @@ class CommandeController extends Controller
         session($sessions);
 
         
-        return view("clients/index",["columns"=>$columns,"title"=>$page_data]);
+        return view("commande/index",["columns"=>$columns,"title"=>$page_data]);
         
     }
 
@@ -107,25 +104,27 @@ class CommandeController extends Controller
         // You can access the validated data using $request->validated()
         $validated = $request->validated();
 
-        $clients = Clients::create($validated);
+        $commande = Commande::create($validated);
 
-        return new ClientResource($clients);
+        // return new ClientResource($commande);
 
         // 3. Optionally, return the created resource using an API Resource class
         // (See Step 3 below for the resource example)
         // return new ProductResource($product);
 
         // Or return a simple JSON response
-        // return response()->json([
-        //     'message' => 'Client créé avec succes',
-        //     'client' => $clients
-        // ], 201); // 201 status code for Created
+        return response()->json([
+            'commande' => $commande,
+            'msg' => $commande 
+                    ? 'Commande crée avec succès'
+                    : 'Echec création commande',
+        ], 201); // 201 status code for Created
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(commande $commande)
+    public function show(Commande $commande)
     {
         //
     }
@@ -144,50 +143,62 @@ class CommandeController extends Controller
         $dateEnd = $request->dateEnd ?? $request->session()->get('dateFin');
         $status = $request->status ?? $request->session()->get('Statut');
 
-        $clients = Clients::where("created_at",">=", date("Y-m-d 00:00:00",strtotime($dateDeb)))
+        $commande = Commande::where("created_at",">=", date("Y-m-d 00:00:00",strtotime($dateDeb)))
                          ->where("created_at","<=", date("Y-m-d 23:59:59",strtotime($dateEnd)))
                          ->when($status, function($query, $status){
                                 return $query->where("Statut",$status);
                          })->get();
 
-        // dd($clients);
+        // dd($commande);
         
-        // $clients = Clients::all();
+        // $commande = Commande::all();
 
         $data = [];
 
-        foreach ($clients as $t) {
+        foreach ($commande as $t) {
             
             $row = [];
             //
-            $buttons_details = "<button class=\"btn btn-warning mr-2\" title=\"Details\" data-toggle=\"modal\" data-target=\"#modal-details\" data-id=\"".$t->ClientID."\" name=\"details\"  type=\"button\"> <i class=\"i-Pen\"></i> Details</button>";
+            $buttons_details = "<button class=\"btn btn-warning mr-2\" title=\"Details\" data-toggle=\"modal\" data-target=\"#modal-details\" data-id=\"".$t->CommandeID."\" name=\"details\"  type=\"button\"> <i class=\"i-Pen\"></i> Details</button>";
             //
-            $button_activate = "<button class=\"btn btn-primary mr-2\" name=\"activer\"  title=\"Activer\" data-id=\"".$t->ClientID."\" type=\"button\">Activer</button>";
+            $button_activate = "<button class=\"btn btn-primary mr-2\" name=\"activer\"  title=\"En cours de livraison\" data-id=\"".$t->CommandeID."\" type=\"button\">En cours</button>";
+            
+            $button_deactivate = "<button class=\"btn btn-success mr-2\"  name=\"desactiver\" title=\"Livré\"  data-id=\"".$t->CommandeID."\" type=\"button\">Livré</button>";
             //
-            $button_deactivate = "<button class=\"btn btn-danger mr-2\"  name=\"desactiver\" title=\"Desactiver\"  data-id=\"".$t->ClientID."\" type=\"button\">Desactiver</button>";
+            $button_annule = "<button class=\"btn btn-danger mr-2\" name=\"activer\"  title=\"Activer\" data-id=\"".$t->CommandeID."\" type=\"button\">Annuler</button>";
             //liste des boutons
             $buttons = $buttons_details;
             
             $etat = "<span class=\"badge badge-pill badge-danger\">Désactivé</span>";
 
-            if($t->Statut == "A"){
+            if($t->Statut == "3"){
+                $buttons.= $button_deactivate.$button_deactivate;
+                $etat = "<span class=\"badge badge-pill badge-primary\">Annulé</span>";
+            }
+
+            if($t->Statut == "2"){
                 $buttons.= $button_deactivate;
-                $etat = "<span class=\"badge badge-pill badge-success\">Activé</span>";
+                $etat = "<span class=\"badge badge-pill badge-success\">Livré</span>";
             }
 
-            if($t->Statut == "I"){
-                $buttons.= $button_activate;
-                $etat = "<span class=\"badge badge-pill badge-danger\">Désactivé</span>";
+            if($t->Statut == "1"){
+                $buttons.= $button_deactivate.$button_annule;
+                $etat = "<span class=\"badge badge-pill badge-primary\">En cours</span>";
+            }
+
+            if($t->Statut == "0"){
+                $buttons.= $button_activate.$button_deactivate.$button_annule;
+                $etat = "<span class=\"badge badge-pill badge-warning\">Initié</span>";
             }
 
 
-            $row[] = $t->ClientID;
-            $row[] = $t->Nom;
-            $row[] = $t->Telephone;
-            $row[] = $t->Email;
-            $row[] = $t->TypeClient;
+            $row[] = $t->CommandeID;
+            $row[] = $t->DateCommande;
+            $row[] = $t->DateLivraisonPrévue;
+            $row[] = $t->DateLivraisonRéelle;
+            // $row[] = $t->Statut;
             $row[] = $etat;
-            $row[] = $t->created_at;
+            $row[] = $t->MontantTotal;
             $row[] = $buttons;
 
             $data[] = $row;
@@ -208,7 +219,7 @@ class CommandeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatecommandeRequest $request, commande $commande)
+    public function update(UpdatecommandeRequest $request, Commande $commande)
     {
         //
     }
@@ -216,7 +227,7 @@ class CommandeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(commande $commande)
+    public function destroy(Commande $commande)
     {
         //
     }

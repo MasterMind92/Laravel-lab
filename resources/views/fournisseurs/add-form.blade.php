@@ -106,13 +106,13 @@
                     type="text"
                     name="Telephone"
                     id="Telephone"
-                    class="form-control @error('Téléphone') is-invalid @enderror"
+                    class="form-control @error('Telephone') is-invalid @enderror"
                     value="{{ old('Téléphone') }}"
                     placeholder="+225 XX XX XX XX"
                     required
                 >
 
-                @error('Téléphone')
+                @error('Telephone')
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>

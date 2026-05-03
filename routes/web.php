@@ -10,7 +10,7 @@ use App\Http\Controllers\ReservationsController;
 use App\Http\Controllers\FournisseursController;
 use App\Http\Controllers\DashboardCtrl;
 use App\Http\Controllers\InventairesController;
-// use App\Http\Controllers\ServicesController;
+use App\Http\Controllers\CommandeController;
 // use App\Http\Controllers\FacturesController;
 // use App\Http\Controllers\LigneFactureController;
 // use App\Http\Controllers\OccupantController;
@@ -81,6 +81,16 @@ Route::middleware('auth')->group(function () {
     Route::post('/inventaire/list', [InventairesController::class, 'list'])->name('inventaire.list');
     Route::post('/inventaire/search', [InventairesController::class, 'search'])->name('inventaire.search');
     Route::post('/inventaire/state', [InventairesController::class, 'setState'])->name('inventaire.state');
+
+
+    /**
+     * 
+     */
+    Route::resource('commande', CommandeController::class);
+
+    Route::post('/commande/list', [CommandeController::class, 'list'])->name('commande.list');
+    Route::post('/commande/search', [CommandeController::class, 'search'])->name('commande.search');
+    Route::post('/commande/state', [CommandeController::class, 'setState'])->name('commande.state');
 
 });
 

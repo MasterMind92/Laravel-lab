@@ -1,6 +1,8 @@
 <form method="POST" action="" id="form-modif" enctype="application/x-www-form-urlencoded">
     @csrf
 
+    @method('PUT')
+
     <input type="hidden" name="ClientID" id="ClientID" />
     
     <div class="form-row">
