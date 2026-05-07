@@ -1,79 +1,129 @@
-<form method="POST" id="addForm" action="{{ route('clients.store') }}" enctype="application/x-www-form-urlencoded">
+<form method="POST">
     @csrf
 
-    <div class="form-row">
+    <div class="row">
 
-        <!-- Nom -->
-        <div class="form-group col-md-6">
-            <label>Nom *</label>
-            <input type="text" name="Nom" class="form-control" placeholder="Nom du client" required>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="Reference">Référence</label>
+                <input type="text"
+                       class="form-control"
+                       name="Reference">
+            </div>
         </div>
 
-        <!-- Prénom -->
-        <div class="form-group col-md-6">
-            <label>Prénom *</label>
-            <input type="text" name="Prenom" class="form-control" placeholder="Prénom du client" required>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="Libelle">Libellé</label>
+                <input type="text"
+                       class="form-control"
+                       name="Libelle">
+            </div>
         </div>
 
-        <!-- Email -->
-        <div class="form-group col-md-6">
-            <label>Email</label>
-            <input type="email" name="Email" class="form-control" placeholder="email@example.com" required>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="Categorie">Catégorie</label>
+                <input type="text"
+                       class="form-control"
+                       name="Categorie">
+            </div>
         </div>
 
-        <!-- Téléphone -->
-        <div class="form-group col-md-6">
-            <label>Téléphone</label>
-            <input type="text" name="Telephone" class="form-control" placeholder="Ex: 0700000000" required>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="QuantiteStock">Quantité en stock</label>
+                <input type="number"
+                       class="form-control"
+                       name="QuantiteStock"
+                       value="0">
+            </div>
         </div>
 
-        <!-- Adresse -->
-        <div class="form-group col-md-12">
-            <label>Adresse</label>
-            <input type="text" name="Adresse" class="form-control" placeholder="Adresse complète" required>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="SeuilMin">Seuil minimum</label>
+                <input type="text"
+                       class="form-control"
+                       name="SeuilMin"
+                       value="0">
+            </div>
         </div>
 
-        <!-- Date de naissance -->
-        <div class="form-group col-md-4">
-            <label>Date de naissance</label>
-            <input type="date" name="DateNaissance" class="form-control" required>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="fkAppart">Appartement</label>
+
+                <select class="form-control"
+                        name="fkAppart">
+
+                    <option value="">Sélectionnez</option>
+
+                    {{-- @foreach($appartements as $appartement)
+                        <option value="{{ $appartement->AppartementID }}">
+                            {{ $appartement->Libelle ?? $appartement->Nom ?? $appartement->AppartementID }}
+                        </option>
+                    @endforeach --}}
+
+                </select>
+            </div>
         </div>
 
-        <!-- Type Client -->
-        <div class="form-group col-md-4">
-            <label>Type Client</label>
-            <select name="TypeClient" class="form-control" required>
-                <option value="">-- Choisir --</option>
-                <option value="Standard">Standard</option>
-                <option value="Premium">Premium</option>
-                <option value="VIP">VIP</option>
-            </select>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="fkCommande">Commande</label>
+
+                <select class="form-control"
+                        name="fkCommande">
+
+                    <option value="">Sélectionnez</option>
+
+                    {{-- @foreach($commandes as $commande)
+                        <option value="{{ $commande->CommandeID }}">
+                            {{ $commande->CommandeID }}
+                        </option>
+                    @endforeach --}}
+
+                </select>
+            </div>
         </div>
 
-        <!-- Statut -->
-        <div class="form-group col-md-4">
-            <label>Statut</label>
-            <select name="Statut" class="form-control" required>
-                <option value="A">Actif</option>
-                <option value="I">Inactif</option>
-            </select>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="Localisation">Localisation</label>
+                <input type="text"
+                       class="form-control"
+                       name="Localisation">
+            </div>
         </div>
 
-        <!-- Points fidélité -->
-        <div class="form-group col-md-6">
-            <label>Points Fidélité</label>
-            <input type="number" name="PointsFidelite" class="form-control" value="0" min="0">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="Etat">Etat</label>
+                <select
+                    name="Etat"
+                    id="Etat"
+                    class="form-control @error('Etat') is-invalid @enderror"
+                >
+                    <option value="">-- Sélectionner --</option>
+
+                    <option value="A"
+                    {{ old('Etat')=='A' ? 'selected':'' }}>
+                        Actif
+                    </option>
+
+                    <option value="I"
+                    {{ old('Etat')=='I' ? 'selected':'' }}>
+                        Inactif
+                    </option>
+
+                </select>
+            </div>
         </div>
 
     </div>
 
-    <div class="d-flex justify-content-end">
-        <button type="reset" class="btn btn-secondary mr-2" data-dismiss="modal" >
-            Annuler
-        </button>
-        <button type="submit" id="saveClient" class="btn btn-success">
-            Enregistrer
-        </button>
-    </div>
-    
+    <button type="submit" class="btn btn-primary">
+        Enregistrer
+    </button>
 </form>

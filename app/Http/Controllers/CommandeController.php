@@ -124,9 +124,55 @@ class CommandeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Commande $commande)
+    public function show(Request $request)
     {
         //
+        // permettre de recuperer les infos d'une entite 
+        // et de les renvoyer a la vue
+
+        // dd($request);
+
+        $commande = Commande::where("CommandeID",$request->id)->first();
+
+        $msg = "Echec recuperation de la ligne";
+
+        if ( (boolean) $commande) {
+            $msg = "Ligne retrouvée avec succès" ;
+        }
+
+        return response()->json([
+            "status"=> (boolean) $commande,
+            "msg" => $msg,
+            "data"=> $commande
+            
+        ]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function setState(Request $request)
+    {
+        //
+        $validatedData = $request->validate([
+            'state' => ['required', 'numeric'],
+        ]);
+
+        //
+        $responseState =  Commande::where("CommandeID",$request->id)
+                                ->update(["Statut"=> $request->state]);
+        // msg par defaut
+        $msg = "Mise a jour effectuee avec succes";
+        // msg d'echec
+        if($responseState != true){
+            $msg = "Echec mise a jour";
+        }
+
+        // reponse de fin
+        return response()->json([
+            "status"=>$responseState,
+            "msg" => $msg
+        ]);
     }
 
     /**
@@ -165,19 +211,19 @@ class CommandeController extends Controller
             
             $button_deactivate = "<button class=\"btn btn-success mr-2\"  name=\"desactiver\" title=\"Livré\"  data-id=\"".$t->CommandeID."\" type=\"button\">Livré</button>";
             //
-            $button_annule = "<button class=\"btn btn-danger mr-2\" name=\"activer\"  title=\"Activer\" data-id=\"".$t->CommandeID."\" type=\"button\">Annuler</button>";
+            $button_annule = "<button class=\"btn btn-danger mr-2\" name=\"annuler\"  title=\"Activer\" data-id=\"".$t->CommandeID."\" type=\"button\">Annuler</button>";
             //liste des boutons
             $buttons = $buttons_details;
             
             $etat = "<span class=\"badge badge-pill badge-danger\">Désactivé</span>";
 
             if($t->Statut == "3"){
-                $buttons.= $button_deactivate.$button_deactivate;
+                $buttons.= $button_deactivate;
                 $etat = "<span class=\"badge badge-pill badge-primary\">Annulé</span>";
             }
 
             if($t->Statut == "2"){
-                $buttons.= $button_deactivate;
+                $buttons.= $button_annule;
                 $etat = "<span class=\"badge badge-pill badge-success\">Livré</span>";
             }
 
@@ -219,9 +265,33 @@ class CommandeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatecommandeRequest $request, Commande $commande)
+    public function update(UpdatecommandeRequest $request, String $id)
     {
         //
+
+        // The $request is already validated.
+        $validated = $request->validated();
+
+        // 1. Find the product (using findOrFail to handle not found cases)
+        $commande = Commande::findOrFail($id);
+
+        // 3. Update the product attributes
+        $response = $commande->update($validated);
+
+        // dd($response,$validated,$commande);
+
+        // 4. Return a response using an API Resource
+
+        $msg = 'Echec mise à jour Commande';
+        if((boolean) $response){
+            $msg = 'Commande mis à jour avec succès';
+
+        }
+        
+        return response()->json([
+            'status' => (boolean) $response,
+            'msg' => $msg
+        ]);
     }
 
     /**

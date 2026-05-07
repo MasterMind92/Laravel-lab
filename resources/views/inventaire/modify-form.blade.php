@@ -1,81 +1,144 @@
-<form method="POST" action="" id="form-modif" enctype="application/x-www-form-urlencoded">
+<form method="POST">
     @csrf
+    @method('PUT')
 
-    <input type="hidden" name="ClientID" id="ClientID" />
-    
-    <div class="form-row">
+    <div class="row">
 
-        <!-- Nom -->
-        <div class="form-group col-md-6">
-            <label>Nom *</label>
-            <input type="text" name="Nom" id="Nom" class="form-control" placeholder="Nom du client" required>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="Reference">Référence</label>
+                <input type="text"
+                       id="Reference"
+                       name="Reference"
+                       class="form-control"
+                       value="">
+            </div>
         </div>
 
-        <!-- Prénom -->
-        <div class="form-group col-md-6">
-            <label>Prénom *</label>
-            <input type="text" name="Prenom" id="Prenom" class="form-control" placeholder="Prénom du client" required>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="Libelle">Libellé</label>
+                <input type="text"
+                       id="Libelle"
+                       name="Libelle"
+                       class="form-control"
+                       value="">
+            </div>
         </div>
 
-        <!-- Email -->
-        <div class="form-group col-md-6">
-            <label>Email</label>
-            <input type="email" name="Email" id="Email" class="form-control" placeholder="email@example.com" required>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="Categorie">Catégorie</label>
+                <input type="text"
+                       id="Categorie"
+                       name="Categorie"
+                       class="form-control"
+                       value="">
+            </div>
         </div>
 
-        <!-- Téléphone -->
-        <div class="form-group col-md-6">
-            <label>Téléphone</label>
-            <input type="text" name="Telephone" id="Telephone" class="form-control" placeholder="Ex: 0700000000" required>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="QuantiteStock">Quantité en stock</label>
+                <input type="number"
+                       id="QuantiteStock"
+                       name="QuantiteStock"
+                       class="form-control"
+                       value="">
+            </div>
         </div>
 
-        <!-- Adresse -->
-        <div class="form-group col-md-12">
-            <label>Adresse</label>
-            <input type="text" name="Adresse" id="Adresse" class="form-control" placeholder="Adresse complète" required>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="SeuilMin">Seuil minimum</label>
+                <input type="text"
+                       id="SeuilMin"
+                       name="SeuilMin"
+                       class="form-control"
+                       value="">
+            </div>
         </div>
 
-        <!-- Date de naissance -->
-        <div class="form-group col-md-4">
-            <label>Date de naissance</label>
-            <input type="date" name="DateNaissance" id="DateNaissance" class="form-control" required>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="fkAppart">Appartement</label>
+
+                <select id="fkAppart"
+                        name="fkAppart"
+                        class="form-control">
+
+                    <option value="">Sélectionnez</option>
+
+                    {{-- @foreach($appartements as $appartement)
+                        <option value="{{ $appartement->AppartementID }}"
+                            {{ $article->fkAppart == $appartement->AppartementID ? 'selected' : '' }}>
+                            {{ $appartement->Libelle ?? $appartement->Nom ?? $appartement->AppartementID }}
+                        </option>
+                    @endforeach --}}
+
+                </select>
+            </div>
         </div>
 
-        <!-- Type Client -->
-        <div class="form-group col-md-4">
-            <label>Type Client</label>
-            <select name="TypeClient" id="TypeClient" class="form-control" required>
-                <option value="">-- Choisir --</option>
-                <option value="Standard">Standard</option>
-                <option value="Premium">Premium</option>
-                <option value="VIP">VIP</option>
-            </select>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="fkCommande">Commande</label>
+
+                <select id="fkCommande"
+                        name="fkCommande"
+                        class="form-control">
+
+                    <option value="">Sélectionnez</option>
+
+                    {{-- @foreach($commandes as $commande)
+                        <option value="{{ $commande->CommandeID }}"
+                            {{ $article->fkCommande == $commande->CommandeID ? 'selected' : '' }}>
+                            {{ $commande->CommandeID }}
+                        </option>
+                    @endforeach --}}
+
+                </select>
+            </div>
         </div>
 
-        <!-- Statut -->
-        <div class="form-group col-md-4">
-            <label>Statut</label>
-            <select name="Statut" id="Statut" class="form-control" required>
-                <option value="A">Actif</option>
-                <option value="I">Inactif</option>
-            </select>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="Localisation">Localisation</label>
+                <input type="text"
+                       id="Localisation"
+                       name="Localisation"
+                       class="form-control"
+                       value="">
+            </div>
         </div>
 
-        <!-- Points fidélité -->
-        <div class="form-group col-md-6">
-            <label>Points Fidélité</label>
-            <input type="number" name="PointsFidelite" id="PointsFidelite" class="form-control" value="0" min="0">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="Etat">Etat</label>
+                <select
+                    name="Etat"
+                    id="Etat"
+                    class="form-control @error('Etat') is-invalid @enderror"
+                >
+                    <option value="">-- Sélectionner --</option>
+
+                    <option value="A"
+                    {{ old('Etat')=='A' ? 'selected':'' }}>
+                        Actif
+                    </option>
+
+                    <option value="I"
+                    {{ old('Etat')=='I' ? 'selected':'' }}>
+                        Inactif
+                    </option>
+
+                </select>
+            </div>
         </div>
 
     </div>
 
-    <div class="d-flex justify-content-end">
-        <button type="reset" data-dismiss="modal" aria-label="Close" class="btn btn-secondary mr-2">
-            Annuler
-        </button>
-        <button type="submit" id="modifClient" class="btn btn-success">
-            Modifier
-        </button>
-    </div>
-    
+    <button type="submit" class="btn btn-primary">
+        Mettre à jour
+    </button>
 </form>

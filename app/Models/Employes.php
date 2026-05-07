@@ -6,18 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Employes extends Model
 {
-   use SoftDeletes;
+    //    use SoftDeletes;
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
+        "Matricule",
         "Nom",
-        "Prénom",
+        "Prenom",
         "Poste",
         "Email",
-        "Téléphone",
+        "Telephone",
         "DateEmbauche",
         "Statut",
     ];

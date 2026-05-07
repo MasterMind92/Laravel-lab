@@ -31,7 +31,7 @@
 
     <div class="card mb-4">
         <div class="card-body">
-            <form id="filterForm"  method="POST" class="row align-items-end" action= {{route("clients.search")}}>
+            <form id="filterForm"  method="POST" class="row align-items-end" action= {{route("inventaire.search")}}>
                 @csrf
                 <div class="col-md-3">
                     <label>Date début</label>
@@ -104,7 +104,7 @@
             </div>
 
             <div class="modal-body">
-                @include('clients.add-form')
+                @include('inventaire.add-form')
             </div>
 
         </div>
@@ -125,7 +125,7 @@
             </div>
 
             <div class="modal-body" id="detailContent">
-                 @include('clients.modify-form')
+                 @include('inventaire.modify-form')
             </div>
 
             
@@ -145,7 +145,7 @@ $(function () {
     // 📊 DATATABLE
     let table = $('#clientTable').DataTable({
         "ajax": {
-            "url": "{{route('clients.list')}}",
+            "url": "{{route('inventaire.list')}}",
             "type": "POST",
             headers: {
                 'X-CSRF-TOKEN':  $('meta[name="csrf-token"]').attr('content')
@@ -178,7 +178,7 @@ $(function () {
                     headers: {
                         'X-CSRF-TOKEN':  $('meta[name="csrf-token"]').attr('content')
                     },
-                    url: "{{ route('clients.state', ['state'=>true]) }}",
+                    url: "{{ route('inventaire.state', ['state'=>true]) }}",
                     data: {id:id},
                     dataType: "json",
                     success: function (response) {
@@ -223,7 +223,7 @@ $(function () {
                     headers: {
                         'X-CSRF-TOKEN':  $('meta[name="csrf-token"]').attr('content')
                     },
-                    url: "{{ route('clients.state', ['state' => 0]) }}",
+                    url: "{{ route('inventaire.state', ['state' => 0]) }}",
                     data: {id:id},
                     dataType: "json",
                     success: function (response) {
@@ -332,7 +332,7 @@ $(function () {
                     headers: {
                         'X-CSRF-TOKEN':  $('meta[name="csrf-token"]').attr('content')
                     },
-                    url: "{{ route('clients.store') }}",
+                    url: "{{ route('inventaire.store') }}",
                     data: $('#addForm').serialize(),
                     dataType: "json",
                     success: function (response) {

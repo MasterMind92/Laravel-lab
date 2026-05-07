@@ -31,7 +31,7 @@
 
     <div class="card mb-4">
         <div class="card-body">
-            <form id="filterForm"  method="POST" class="row align-items-end" action= {{route("commande.search")}}>
+            <form id="filterForm"  method="POST" class="row align-items-end" action= {{route("employes.search")}}>
                 @csrf
                 <div class="col-md-3">
                     <label>Date début</label>
@@ -106,7 +106,7 @@
             </div>
 
             <div class="modal-body">
-                @include('commande.add-form')
+                @include('employes.add-form')
             </div>
 
         </div>
@@ -127,7 +127,7 @@
             </div>
 
             <div class="modal-body" id="detailContent">
-                 @include('commande.modify-form')
+                 @include('employes.modify-form')
             </div>
 
             
@@ -147,7 +147,7 @@ $(function () {
     // 📊 DATATABLE
     let table = $('#clientTable').DataTable({
         "ajax": {
-            "url": "{{route('commande.list')}}",
+            "url": "{{route('employes.list')}}",
             "type": "POST",
             headers: {
                 'X-CSRF-TOKEN':  $('meta[name="csrf-token"]').attr('content')
@@ -167,7 +167,7 @@ $(function () {
 
         swal({
             title: "Confirmer ?",
-            text: "Activer cette commande ?",
+            text: "Activer cet employe ?",
             icon: "warning",
             showCancelButton: true
 
@@ -180,7 +180,7 @@ $(function () {
                     headers: {
                         'X-CSRF-TOKEN':  $('meta[name="csrf-token"]').attr('content')
                     },
-                    url: "{{ route('commande.state', ['state'=>1]) }}",
+                    url: "{{ route('employes.state', ['state'=>1]) }}",
                     data: {id:id},
                     dataType: "json",
                     success: function (response) {
@@ -212,7 +212,7 @@ $(function () {
 
         swal({
             title: "Confirmer ?",
-            text: "Annuler cette commande",
+            text: "Annuler cet employé",
             icon: "warning",
             showCancelButton: true
 
@@ -225,7 +225,7 @@ $(function () {
                     headers: {
                         'X-CSRF-TOKEN':  $('meta[name="csrf-token"]').attr('content')
                     },
-                    url: "{{ route('commande.state', ['state'=>3]) }}",
+                    url: "{{ route('employes.state', ['state'=>3]) }}",
                     data: {id:id},
                     dataType: "json",
                     success: function (response) {
@@ -259,7 +259,7 @@ $(function () {
         
         swal({
             title: "Confirmer ?",
-            text: "Confirmer la livraison de cette commande ?",
+            text: "Confirmer la livraison de cet employe ?",
             icon: "warning",
             showCancelButton: true
         }).then(result => {
@@ -271,7 +271,7 @@ $(function () {
                     headers: {
                         'X-CSRF-TOKEN':  $('meta[name="csrf-token"]').attr('content')
                     },
-                    url: "{{ route('commande.state', ['state' => 2]) }}",
+                    url: "{{ route('employes.state', ['state' => 0]) }}",
                     data: {id:id},
                     dataType: "json",
                     success: function (response) {
@@ -312,12 +312,12 @@ $(function () {
     $('#btnAdd').click(() => $('#addModal').modal('show'));
 
     // 💾 MODIFIER CLIENT
-    $('#modifReserv').click(function (e) {
+    $('#modifEmploye').click(function (e) {
         e.preventDefault();
 
         swal({
             title: "Confirmer ?",
-            text: "Modifier cette commande",
+            text: "Modifier cet employé",
             icon: "warning",
             showCancelButton: true
 
@@ -327,10 +327,10 @@ $(function () {
             
             if (result) {
 
-                let id = $('#form-modif').find('input[name="CommandeID"]').val();
+                let id = $('#form-modif').find('input[name="EmployeID"]').val();
 
                 var options = {
-                    url: `/commande/${id}`,
+                    url: `/employes/${id}`,
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -359,12 +359,12 @@ $(function () {
     });
 
     // 💾 ENREGISTRER CLIENT
-    $('#saveCmd').click(function (e) {
+    $('#saveEmploye').click(function (e) {
         e.preventDefault();
 
         swal({
             title: "Confirmer ?",
-            text: "Ajouter cette reservation",
+            text: "Ajouter cet employé",
             icon: "warning",
             showCancelButton: true
 
@@ -379,7 +379,7 @@ $(function () {
                     headers: {
                         'X-CSRF-TOKEN':  $('meta[name="csrf-token"]').attr('content')
                     },
-                    url: "{{ route('commande.store') }}",
+                    url: "{{ route('employes.store') }}",
                     data: $('#addForm').serialize(),
                     dataType: "json",
                     success: function (response) {
@@ -409,7 +409,7 @@ $(function () {
 
         let id = $(this).data('id');
 
-        $.get(`/commande/${id}`, function (data) {
+        $.get(`/employes/${id}`, function (data) {
 
             $('#detailContent').html(`
                 <p><strong>Nom:</strong> ${data.nom}</p>
@@ -458,7 +458,7 @@ $(function () {
             headers: {
                 'X-CSRF-TOKEN':  $('meta[name="csrf-token"]').attr('content')
             },
-            url: `/commande/${id}`,
+            url: `/employes/${id}`,
             data: {'id':id},
             dataType: "json",
             success: function (data) {

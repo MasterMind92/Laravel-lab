@@ -46,7 +46,7 @@ class InventairesController extends Controller
         session($sessions);
 
 
-        return view("clients/index",["columns"=>$columns,"title"=>$page_data]);
+        return view("inventaire/index",["columns"=>$columns,"title"=>$page_data]);
     }
 
     /**
@@ -87,7 +87,7 @@ class InventairesController extends Controller
         session($sessions);
 
         
-        return view("clients/index",["columns"=>$columns,"title"=>$page_data]);
+        return view("inventaire/index",["columns"=>$columns,"title"=>$page_data]);
         
     }
 

@@ -75,10 +75,17 @@
 
                                 <input type="checkbox" id="drop-2">
                                 <ul>
+                                    <li class="nav-item">
+                                        <a class="{{ Route::currentRouteName()=='commande.index' ? 'open' : '' }}"
+                                            href="{{route('commande.index')}}">
+                                            <i class="nav-icon mr-2 fa fa-list"></i>
+                                            <span class="item-name">Commande</span>
+                                        </a>
+                                    </li>
 
-                                    <li class="nav-item ">
-                                        <a class="{{ Route::currentRouteName()=='dashboard' ? 'open' : '' }}"
-                                            href="{{route('dashboard')}}">
+                                    <li class="nav-item">
+                                        <a class="{{ Route::currentRouteName()=='inventaire.index' ? 'open' : '' }}"
+                                            href="{{route('inventaire.index')}}">
                                             <i class="nav-icon mr-2 fa fa-list"></i>
                                             <span class="item-name">Inventaire</span>
                                         </a>

@@ -11,12 +11,12 @@ use App\Http\Controllers\FournisseursController;
 use App\Http\Controllers\DashboardCtrl;
 use App\Http\Controllers\InventairesController;
 use App\Http\Controllers\CommandeController;
+use App\Http\Controllers\EmployesController;
 // use App\Http\Controllers\FacturesController;
 // use App\Http\Controllers\LigneFactureController;
 // use App\Http\Controllers\OccupantController;
 // use App\Http\Controllers\PrestationController;
 // use App\Http\Controllers\PromotionController;
-// use App\Http\Controllers\ApartementsController;
 // use App\Http\Controllers\ApartementsController;
 
 // Route::get('/', function () {
@@ -91,6 +91,16 @@ Route::middleware('auth')->group(function () {
     Route::post('/commande/list', [CommandeController::class, 'list'])->name('commande.list');
     Route::post('/commande/search', [CommandeController::class, 'search'])->name('commande.search');
     Route::post('/commande/state', [CommandeController::class, 'setState'])->name('commande.state');
+
+
+    /**
+     * 
+     */
+    Route::resource('employes', EmployesController::class);
+
+    Route::post('/employes/list', [EmployesController::class, 'list'])->name('employes.list');
+    Route::post('/employes/search', [EmployesController::class, 'search'])->name('employes.search');
+    Route::post('/employes/state', [EmployesController::class, 'setState'])->name('employes.state');
 
 });
 
