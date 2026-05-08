@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Inventaires;
+use App\Models\Appartements;
+use App\Models\Commande;
 use App\Http\Requests\StoreInventairesRequest;
 use App\Http\Requests\UpdateInventairesRequest;
 use Illuminate\Http\Request;
@@ -44,9 +46,12 @@ class InventairesController extends Controller
 
         // initialisation des valeurs par defauts
         session($sessions);
+       
+
+        // dd($appartements,$commandes);
 
 
-        return view("inventaire/index",["columns"=>$columns,"title"=>$page_data]);
+        return view("inventaire/index",["columns"=>$columns,"title"=>$page_data,"commandes" =>Commande::all(), "appartements"=> Appartements::all()]);
     }
 
     /**
@@ -85,7 +90,7 @@ class InventairesController extends Controller
 
         // initialisation des valeurs par defauts
         session($sessions);
-
+        
         
         return view("inventaire/index",["columns"=>$columns,"title"=>$page_data]);
         

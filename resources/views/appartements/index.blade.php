@@ -222,7 +222,11 @@ $(function () {
     $('#btnFilter').click(() => table.ajax.reload());
 
     // ➕ OUVRIR MODAL AJOUT
-    $('#btnAdd').click(() => $('#addModal').modal('show'));
+    $('#btnAdd').click(() => 
+        // generation et insertion de l'id
+        let options = {};
+        $('#addModal').modal('show')
+    );
 
     // 💾 MODIFIER CLIENT
     $('#saveAppart').click(function (e) {

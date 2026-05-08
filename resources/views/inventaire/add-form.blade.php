@@ -59,11 +59,11 @@
 
                     <option value="">Sélectionnez</option>
 
-                    {{-- @foreach($appartements as $appartement)
+                    @foreach($appartements as $appartement)
                         <option value="{{ $appartement->AppartementID }}">
-                            {{ $appartement->Libelle ?? $appartement->Nom ?? $appartement->AppartementID }}
+                            {{ $appartement->Code }}
                         </option>
-                    @endforeach --}}
+                    @endforeach
 
                 </select>
             </div>
@@ -78,11 +78,11 @@
 
                     <option value="">Sélectionnez</option>
 
-                    {{-- @foreach($commandes as $commande)
+                    @foreach($commandes as $commande)
                         <option value="{{ $commande->CommandeID }}">
                             {{ $commande->CommandeID }}
                         </option>
-                    @endforeach --}}
+                    @endforeach
 
                 </select>
             </div>

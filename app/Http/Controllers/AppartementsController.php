@@ -9,7 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class AppartementsController extends Controller
-{
+{   
     /**
      * Display a listing of the resource.
      */
@@ -47,6 +47,24 @@ class AppartementsController extends Controller
 
 
         return view("appartements/index",["columns"=>$columns,"title"=>$page_data]);
+
+    }
+
+    /**
+     * Generer a listing of the resource.
+     */
+
+    public function generate_id(){
+        // recuperer l'identifiant du dernier appartement existant
+        $appartement = Appartement::latest()->first();
+        // Incrementer puis retourner la chaine de caractere
+        $paddedNumber = sprintf('%04d', $appartement->appartementID);
+
+        return response()->json([
+            "status"=> (boolean) $appartement,
+            "msg" => "Appartement recuperé avec succès",
+            "data"=> ['ID'=>"Appart-".$paddedNumber]
+        ]);
 
     }
 
@@ -213,6 +231,8 @@ class AppartementsController extends Controller
                         : 'Appartement créé avec succes',
         ], 201); // 201 status code for Created
     }
+
+
 
     /**
      * Display the specified resource.
