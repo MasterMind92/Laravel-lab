@@ -27,8 +27,8 @@
 
             <div class="form-group">
                 <label for="Statut">Statut</label>
-                <select name="Statut" id="Statut" class="form-control">
-                    <option value="3" selected>Non-livré</option>
+                <select name="Statut" id="Statut" inert class="form-control">
+                    <option value="3">Non-livré</option>
                     <option value="2">Livré</option>
                     <option value="1">En cours</option>
                     <option value="0">Initié</option>

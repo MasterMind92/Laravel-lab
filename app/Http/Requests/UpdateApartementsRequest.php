@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateApartementsRequest extends FormRequest
 {
@@ -24,11 +25,22 @@ class UpdateApartementsRequest extends FormRequest
         return [
             'AppartementID' => 'required|numeric',
             'Code' => 'required|alpha_dash:ascii|',
-            'Type' => 'required|alpha_dash:ascii|',
+            'Type' => [
+                'required',
+                Rule::string()
+                    ->min(3)
+                    ->max(255)
+            ],
             'Surface' => 'required|alpha_dash:ascii|',
             'Etage' => 'required|numeric',
             'CapaciteMax' => 'required|numeric',
-            'Etat' => 'required|alpha_dash:ascii|in:Disponible,Occupé,Maintenance',
+            'Etat' => [
+                'required',
+                'in:Disponible,Occupe,Maintenance',
+                Rule::string()
+                    ->min(3)
+                    ->max(12)
+                ],
             'DernierNettoyage' => 'required|date',
             'DateDerniereRenovation' => 'required|date',
             'Observations' => 'required|max:255|string',

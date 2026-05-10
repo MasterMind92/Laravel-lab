@@ -193,7 +193,8 @@ class CommandeController extends Controller
                          ->where("created_at","<=", date("Y-m-d 23:59:59",strtotime($dateEnd)))
                          ->when($status, function($query, $status){
                                 return $query->where("Statut",$status);
-                         })->get();
+                         })->orderBy('created_at','DESC')
+                         ->get();
 
         // dd($commande);
         
@@ -204,34 +205,40 @@ class CommandeController extends Controller
         foreach ($commande as $t) {
             
             $row = [];
-            //
+            // bouton details commande
             $buttons_details = "<button class=\"btn btn-warning mr-2\" title=\"Details\" data-toggle=\"modal\" data-target=\"#modal-details\" data-id=\"".$t->CommandeID."\" name=\"details\"  type=\"button\"> <i class=\"i-Pen\"></i> Details</button>";
-            //
+            // bouton commande en cours
             $button_activate = "<button class=\"btn btn-primary mr-2\" name=\"activer\"  title=\"En cours de livraison\" data-id=\"".$t->CommandeID."\" type=\"button\">En cours</button>";
-            
+            // bouton commande livree
             $button_deactivate = "<button class=\"btn btn-success mr-2\"  name=\"desactiver\" title=\"Livré\"  data-id=\"".$t->CommandeID."\" type=\"button\">Livré</button>";
-            //
+            // bouton commande annuler
             $button_annule = "<button class=\"btn btn-danger mr-2\" name=\"annuler\"  title=\"Activer\" data-id=\"".$t->CommandeID."\" type=\"button\">Annuler</button>";
             //liste des boutons
             $buttons = $buttons_details;
             
+            // etat par defaut 
             $etat = "<span class=\"badge badge-pill badge-danger\">Désactivé</span>";
-
+            // commande annulee
             if($t->Statut == "3"){
-                $buttons.= $button_deactivate;
-                $etat = "<span class=\"badge badge-pill badge-primary\">Annulé</span>";
+                // Affichage etat annulép
+                $etat = "<span class=\"badge badge-pill badge-danger\">Annulé</span>";
             }
 
+            // commande livree
             if($t->Statut == "2"){
-                $buttons.= $button_annule;
+                // affichage etat livree
                 $etat = "<span class=\"badge badge-pill badge-success\">Livré</span>";
             }
 
+            // commande en cours
             if($t->Statut == "1"){
+                // ajout bouton cmd livree + ajout bouton cmd annulee
                 $buttons.= $button_deactivate.$button_annule;
+                // affichhage etat en cours
                 $etat = "<span class=\"badge badge-pill badge-primary\">En cours</span>";
             }
 
+            // commande initiee
             if($t->Statut == "0"){
                 $buttons.= $button_activate.$button_deactivate.$button_annule;
                 $etat = "<span class=\"badge badge-pill badge-warning\">Initié</span>";

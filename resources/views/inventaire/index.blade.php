@@ -260,8 +260,32 @@ $(function () {
     // 🔍 FILTRE
     $('#btnFilter').click(() => table.ajax.reload());
 
-    // ➕ OUVRIR MODAL AJOUT
-    $('#btnAdd').click(() => $('#addModal').modal('show'));
+// ➕ OUVRIR MODAL AJOUT
+    $('#btnAdd').click(function(){
+        // generation et insertion de l'id
+        let options = {
+            url: "{{ route('inventaire.generate.id') }} ",
+            method: 'GET',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {},
+            success: function (response) {
+                //apres avoir recuperer la reponse
+                console.log(response);
+                
+                // injecter celle-ci dans le champ code
+                $("#ArticleID").val(response.data.ID);
+
+            },
+        };
+        // execution requete ajax
+        $.ajax(options);
+
+
+        $('#addModal').modal('show')
+
+    });
 
     // 💾 MODIFIER CLIENT
     $('#modifClient').click(function (e) {

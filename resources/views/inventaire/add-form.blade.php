@@ -8,6 +8,7 @@
                 <label for="Reference">Référence</label>
                 <input type="text"
                        class="form-control"
+                       id="ArticleID"
                        name="Reference">
             </div>
         </div>

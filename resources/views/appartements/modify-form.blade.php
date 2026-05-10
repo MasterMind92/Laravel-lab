@@ -45,7 +45,7 @@
             <select class="form-control" name="Etat" id="Etat">
                 <option value="">-- Choisir --</option>
                 <option value="Disponible" {{ ($appartement->Etat ?? '') == 'Disponible' ? 'selected' : '' }}>Disponible</option>
-                <option value="Occupé" {{ ($appartement->Etat ?? '') == 'Occupé' ? 'selected' : '' }}>Occupé</option>
+                <option value="Occupe" {{ ($appartement->Etat ?? '') == 'Occupe' ? 'selected' : '' }}>Occupé</option>
                 <option value="Maintenance" {{ ($appartement->Etat ?? '') == 'Maintenance' ? 'selected' : '' }}>Maintenance</option>
             </select>
         </div>

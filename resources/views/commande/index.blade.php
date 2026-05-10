@@ -439,6 +439,7 @@ $(function () {
                 }
             } 
             else {
+                // pour un input et un select 
                 $(this).val(data[id]);
             }
         });

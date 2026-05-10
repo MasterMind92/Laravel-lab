@@ -68,7 +68,7 @@
                                 <label class="toggle" for="drop-2">
                                     Appartements
                                 </label>
-                                <a href="{{route('appartements.index')}}" class="nav-item">
+                                <a href="{{route('appartements.index')}}" class="nav-item hvr-underline-from-left">
                                     <i class="nav-icon mr-2 fa fa-home"></i>
                                     Appartements
                                 </a>
@@ -76,7 +76,7 @@
                                 <input type="checkbox" id="drop-2">
                                 <ul>
                                     <li class="nav-item">
-                                        <a class="{{ Route::currentRouteName()=='commande.index' ? 'open' : '' }}"
+                                        <a class="hvr-underline-from-left  {{ Route::currentRouteName()=='commande.index' ? 'open' : '' }}"
                                             href="{{route('commande.index')}}">
                                             <i class="nav-icon mr-2 fa fa-list"></i>
                                             <span class="item-name">Commande</span>
@@ -84,7 +84,7 @@
                                     </li>
 
                                     <li class="nav-item">
-                                        <a class="{{ Route::currentRouteName()=='inventaire.index' ? 'open' : '' }}"
+                                        <a class=" hvr-underline-from-left {{ Route::currentRouteName()=='inventaire.index' ? 'open' : '' }}"
                                             href="{{route('inventaire.index')}}">
                                             <i class="nav-icon mr-2 fa fa-list"></i>
                                             <span class="item-name">Inventaire</span>

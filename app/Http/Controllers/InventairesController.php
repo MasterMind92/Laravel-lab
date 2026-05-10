@@ -171,6 +171,24 @@ class InventairesController extends Controller
         
     }
 
+    public function generate_id(){
+        // recuperer l'identifiant du dernier appartement existant
+        $inventaire = Inventaires::latest()->first();
+
+        // dd($inventaire);
+
+        $paddedNumber = ((boolean) $inventaire) ? sprintf('%05d', $inventaire->ArticleID) : sprintf('%05d', 1);
+        // Incrementer puis retourner la chaine de caractere
+        // $paddedNumber = sprintf('%05d', $inventaire->ArticleID);
+
+        return response()->json([
+            "status"=> (boolean) $inventaire,
+            "msg" => "Inventaire recuperé avec succès",
+            "data"=> ['ID'=>"INV-".$paddedNumber]
+        ]);
+
+    }
+
     /**
      * Store a newly created resource in storage.
      */

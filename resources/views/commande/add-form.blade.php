@@ -22,7 +22,7 @@
                 <label for="DateLivraisonRéelle">Date de livraison réelle</label>
                 <input type="datetime-local" name="DateLivraisonRéelle" class="form-control">
             </div>
-
+            
             <div class="form-group">
                 <label for="Statut">Statut</label>
                 <select name="Statut" class="form-control">

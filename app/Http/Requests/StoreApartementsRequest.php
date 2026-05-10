@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreApartementsRequest extends FormRequest
 {
@@ -23,7 +24,12 @@ class StoreApartementsRequest extends FormRequest
     {
         return [
             'Code' => 'required|alpha_dash:ascii|',
-            'Type' => 'required|alpha_dash:ascii|',
+            'Type' => [
+                'required',
+                Rule::string()
+                    ->min(3)
+                    ->max(255)
+            ],
             'Surface' => 'required|alpha_dash:ascii|',
             'Etage' => 'required|numeric',
             'CapaciteMax' => 'required|numeric',

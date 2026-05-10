@@ -56,9 +56,11 @@ class AppartementsController extends Controller
 
     public function generate_id(){
         // recuperer l'identifiant du dernier appartement existant
-        $appartement = Appartement::latest()->first();
+        $appartement = Appartements::latest()->first();
         // Incrementer puis retourner la chaine de caractere
-        $paddedNumber = sprintf('%04d', $appartement->appartementID);
+        // $paddedNumber = sprintf('%04d', $appartement->appartementID+1);
+        $paddedNumber = ((boolean) $appartement) ? sprintf('%05d', $appartement->appartementID+1) : sprintf('%05d', 1);
+
 
         return response()->json([
             "status"=> (boolean) $appartement,
@@ -161,7 +163,7 @@ class AppartementsController extends Controller
                 $etat = "<span class=\"badge badge-pill badge-success\">Maintenance</span>";
             }
 
-            if($t->Etat == "Occupé"){
+            if($t->Etat == "Occupe"){
                 $buttons.= $button_maintenance;
                 $etat = "<span class=\"badge badge-pill badge-danger\">Occupé</span>";
             }

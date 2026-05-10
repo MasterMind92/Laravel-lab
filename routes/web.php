@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function () {
     /*****************************************************************************/ 
 
     /*****************************************************************************/ 
+    Route::get('/appartements/generate-id', [AppartementsController::class, 'generate_id'])->name('appartements.generate.id');
     Route::resource('appartements', AppartementsController::class);
 
     Route::post('/appartements/list', [AppartementsController::class, 'list'])->name('appartements.list');
@@ -76,6 +77,7 @@ Route::middleware('auth')->group(function () {
     /**
      * 
      */
+    Route::get('/inventaire/generate-id', [InventairesController::class, 'generate_id'])->name('inventaire.generate.id');
     Route::resource('inventaire', InventairesController::class);
 
     Route::post('/inventaire/list', [InventairesController::class, 'list'])->name('inventaire.list');

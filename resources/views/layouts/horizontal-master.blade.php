@@ -15,6 +15,7 @@
         <link id="gull-theme" rel="stylesheet" href="{{  asset('assets/styles/css/themes/lite-blue.min.css')}}">
         <link rel="stylesheet" href="{{asset('assets/styles/vendor/perfect-scrollbar.css')}}">
         <link rel="stylesheet" href="{{asset('assets/styles/vendor/sweetalert2.min.css')}}">
+        <link rel="stylesheet" href="{{asset('assets/styles/vendor/hover.min.css')}}">
         <link rel="stylesheet" href="{{asset('assets/fonts/fontawesome-free-5.10.1-web/css/all.min.css')}}">
         {{-- page specific css --}}
         @yield('page-css')

@@ -222,11 +222,31 @@ $(function () {
     $('#btnFilter').click(() => table.ajax.reload());
 
     // ➕ OUVRIR MODAL AJOUT
-    $('#btnAdd').click(() => 
+    $('#btnAdd').click(function(){
         // generation et insertion de l'id
-        let options = {};
+        let options = {
+            url: "{{ route('appartements.generate.id') }} ",
+            method: 'GET',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {},
+            success: function (response) {
+                //apres avoir recuperer la reponse
+                console.log(response);
+                
+                // injecter celle-ci dans le champ code
+                $("#Code").val(response.data.ID);
+
+            },
+        };
+        // execution requete ajax
+        $.ajax(options);
+
+
         $('#addModal').modal('show')
-    );
+
+    });
 
     // 💾 MODIFIER CLIENT
     $('#saveAppart').click(function (e) {
@@ -345,18 +365,25 @@ $(function () {
 
             let id = $(this).attr('id');
             let type = $(this).attr('type');
-
+            // si l'attribut id n'est pas defini sortir de la fonction
             if (!id || data[id] === undefined) return;
-
+            // si le type est une checkbox
             if (type === 'checkbox') {
+                // si la checkbox est cochee
+                // affecter la donnee avec l'id correspondant
                 $(this).prop('checked', data[id]);
             } 
+            // si le type est un radio
             else if (type === 'radio') {
+                // si la valeur actuelle correspond a la donnee
                 if ($(this).val() == data[id]) {
+                    // cocher le bouton radio
                     $(this).prop('checked', true);
                 }
             } 
             else {
+                // pour un input et un select 
+                // affecter la valeur correspondan
                 $(this).val(data[id]);
             }
         });
