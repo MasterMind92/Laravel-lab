@@ -24,12 +24,7 @@ class StoreApartementsRequest extends FormRequest
     {
         return [
             'Code' => 'required|alpha_dash:ascii|',
-            'Type' => [
-                'required',
-                Rule::string()
-                    ->min(3)
-                    ->max(255)
-            ],
+            'Type' =>'required|string',
             'Surface' => 'required|alpha_dash:ascii|',
             'Etage' => 'required|numeric',
             'CapaciteMax' => 'required|numeric',

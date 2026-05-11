@@ -18,35 +18,7 @@
 
     <div class="card mb-4">
         <div class="card-body">
-            <form id="filterForm" class="row align-items-end">
-
-                <div class="col-md-3">
-                    <label>Date début</label>
-                    <input type="date" id="date_debut" class="form-control">
-                </div>
-
-                <div class="col-md-3">
-                    <label>Date fin</label>
-                    <input type="date" id="date_fin" class="form-control">
-                </div>
-
-                <div class="col-md-3">
-                    <label>Etat</label>
-                    <select id="etat" class="form-control">
-                        <option value="">Tous</option>
-                        <option value="Actif">Actif</option>
-                        <option value="Inactif">Inactif</option>
-                        <option value="Supprime">Supprimé</option>
-                    </select>
-                </div>
-
-                <div class="col-md-3">
-                    <button type="button" id="btnFilter" class="btn btn-primary">
-                        Rechercher
-                    </button>
-                </div>
-
-            </form>
+            @include('search-form')
         </div>
     </div>
 

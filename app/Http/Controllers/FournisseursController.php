@@ -35,6 +35,22 @@ class FournisseursController extends Controller
             "Date",
         ];
 
+        // Valeurs pour la recherche
+        $search_column = [
+            'route'=>route('fournisseurs.search'),
+            'name'=>'Etat',
+            'values'=>[
+                [
+                    'lib'=>'Actif',
+                    'value'=>'A',
+                ],
+                [
+                    'lib'=>'Inactif',
+                    'value'=>'I',
+                ],
+            ]
+        ];
+
         // initialiser les donnees de session par defaut
         $sessions = [
             "dateDeb"=>date("Y-m-01"),
@@ -46,7 +62,7 @@ class FournisseursController extends Controller
         session($sessions);
 
 
-        return view("fournisseurs/index",["columns"=>$columns,"title"=>$page_data]);
+        return view("fournisseurs/index",["columns"=>$columns,"title"=>$page_data,'search'=>$search_column]);
     }
 
     /**
@@ -74,6 +90,22 @@ class FournisseursController extends Controller
             "Date",
         ];
 
+        // Valeurs pour la recherche
+        $search_column = [
+            'route'=>route('fournisseurs.search'),
+            'name'=>'Etat',
+            'values'=>[
+                [
+                    'lib'=>'Actif',
+                    'value'=>'A',
+                ],
+                [
+                    'lib'=>'Inactif',
+                    'value'=>'I',
+                ],
+            ]
+        ];
+
         // initialiser les donnees de session par defaut
         $sessions = [
             "dateDeb"=>date("Y-m-01",strtotime($request->dateDeb)),
@@ -85,7 +117,7 @@ class FournisseursController extends Controller
         session($sessions);
 
         
-        return view("fournisseurs/index",["columns"=>$columns,"title"=>$page_data]);
+        return view("fournisseurs/index",["columns"=>$columns,"title"=>$page_data,'search'=>$search_column]);
     }
 
     /**

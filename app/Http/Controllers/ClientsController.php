@@ -35,6 +35,23 @@ class ClientsController extends Controller
             "Date",
         ];
 
+        // Valeurs pour la recherche
+        $search_column = [
+            'route'=>route('clients.search'),
+            'name'=>'Etat',
+            'values'=>[
+                [
+                    'lib'=>'Actif',
+                    'value'=>'A',
+                ],
+                [
+                    'lib'=>'Inactif',
+                    'value'=>'I',
+                ],
+                
+            ]
+        ];
+
         // initialiser les donnees de session par defaut
         $sessions = [
             "dateDeb"=>date("Y-m-01"),
@@ -56,7 +73,7 @@ class ClientsController extends Controller
 
         // dd($clients);
 
-        return view("clients/index",["columns"=>$columns,"title"=>$page_data]);
+        return view("clients/index",["columns"=>$columns,"title"=>$page_data,'search'=>  $search_column]);
     }
 
     
@@ -85,6 +102,22 @@ class ClientsController extends Controller
             "Etat",
             "Date",
         ];
+        // Valeurs pour la recherche
+        $search_column = [
+            'route'=>route('clients.search'),
+            'name'=>'Etat',
+            'values'=>[
+                [
+                    'lib'=>'Actif',
+                    'value'=>'A',
+                ],
+                [
+                    'lib'=>'Inactif',
+                    'value'=>'I',
+                ],
+                
+            ]
+        ];
 
         // initialiser les donnees de session par defaut
         $sessions = [
@@ -97,7 +130,8 @@ class ClientsController extends Controller
         session($sessions);
 
         
-        return view("clients/index",["columns"=>$columns,"title"=>$page_data]);
+        return view("clients/index",["columns"=>$columns,"title"=>$page_data,'search'=>  $search_column]);
+
         
     }
 

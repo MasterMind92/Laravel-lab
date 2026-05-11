@@ -168,7 +168,7 @@
                                 <label class="toggle" for="drop-2">
                                     Employés
                                 </label>
-                                <a href="{{route('reservations.index')}}" class="nav-item">
+                                <a href="{{route('employes.index')}}" class="nav-item">
                                     <i class="nav-icon mr-2 fa fa-users"></i>
                                     Employés
                                 </a>

@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateApartementsRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+
 class AppartementsController extends Controller
 {   
     /**
@@ -35,6 +36,26 @@ class AppartementsController extends Controller
             "Etat",
         ];
 
+        // Valeurs pour la recherche
+        $search_column = [
+            'route'=>route('appartements.search'),
+            'name'=>'Etat',
+            'values'=>[
+                [
+                    'lib'=>'Disponible',
+                    'value'=>'Disponible',
+                ],
+                [
+                    'lib'=>'Occupe',
+                    'value'=>'Occupe',
+                ],
+                [
+                    'lib'=>'Maintenance',
+                    'value'=>'Maintenance',
+                ],
+            ]
+        ];
+
         // initialiser les donnees de session par defaut
         $sessions = [
             "dateDeb"=>date("Y-m-01"),
@@ -46,7 +67,7 @@ class AppartementsController extends Controller
         session($sessions);
 
 
-        return view("appartements/index",["columns"=>$columns,"title"=>$page_data]);
+        return view("appartements/index",["columns"=>$columns,"title"=>$page_data,'search'=>$search_column]);
 
     }
 
@@ -59,7 +80,8 @@ class AppartementsController extends Controller
         $appartement = Appartements::latest()->first();
         // Incrementer puis retourner la chaine de caractere
         // $paddedNumber = sprintf('%04d', $appartement->appartementID+1);
-        $paddedNumber = ((boolean) $appartement) ? sprintf('%05d', $appartement->appartementID+1) : sprintf('%05d', 1);
+        // dd($appartement,$appartement->AppartementID+1);
+        $paddedNumber = ((boolean) $appartement) ? sprintf('%05d', (int) $appartement->AppartementID+1) : sprintf('%05d', 1);
 
 
         return response()->json([
@@ -97,6 +119,26 @@ class AppartementsController extends Controller
             "Observations",
         ];
 
+        // Valeurs pour la recherche
+        $search_column = [
+            'route'=>route('appartements.search'),
+            'name'=>'Etat',
+            'values'=>[
+                [
+                    'lib'=>'Disponible',
+                    'value'=>'Disponible',
+                ],
+                [
+                    'lib'=>'Occupe',
+                    'value'=>'Occupe',
+                ],
+                [
+                    'lib'=>'Maintenance',
+                    'value'=>'Maintenance',
+                ],
+            ]
+        ];
+
         // initialiser les donnees de session par defaut
         $sessions = [
             "dateDeb"=>date("Y-m-01",strtotime($request->dateDeb)),
@@ -107,7 +149,7 @@ class AppartementsController extends Controller
         // initialisation des valeurs par defauts
         session($sessions);
         
-        return view("appartements/index",["columns"=>$columns,"title"=>$page_data]);
+        return view("appartements/index",["columns"=>$columns,"title"=>$page_data,'search'=>$search_column]);
         
     }
 

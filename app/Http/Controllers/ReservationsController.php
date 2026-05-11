@@ -36,6 +36,27 @@ class ReservationsController extends Controller
             "Statut",
         ];
 
+        // Valeurs pour la recherche
+        $search_column = [
+            'route'=>route('reservations.search'),
+            'name'=>'Etat',
+            'values'=>[
+                [
+                    'lib'=>'En attente',
+                    'value'=>'1',
+                ],
+                [
+                    'lib'=>'Livré',
+                    'value'=>'2',
+                ],
+                [
+                    'lib'=>'Annulé',
+                    'value'=>'3',
+                ],
+                
+            ]
+        ];
+
         // initialiser les donnees de session par defaut
         $sessions = [
             "dateDeb"=>date("Y-m-01"),
@@ -47,7 +68,7 @@ class ReservationsController extends Controller
         session($sessions);
 
         
-        return view("reservations/index",["columns"=>$columns,"title"=>$page_data,"clients"=>Clients::all(),"appartements"=>Appartements::all()]);
+        return view("reservations/index",["columns"=>$columns,"title"=>$page_data,"clients"=>Clients::all(),"appartements"=>Appartements::all(),'search'=> $search_column]);
 
     }
 
@@ -76,6 +97,27 @@ class ReservationsController extends Controller
             "Statut",
         ];
 
+        // Valeurs pour la recherche
+        $search_column = [
+            'route'=>route('reservations.search'),
+            'name'=>'Etat',
+            'values'=>[
+                [
+                    'lib'=>'En attente',
+                    'value'=>'1',
+                ],
+                [
+                    'lib'=>'Livré',
+                    'value'=>'2',
+                ],
+                [
+                    'lib'=>'Annulé',
+                    'value'=>'3',
+                ],
+                
+            ]
+        ];
+
         // initialiser les donnees de session par defaut
         $sessions = [
             "dateDeb"=>date("Y-m-01",strtotime($request->dateDeb)),
@@ -86,7 +128,7 @@ class ReservationsController extends Controller
         // initialisation des valeurs par defauts
         session($sessions);
         
-                return view("reservations/index",["columns"=>$columns,"title"=>$page_data,"clients"=>Clients::all(),"appartements"=>Appartements::all()]);
+        return view("reservations/index",["columns"=>$columns,"title"=>$page_data,"clients"=>Clients::all(),"appartements"=>Appartements::all(),'search'=> $search_column]);
 
         
     }

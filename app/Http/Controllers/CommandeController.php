@@ -39,21 +39,37 @@ class CommandeController extends Controller
             "Statut"=>false,
         ];
 
+        // Valeurs pour la recherche
+        $search_column = [
+            'route'=>route('commande.search'),
+            'name'=>'Etat',
+            'values'=>[
+                [
+                    'lib'=>'Initié',
+                    'value'=>'0',
+                ],
+                [
+                    'lib'=>'En cours de livraison',
+                    'value'=>'1',
+                ],
+                [
+                    'lib'=>'Livré',
+                    'value'=>'2',
+                ],
+                [
+                    'lib'=>'Annulé',
+                    'value'=>'3',
+                ],
+                
+            ]
+        ];
+
         // initialisation des valeurs par defauts
         session($sessions);
 
-        // dd($sessions,session()->all());
-
-        // recuperation de client selon la date
-        // $commande = Commande::where("created_at",">=", date("Y-m-01"))
-        //                     ->where("created_at","<=", date("Y-m-d"))
-        //                     ->get();
-
         // $commande = Commande::all();
 
-        // dd($commande);
-
-        return view("commande/index",["columns"=>$columns,"title"=>$page_data]);
+        return view("commande/index",["columns"=>$columns,"title"=>$page_data,'search'=> $search_column]);
     }
 
     /**
@@ -80,6 +96,31 @@ class CommandeController extends Controller
             "Montant Total",
         ];
 
+        // Valeurs pour la recherche
+        $search_column = [
+            'route'=>route('commande.search'),
+            'name'=>'Etat',
+            'values'=>[
+                [
+                    'lib'=>'Initié',
+                    'value'=>'0',
+                ],
+                [
+                    'lib'=>'En cours de livraison',
+                    'value'=>'1',
+                ],
+                [
+                    'lib'=>'Livré',
+                    'value'=>'2',
+                ],
+                [
+                    'lib'=>'Annulé',
+                    'value'=>'3',
+                ],
+                
+            ]
+        ];
+
         // initialiser les donnees de session par defaut
         $sessions = [
             "dateDeb"=>date("Y-m-01",strtotime($request->dateDeb)),
@@ -91,7 +132,7 @@ class CommandeController extends Controller
         session($sessions);
 
         
-        return view("commande/index",["columns"=>$columns,"title"=>$page_data]);
+        return view("commande/index",["columns"=>$columns,"title"=>$page_data,'search'=> $search_column]);
         
     }
 
