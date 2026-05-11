@@ -28,7 +28,7 @@ class Employes extends Model
      */
     public function employe(): HasMany
     {
-        return $this->hasMany(Apartements::class);
+        return $this->hasMany(Appartements::class);
     }
 
     /**

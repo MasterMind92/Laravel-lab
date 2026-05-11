@@ -9,6 +9,11 @@
         <div class="card-body">
 
             <div class="form-group">
+                <label>Reference Commande *</label>
+                <input type="text" class="form-control" name="Reference" id="Reference" value="">
+            </div>
+
+            <div class="form-group">
                 <label for="DateCommande">Date de commande</label>
                 <input type="datetime-local" name="DateCommande" class="form-control" required>
             </div>

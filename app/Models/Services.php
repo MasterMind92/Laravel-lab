@@ -26,7 +26,7 @@ class Services extends Model
      */
     public function appartement(): HasOne
     {
-        return $this->hasOne(Apartements::class);
+        return $this->hasOne(Appartements::class);
     }
 
 

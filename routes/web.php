@@ -17,7 +17,7 @@ use App\Http\Controllers\EmployesController;
 // use App\Http\Controllers\OccupantController;
 // use App\Http\Controllers\PrestationController;
 // use App\Http\Controllers\PromotionController;
-// use App\Http\Controllers\ApartementsController;
+// use App\Http\Controllers\AppartementsController;
 
 // Route::get('/', function () {
 //     return view('welcome');

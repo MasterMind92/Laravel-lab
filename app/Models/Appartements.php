@@ -37,7 +37,7 @@ class Appartements extends Model
      *
      * @var string
      */
-    protected $table = 'apartements';
+    protected $table = 'appartements';
 
     /**
      * The primary key associated with the table.

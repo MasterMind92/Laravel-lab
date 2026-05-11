@@ -13,6 +13,7 @@ class Commande extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        "Reference",
         "DateCommande",
         "DateLivraisonPrévue",
         "DateLivraisonRéelle",

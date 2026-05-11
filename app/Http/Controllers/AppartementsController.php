@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appartements;
-use App\Http\Requests\StoreApartementsRequest;
-use App\Http\Requests\UpdateApartementsRequest;
+use App\Http\Requests\StoreAppartementsRequest;
+use App\Http\Requests\UpdateAppartementsRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -251,7 +251,7 @@ class AppartementsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreApartementsRequest $request)
+    public function store(StoreAppartementsRequest $request)
     {
         
        // The request is already validated and authorized.
@@ -345,7 +345,7 @@ class AppartementsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Apartements $apartements)
+    public function edit(Appartements $appartements)
     {
         //
     }
@@ -353,7 +353,7 @@ class AppartementsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateApartementsRequest $request, $id)
+    public function update(UpdateAppartementsRequest $request, $id)
     {
         // dd($request);
         // The $request is already validated.
@@ -373,7 +373,7 @@ class AppartementsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Apartements $apartements)
+    public function destroy(Appartements $appartements)
     {
         //
     }

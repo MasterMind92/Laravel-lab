@@ -25,6 +25,7 @@ class CommandeController extends Controller
         // colonne du tableau
         $columns = [
             "#",
+            "Reference",
             "Date Commande",
             "Date Livraison Prévue",
             "Date Livraison Réelle",
@@ -89,6 +90,7 @@ class CommandeController extends Controller
         // colonne du tableau
         $columns = [
             "#",
+            "Reference",
             "Date Commande",
             "Date Livraison Prévue",
             "Date Livraison Réelle",
@@ -287,6 +289,7 @@ class CommandeController extends Controller
 
 
             $row[] = $t->CommandeID;
+            $row[] = $t->Reference;
             $row[] = $t->DateCommande;
             $row[] = $t->DateLivraisonPrévue;
             $row[] = $t->DateLivraisonRéelle;

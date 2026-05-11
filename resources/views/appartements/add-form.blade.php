@@ -1,6 +1,6 @@
 <form id="addForm" 
       method="POST" 
-      action="{{ isset($appartement) ? route('apartements.update', $appartement->AppartementID) : route('appartements.store') }}">
+      action="{{ isset($appartement) ? route('appartements.update', $appartement->AppartementID) : route('appartements.store') }}">
 
     @csrf
 

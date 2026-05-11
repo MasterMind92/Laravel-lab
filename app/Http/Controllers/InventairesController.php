@@ -44,6 +44,22 @@ class InventairesController extends Controller
             "Statut"=>false,
         ];
 
+        // Valeurs pour la recherche
+        $search_column = [
+            'route'=>route('inventaire.search'),
+            'name'=>'Etat',
+            'values'=>[
+                [
+                    'lib'=>'Inactif',
+                    'value'=>'I',
+                ],
+                [
+                    'lib'=>'Actif',
+                    'value'=>'A',
+                ],
+            ]
+        ];
+
         // initialisation des valeurs par defauts
         session($sessions);
        

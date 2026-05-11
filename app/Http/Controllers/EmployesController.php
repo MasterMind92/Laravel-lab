@@ -36,6 +36,22 @@ class EmployesController extends Controller
             "Statut",
         ];
 
+        // Valeurs pour la recherche
+        $search_column = [
+            'route'=>route('employes.search'),
+            'name'=>'Etat',
+            'values'=>[
+                [
+                    'lib'=>'Inactif',
+                    'value'=>'I',
+                ],
+                [
+                    'lib'=>'Actif',
+                    'value'=>'A',
+                ],
+            ]
+        ];
+
         // initialiser les donnees de session par defaut
         $sessions = [
             "dateDeb"=>date("Y-m-01"),
@@ -46,18 +62,9 @@ class EmployesController extends Controller
         // initialisation des valeurs par defauts
         session($sessions);
 
-        // dd($sessions,session()->all());
+        
 
-        // recuperation de client selon la date
-        // $employes = Employes::where("created_at",">=", date("Y-m-01"))
-        //                     ->where("created_at","<=", date("Y-m-d"))
-        //                     ->get();
-
-        // $employes = Employes::all();
-
-        // dd($employes);
-
-        return view("employes/index",["columns"=>$columns,"title"=>$page_data]);
+        return view("employes/index",["columns"=>$columns,"title"=>$page_data, 'search'=>$search_column]);
     }
 
     /**
@@ -94,11 +101,27 @@ class EmployesController extends Controller
             "Statut"=>$request->Statut,
         ];
 
+        // Valeurs pour la recherche
+        $search_column = [
+            'route'=>route('employes.search'),
+            'name'=>'Etat',
+            'values'=>[
+                [
+                    'lib'=>'Inactif',
+                    'value'=>'I',
+                ],
+                [
+                    'lib'=>'Actif',
+                    'value'=>'A',
+                ],
+            ]
+        ];
+
         // initialisation des valeurs par defauts
         session($sessions);
 
         
-        return view("employes/index",["columns"=>$columns,"title"=>$page_data]);
+        return view("employes/index",["columns"=>$columns,"title"=>$page_data, 'search'=> $search_column]);
         
     }
 
