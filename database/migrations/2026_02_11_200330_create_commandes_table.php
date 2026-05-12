@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('commandes', function (Blueprint $table) {
             $table->id("CommandeID")->unsignedInteger()->autoincrement();
-            $table->string("Reference")->nullable()->comments('Reference commande');
+            $table->string("Reference")->nullable()->comment('Reference commande');
             $table->dateTime("DateCommande");
             $table->dateTime("DateLivraisonPrévue");
             $table->dateTime("DateLivraisonRéelle");
-            $table->string("Statut")->default("Non-livré")->comments("0:Initie , 1: en cours de livraison , 2: livre, 3: Annule ");
+            $table->string("Statut")->default("Non-livré")->comment("0:Initie , 1: en cours de livraison , 2: livre, 3: Annule ");
             $table->integer("MontantTotal");
             $table->string("Etat");
             $table->timestamps();

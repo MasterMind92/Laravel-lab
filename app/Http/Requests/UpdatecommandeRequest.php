@@ -23,6 +23,7 @@ class UpdatecommandeRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'Reference' => 'required',
             'DateCommande' => 'required',
             'DateLivraisonPrévue' => 'required',
             'DateLivraisonRéelle' => 'required',
