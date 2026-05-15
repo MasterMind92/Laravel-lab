@@ -63,7 +63,7 @@ Route::middleware('auth')->group(function () {
     /*****************************************************************************/ 
 
     Route::get('/reservations/generate-id', [ReservationsController::class, 'generate_id'])->name('reservations.generate.id');
-    
+
     Route::resource('reservations', ReservationsController::class);
 
     Route::post('/reservations/list', [ReservationsController::class, 'list'])->name('reservations.list');
@@ -111,6 +111,19 @@ Route::middleware('auth')->group(function () {
     Route::post('/employes/search', [EmployesController::class, 'search'])->name('employes.search');
     Route::post('/employes/state', [EmployesController::class, 'setState'])->name('employes.state');
 
+
+    /**
+     * 
+    */
+    Route::get('/services/generate-id', [ServicesController::class, 'generate_id'])->name('services.generate.id');
+
+    Route::resource('services', ServicesController::class);
+    
+    Route::post('/services/list', [ServicesController::class, 'list'])->name('services.list');
+    Route::post('/services/search', [ServicesController::class, 'search'])->name('services.search');
+    Route::post('/services/state', [ServicesController::class, 'setState'])->name('services.state');
+
+    
 });
 
 
