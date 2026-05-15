@@ -67,7 +67,7 @@ class InventairesController extends Controller
         // dd($appartements,$commandes);
 
 
-        return view("inventaire/index",["columns"=>$columns,"title"=>$page_data,"commandes" =>Commande::all(), "appartements"=> Appartements::all()]);
+        return view("inventaire/index",["columns"=>$columns,"title"=>$page_data,"commandes" =>Commande::all(), "appartements"=> Appartements::all(),'search'=>$search_column]);
     }
 
     /**
@@ -97,6 +97,22 @@ class InventairesController extends Controller
             "Date",
         ];
 
+        // Valeurs pour la recherche
+        $search_column = [
+            'route'=>route('inventaire.search'),
+            'name'=>'Etat',
+            'values'=>[
+                [
+                    'lib'=>'Inactif',
+                    'value'=>'I',
+                ],
+                [
+                    'lib'=>'Actif',
+                    'value'=>'A',
+                ],
+            ]
+        ];
+
         // initialiser les donnees de session par defaut
         $sessions = [
             "dateDeb"=>date("Y-m-01",strtotime($request->dateDeb)),
@@ -108,7 +124,7 @@ class InventairesController extends Controller
         session($sessions);
         
         
-        return view("inventaire/index",["columns"=>$columns,"title"=>$page_data]);
+        return view("inventaire/index",["columns"=>$columns,"title"=>$page_data,"commandes" =>Commande::all(), "appartements"=> Appartements::all(),'search'=>$search_column]);
         
     }
 

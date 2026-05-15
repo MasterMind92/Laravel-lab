@@ -165,6 +165,27 @@ class CommandeController extends Controller
     }
 
     /**
+     * Generer a listing of the resource.
+     */
+
+    public function generate_id(){
+        // recuperer l'identifiant du dernier appartement existant
+        $commande = Commande::latest()->first();
+        // Incrementer puis retourner la chaine de caractere
+        // $paddedNumber = sprintf('%04d', $commande->appartementID+1);
+        // dd($commande,$commande->AppartementID+1);
+        $paddedNumber = ((boolean) $commande) ? sprintf('%05d', (int) $commande->CommandeID+1) : sprintf('%05d', 1);
+
+
+        return response()->json([
+            "status"=> (boolean) $commande,
+            "msg" => "Reference commande générée avec succès",
+            "data"=> ['ID'=>"CMD-".date("YmdHis")."-".$paddedNumber]
+        ]);
+
+    }
+
+    /**
      * Display the specified resource.
      */
     public function show(Request $request)

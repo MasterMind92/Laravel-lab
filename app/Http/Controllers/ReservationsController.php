@@ -134,6 +134,27 @@ class ReservationsController extends Controller
     }
 
     /**
+     * Generer a listing of the resource.
+     */
+
+    public function generate_id(){
+        // recuperer l'identifiant du dernier appartement existant
+        $reservation = Reservations::latest()->first();
+        // Incrementer puis retourner la chaine de caractere
+        // $paddedNumber = sprintf('%04d', $reservation->appartementID+1);
+        // dd($reservation,$reservation->AppartementID+1);
+        $paddedNumber = ((boolean) $reservation) ? sprintf('%05d', (int) $reservation->ReservationID+1) : sprintf('%05d', 1);
+
+
+        return response()->json([
+            "status"=> (boolean) $reservation,
+            "msg" => "Reference reservation générée avec succès",
+            "data"=> ['ID'=>"RES-".date("YmdHis")."-".$paddedNumber]
+        ]);
+
+    }
+
+    /**
      * Display the specified resource.
      */
     public function list(Request $request)

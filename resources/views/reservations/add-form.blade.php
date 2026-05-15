@@ -24,7 +24,7 @@
             <div class="form-group col-md-6">
                 <label>Numéro *</label>
                 <input type="text" class="form-control" name="Numero" id="Numero"
-                        value="{{ $reservation->Numero ?? '' }}">
+                        value="{{ $reservation->ReservationID ?? '' }}">
             </div>
 
             <div class="form-group col-md-6">

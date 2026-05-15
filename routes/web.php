@@ -62,6 +62,8 @@ Route::middleware('auth')->group(function () {
     /*****************************************************************************/ 
     /*****************************************************************************/ 
 
+    Route::get('/reservations/generate-id', [ReservationsController::class, 'generate_id'])->name('reservations.generate.id');
+    
     Route::resource('reservations', ReservationsController::class);
 
     Route::post('/reservations/list', [ReservationsController::class, 'list'])->name('reservations.list');
@@ -79,17 +81,19 @@ Route::middleware('auth')->group(function () {
      */
     Route::get('/inventaire/generate-id', [InventairesController::class, 'generate_id'])->name('inventaire.generate.id');
     Route::resource('inventaire', InventairesController::class);
-
+    
     Route::post('/inventaire/list', [InventairesController::class, 'list'])->name('inventaire.list');
     Route::post('/inventaire/search', [InventairesController::class, 'search'])->name('inventaire.search');
     Route::post('/inventaire/state', [InventairesController::class, 'setState'])->name('inventaire.state');
-
-
+    
+    
     /**
      * 
-     */
-    Route::resource('commande', CommandeController::class);
+    */
+    Route::get('/commande/generate-id', [CommandeController::class, 'generate_id'])->name('commande.generate.id');
 
+    Route::resource('commande', CommandeController::class);
+    
     Route::post('/commande/list', [CommandeController::class, 'list'])->name('commande.list');
     Route::post('/commande/search', [CommandeController::class, 'search'])->name('commande.search');
     Route::post('/commande/state', [CommandeController::class, 'setState'])->name('commande.state');
@@ -98,6 +102,9 @@ Route::middleware('auth')->group(function () {
     /**
      * 
      */
+    // Route::get('/employes/generate-id', [CommandeController::class, 'generate_id'])->name('employes.generate.id');
+
+
     Route::resource('employes', EmployesController::class);
 
     Route::post('/employes/list', [EmployesController::class, 'list'])->name('employes.list');
